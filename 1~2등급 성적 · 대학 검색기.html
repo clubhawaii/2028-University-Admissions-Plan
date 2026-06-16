@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1~2등급 지원전략 검색기</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{
+    --ink:#191919; --ink2:#3A3A3A; --muted:#9A8D92; --faint:#9A8D92;
+    --paper:#FFFFFF; --surface:#FFFFFF; --line:#EEEEEE; --line2:#F5F4F2; --bd:#E6E6E6;
+    --accent:#FF5F9F; --accent2:#5A23A0;
+    --safe:#0C6E51; --safe-bg:#E3F6EE;
+    --fit:#2A4F9A;  --fit-bg:#EAF0FD;
+    --reach:#9A5A0C; --reach-bg:#FDF0DC;
+    --out:#9A8D92;  --out-bg:#EEEFF1;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#fff; color:var(--ink);
+    font-family:'Pretendard','Pretendard Variable',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic','맑은 고딕',sans-serif;
+    font-size:14px; line-height:1.55; -webkit-font-smoothing:antialiased;
+    font-variant-numeric:tabular-nums;
+  }
+  .wrap{max-width:880px; margin:0 auto; padding:18px 18px 64px;}
+
+  /* ===== top bar (2028 style) ===== */
+  header.bar{position:sticky; top:0; z-index:60; background:#fff; border-bottom:1px solid var(--line);}
+  .bar-in{max-width:880px; margin:0 auto; padding:0 18px;}
+  .bar-top{display:flex; align-items:center; gap:14px; height:64px;}
+  .home-btn{display:inline-flex; align-items:center; gap:5px; flex:none; text-decoration:none;
+    border:1px solid var(--line); background:#fff; color:var(--ink2); font-weight:700; font-size:12.5px;
+    padding:7px 11px; border-radius:9px; transition:all .14s;}
+  .home-btn:hover{border-color:var(--ink); color:var(--ink);}
+  .brand{display:flex; align-items:baseline; gap:9px; cursor:default; flex:none;}
+  .brand .yr{font-weight:800; font-size:12px; color:var(--accent); padding-left:14px; position:relative;}
+  .brand .yr::before{content:''; position:absolute; left:0; top:50%; transform:translateY(-50%);
+    width:8px; height:8px; border-radius:50%; background:var(--accent);}
+  .brand h1{font-size:18px; font-weight:800; letter-spacing:-.02em; color:var(--ink); margin:0;}
+  .brand .sub{font-size:11.5px; color:var(--muted); letter-spacing:-.005em;}
+  nav.tabs{display:flex; gap:4px; margin-left:auto;}
+  .tab{border:none; background:none; color:var(--muted); font:inherit; font-size:14px; font-weight:700;
+    padding:8px 14px; border-radius:9px; cursor:pointer; letter-spacing:-.02em; transition:all .14s; white-space:nowrap;}
+  .tab:hover{color:var(--ink); background:var(--line2);}
+  .tab[aria-selected="true"]{color:#fff; background:var(--accent);}
+  .tab:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+
+  /* ===== header sub: title + input + quick ===== */
+  .bar-sub-wrap{background:#fff; border-bottom:1px solid var(--line); margin-bottom:8px;}
+  .bar-sub{max-width:880px; margin:0 auto; padding:56px 18px 48px; text-align:center;}
+  .search-label{font-size:30px; font-weight:800; color:var(--ink); letter-spacing:-.02em;
+    line-height:1.3; margin:0 0 28px;}
+  @media (max-width:560px){ .search-label{font-size:22px;} }
+
+  .grade-input{
+    width:200px; font:inherit; font-size:34px; font-weight:800; letter-spacing:-.01em;
+    text-align:center; color:var(--ink); border:1.5px solid var(--ink); border-radius:14px;
+    padding:12px 8px; background:#fff; margin:0 auto; display:block;
+  }
+  .grade-input:focus{outline:none; box-shadow:0 0 0 3px rgba(25,25,25,.12);}
+  .grade-input::-webkit-outer-spin-button,.grade-input::-webkit-inner-spin-button{opacity:1;}
+  .quick{display:flex; gap:7px; flex-wrap:wrap; justify-content:center; margin:16px 0 0;}
+  .chip{border:1px solid var(--line); background:#fff; color:var(--ink2); font:inherit;
+    font-size:13px; font-weight:600; padding:7px 13px; border-radius:999px; cursor:pointer; transition:all .14s;}
+  .chip:hover{border-color:var(--accent2); color:var(--accent2);}
+  .quick .chip:hover{border-color:var(--accent); color:var(--accent);}
+  .chip:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .hint{font-size:12px; color:var(--muted); margin:14px 0 0;}
+
+  .search-input{width:100%; max-width:560px; font:inherit; font-size:16px; padding:13px 16px;
+    border:1.5px solid var(--ink); border-radius:12px; background:#fff; color:var(--ink);
+    margin:0 auto; display:block; text-align:left;}
+  .search-input:focus{outline:none; box-shadow:0 0 0 3px rgba(25,25,25,.12);}
+
+  /* upcoming notice */
+  .upcoming{display:flex; align-items:center; justify-content:center; gap:7px; text-align:center;
+    border:1px solid var(--accent2); color:var(--accent2); background:#fff; font-weight:700;
+    font-size:13px; letter-spacing:-.01em; padding:11px 16px; border-radius:999px;
+    margin:0 0 22px;}
+
+  /* legacy panel (unused after move, kept neutral) */
+  .panel{background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:18px; margin-bottom:16px;}
+  .field-label{font-size:12px; font-weight:700; color:var(--ink2); margin:0 0 8px; display:block;}
+
+  /* Legend */
+  .legend{display:flex; gap:14px; flex-wrap:wrap; margin:2px 0 16px; padding-left:2px;}
+  .lg{display:flex; align-items:center; gap:6px; font-size:12px; color:var(--ink2); font-weight:600;}
+  .dot{width:10px; height:10px; border-radius:3px;}
+  .dot.safe{background:var(--safe);} .dot.fit{background:var(--fit);}
+  .dot.reach{background:var(--reach);} .dot.out{background:var(--out);}
+
+  /* Bucket heading */
+  .bucket{margin:28px 0 12px; display:flex; align-items:baseline; gap:10px;}
+  .bucket h2{font-size:18px; font-weight:800; margin:0; letter-spacing:-.01em;}
+  .bucket .cnt{font-size:13px; color:var(--muted); font-weight:600;}
+  .bucket .bar{flex:1; height:1px; background:var(--line);}
+
+  /* Cards */
+  .card{background:#fff; border:1px solid var(--line); border-radius:var(--radius);
+    padding:16px 17px; margin-bottom:11px; animation:rise .28s ease both;}
+  .card.dim{opacity:.62;}
+  @keyframes rise{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;}}
+  @media (prefers-reduced-motion:reduce){.card{animation:none;}}
+
+  .card-top{display:flex; justify-content:space-between; align-items:flex-start; gap:12px;}
+  .line-name{font-size:17px; font-weight:800; letter-spacing:-.01em; margin:0;}
+  .tier{font-size:11px; color:var(--muted); font-weight:600; margin:2px 0 0;}
+  .unis{display:flex; flex-wrap:wrap; gap:6px; margin:11px 0 13px;}
+  .uni-tag{font:inherit; font-size:12.5px; font-weight:600; color:var(--ink2); background:var(--line2);
+    padding:4px 9px; border-radius:7px; border:1px solid transparent; cursor:pointer; transition:all .14s;}
+  .uni-tag::after{content:"›"; margin-left:5px; opacity:.45; font-weight:800;}
+  .uni-tag:hover{background:var(--fit-bg); color:var(--fit); border-color:var(--fit);}
+  .uni-tag:hover::after{opacity:.9;}
+  .uni-tag:focus-visible{outline:2px solid var(--accent2); outline-offset:2px;}
+
+  /* Track row + gauge */
+  .tracks{display:flex; flex-direction:column; gap:9px; margin:4px 0 13px;}
+  .track{display:grid; grid-template-columns:34px 1fr auto; align-items:center; gap:11px;}
+  .tk-label{font-size:12px; font-weight:700; color:var(--ink2);}
+  .gauge{position:relative; height:8px; border-radius:6px; background:var(--line2); overflow:visible;}
+  .gauge .band{position:absolute; top:0; bottom:0; border-radius:6px; opacity:.55;}
+  .gauge .mark{position:absolute; top:-4px; width:3px; height:16px; border-radius:2px; background:var(--ink);
+    transform:translateX(-50%); box-shadow:0 0 0 2px #fff;}
+  .gauge .rng{position:absolute; top:11px; font-size:10px; color:var(--muted); white-space:nowrap;}
+  .badge{font-size:11.5px; font-weight:800; padding:3px 9px; border-radius:999px; white-space:nowrap;}
+  .badge.safe{color:var(--safe); background:var(--safe-bg);}
+  .badge.fit{color:var(--fit); background:var(--fit-bg);}
+  .badge.reach{color:var(--reach); background:var(--reach-bg);}
+  .badge.out{color:var(--out); background:var(--out-bg);}
+  .band.safe{background:var(--safe);} .band.fit{background:var(--fit);}
+  .band.reach{background:var(--reach);} .band.out{background:var(--out);}
+
+  .caution{font-size:13px; color:var(--ink2); background:#FAFAFA; border:1px solid var(--line);
+    border-radius:9px; padding:9px 11px; margin:2px 0 0; line-height:1.5;}
+  .caution b{color:var(--accent2); font-weight:700;}
+
+  details.notes{margin:11px 0 0;}
+  details.notes>summary{font-size:12px; font-weight:700; color:var(--ink2); cursor:pointer; list-style:none;
+    display:inline-flex; align-items:center; gap:5px; user-select:none;}
+  details.notes>summary::-webkit-details-marker{display:none;}
+  details.notes>summary::before{content:"▸"; color:var(--accent2); transition:transform .15s;}
+  details.notes[open]>summary::before{transform:rotate(90deg);}
+  details.notes ul{margin:9px 0 2px; padding-left:2px; list-style:none;}
+  details.notes li{font-size:12.5px; color:var(--ink2); padding:3px 0 3px 14px; position:relative; line-height:1.5;}
+  details.notes li::before{content:""; position:absolute; left:2px; top:10px; width:4px; height:4px;
+    border-radius:50%; background:var(--accent2);}
+
+  /* University detail card */
+  .uni-card .line-name{display:flex; align-items:center; gap:9px;}
+  .line-pill{font-size:11.5px; font-weight:700; color:#fff; background:var(--ink); padding:3px 9px; border-radius:7px;}
+  .meta{display:flex; gap:18px; flex-wrap:wrap; margin:12px 0 13px;}
+  .meta .m{font-size:12px;}
+  .meta .m span{display:block; font-size:11px; color:var(--muted); font-weight:600; margin-bottom:2px;}
+  .meta .m b{font-size:15px; font-weight:800; color:var(--ink);}
+  .kv{margin:0 0 10px;}
+  .kv .k{font-size:11px; font-weight:700; color:var(--accent2); letter-spacing:.03em; margin:0 0 3px;}
+  .kv .v{font-size:13px; color:var(--ink2); line-height:1.55;}
+  .kv ul{margin:4px 0 0; padding-left:2px; list-style:none;}
+  .kv li{font-size:12.5px; color:var(--ink2); padding:2px 0 2px 14px; position:relative; line-height:1.5;}
+  .kv li::before{content:""; position:absolute; left:2px; top:9px; width:4px; height:4px; border-radius:50%; background:var(--accent2);}
+  .fb-note{font-size:11px; color:var(--muted); margin:9px 0 0; line-height:1.55; padding-top:8px; border-top:1px dashed var(--line);}
+
+  /* Uni mode default chip grid */
+  .grouplabel{font-size:12px; font-weight:800; color:var(--ink); margin:16px 0 8px; display:flex; gap:8px; align-items:center;}
+  .grouplabel small{font-weight:600; color:var(--muted); font-size:11px;}
+  .chipgrid{display:flex; flex-wrap:wrap; gap:7px;}
+  .chipgrid .chip{font-weight:700;}
+
+  .empty{text-align:center; color:var(--muted); padding:34px 10px; font-size:13.5px;}
+
+  /* Footer options */
+  .opts{margin-top:20px;}
+  .opts>summary{font-size:13px; font-weight:800; color:var(--ink); cursor:pointer; padding:13px 16px;
+    background:var(--surface); border:1px solid var(--line); border-radius:11px; list-style:none;
+    display:flex; align-items:center; gap:8px;}
+  .opts>summary::-webkit-details-marker{display:none;}
+  .opts>summary::before{content:"＋"; color:var(--accent2); font-weight:800;}
+  .opts[open]>summary::before{content:"－";}
+  .opts .body{padding:6px 4px 2px;}
+  .optitem{padding:11px 2px; border-bottom:1px solid var(--line2);}
+  .optitem:last-child{border-bottom:0;}
+  .optitem h4{margin:0 0 3px; font-size:13px; font-weight:800;}
+  .optitem p{margin:0; font-size:12.5px; color:var(--ink2); line-height:1.55;}
+
+  footer{max-width:880px; margin:0 auto; padding:28px 18px 44px; font-size:12px; color:var(--faint);
+    letter-spacing:-.005em; text-align:center; line-height:1.7;}
+  .hidden{display:none !important;}
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="bar-in">
+    <div class="bar-top">
+      <a href="index.html" class="home-btn" title="홈으로">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>홈
+      </a>
+      <div class="brand">
+        <span class="yr">1~3등급</span><h1>지원전략 검색기</h1>
+        <span class="sub">성적·대학 검색</span>
+      </div>
+      <nav class="tabs" role="tablist" aria-label="검색 모드">
+        <button class="tab" id="tab-grade" role="tab" aria-selected="true" aria-controls="view-grade">성적으로 찾기</button>
+        <button class="tab" id="tab-uni" role="tab" aria-selected="false" aria-controls="view-uni">대학으로 찾기</button>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div class="bar-sub-wrap">
+  <!-- GRADE MODE INPUT -->
+  <div class="bar-sub" id="sub-grade">
+    <p class="search-label">성적으로 예상하는 대학 라인</p>
+    <label class="hidden" for="grade">내신 등급 입력</label>
+    <input class="grade-input" id="grade" type="number" inputmode="decimal" step="0.05" min="1" max="3" placeholder="1.70" value="1.70" aria-label="내신 등급">
+    <div class="quick" aria-label="간편 검색">
+      <button class="chip" data-g="1.10">1.10</button>
+      <button class="chip" data-g="1.30">1.30</button>
+      <button class="chip" data-g="1.50">1.50</button>
+      <button class="chip" data-g="1.70">1.70</button>
+      <button class="chip" data-g="1.90">1.90</button>
+      <button class="chip" data-g="2.10">2.10</button>
+    </div>
+    <p class="hint">교과·종합 각각의 컷 구간과 내 위치를 게이지로 표시합니다. 점수 라인은 보정값 기반으로 ±0.1 변동 가능.</p>
+  </div>
+
+  <!-- UNI MODE INPUT -->
+  <div class="bar-sub hidden" id="sub-uni">
+    <p class="search-label">대학으로 예상하는 요구 성적</p>
+    <label class="hidden" for="uniq">대학 검색</label>
+    <input class="search-input" id="uniq" type="text" placeholder="예: 숭실대 · 가천 · 광명상가 · 여대" autocomplete="off">
+    <p class="hint">대학명·줄임말·라인 이름으로 검색됩니다. 비워두면 전체 목록이 라인별로 보입니다.</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <p class="upcoming">🔜 2.0~3.0등급 검색기는 곧 업로드될 예정입니다 — 조금만 기다려 주세요!</p>
+
+  <!-- GRADE MODE -->
+  <section id="view-grade" role="tabpanel" aria-labelledby="tab-grade">
+    <div class="legend">
+      <span class="lg"><span class="dot fit"></span>적정 · 지원권</span>
+      <span class="lg"><span class="dot reach"></span>도전</span>
+      <span class="lg"><span class="dot safe"></span>안정</span>
+      <span class="lg"><span class="dot out"></span>어려움</span>
+    </div>
+
+    <div id="grade-results"></div>
+  </section>
+
+  <!-- UNI MODE -->
+  <section id="view-uni" role="tabpanel" aria-labelledby="tab-uni" class="hidden">
+    <div id="uni-results"></div>
+  </section>
+
+  <details class="opts">
+    <summary>라인과 무관한 공통 옵션 — 계약학과 · 자유전공 · 논술</summary>
+    <div class="body">
+      <div class="optitem">
+        <h4>계약학과 (반도체 등)</h4>
+        <p>시스템반도체·반도체공학 등 채용연계 계약학과. 약대 수준의 입결이 형성될 것으로 예측되며 주로 학생부 종합전형으로 선발. 관련 역량·진로 일관성이 강점이면 도전.</p>
+      </div>
+      <div class="optitem">
+        <h4>자유전공 (유형1 · 완전 자유전공)</h4>
+        <p>1학년 이후 문·이과 구분 없이 전공 선택. 학교당 20% 이상 선발하는 큰 기회. 입결은 다소 높은 편이고 상위권에 이과가 많지만 문과 상위권도 결과 좋음. 융합 키워드 학생부가 합격에 유의미.</p>
+      </div>
+      <div class="optitem">
+        <h4>자유전공 (유형2 · 계열 광역모집)</h4>
+        <p>공대·자연 등 계열이 정해진 광역모집. 문·이과 유불리는 없으나 ‘융합’ 키워드 도전 성격. 계열별 학과 확인 후 관련 과목 선택·성적 관리 필요.</p>
+      </div>
+      <div class="optitem">
+        <h4>논술 (인문 / 자연)</h4>
+        <p>수능과 함께 준비, 대부분 수능최저 있음(only 논술러 라인은 최저가 당락 결정). 인문논술=독해+문제해결+글쓰기, 자연논술 별도. 보통 2학년 겨울방학부터 준비. 약술형 논술(국숭세·광명상가 등)은 부담이 상대적으로 낮음.</p>
+      </div>
+    </div>
+  </details>
+
+</div>
+
+<footer>
+  데이터 출처: ‘1~1.5등급’ · ‘1.5~2등급’ 지원전략 설명회 자료 재정렬본. 점수 라인은 각종 기관 자료 + 보정값으로 상승/하락 가능성이 있으며, 실제 지원은 모집요강·최신 입결로 재확인 필요.<br>
+  모든 저작권은 (주)이즈유에 있으며, 무단 전재 및 재배포를 엄격히 금지합니다.<br>
+  ⓒ2021. ISYOU all rights reserved.
+</footer>
+
+<script>
+const SCALE_MIN = 1.0, SCALE_MAX = 2.6;
+
+const LINES = [
+  { id:'med', name:'메디컬 (의·치·한·약·수)', tier:'최상위 · All 1등급',
+    unis:['의대','치대','한의대','약대','수의대'],
+    gyo:[1.00,1.15], jong:[1.00,1.25],
+    caution:'기본은 <b>All 1등급</b> 경쟁. 지원 요건 = All 1등급 + 수능최저 3합4 이상 + 학생부 관리.',
+    notes:['비지역인재 선발 비중(전체) — 교과 17%·종합 35%·논술 6%·정시 41%',
+           '교과: 2등급 2~3개라도 최저 강한 학교(전북대·영남대 4합5 등) 지원 가능',
+           '종합: 건국대 글로컬 면접형·계명대 등 최저 높은 학교',
+           '최저 3합4가 기본 — 더 높이면 중대·울산·고려대 등 수도권/메이저 의대 종합 가능',
+           '지역인재/지역의사 비해당자는 학종 주력, 해당자는 지역에 따라 교과 주력'] },
+  { id:'sky', name:'SKY (서울대·연세대·고려대)', tier:'최상위',
+    unis:['서울대','연세대','고려대'],
+    gyo:[1.10,1.30], jong:[1.30,1.55],
+    caution:'면접 변별이 큼. 일반고는 <b>내신 압도 + 어려운 과목 + 원점수</b>가 기조.',
+    notes:['교과 1.15 이내 + 최저 — ‘내신의 왕’ 라인',
+           '교과 1.3 이내 + 선택과목·세특 경쟁력',
+           '종합 1.4 이내 + 학생부 역량 우수 (특목·자사 제외)',
+           '종합 1.6 이내 + 학생부 역량 + 수능 역량 우수',
+           '정시에서도 내신(학생부) 반영 — 내신을 던지는 것은 위험'] },
+  { id:'ssh', name:'서성한 (서강·성균관·한양)', tier:'상위',
+    unis:['서강대','성균관대','한양대'],
+    gyo:[1.20,1.45], jong:[1.40,1.60],
+    caution:'<b>면접·최저가 갈림길</b>. 서강대만 면접 있는 종합 없음(수시 합격 시 정시 기회 없음 유의).',
+    notes:['교과: 등급 위주 (서강 3개 각3 / 한양 3개 각3 수학 / 성균 3합6~7)',
+           '종합: 대부분 제시문·인적성 면접 — 기출로 학생부 관리',
+           '내신의 왕 + 최저 3개 각3이면 서강대 (과목 선택 안 봄)',
+           '계열 과목 선택·성적·세특 충실 + 최저 3합7이면 성균관대',
+           '내신 따기 어려운 학교서 경쟁했다면 한양대 교과(교과 탈 쓴 종합)도 주목'] },
+  { id:'jge', name:'중경외시이', tier:'중상위',
+    unis:['중앙대','경희대','한국외대','서울시립대','이화여대'],
+    gyo:[1.25,1.30], jong:[1.40,1.70],
+    caution:'도전 기회는 <b>수능최저가 있는 종합전형</b>에서 열림. 교과는 최저 3합7.',
+    notes:['교과 1.25 이내 — 수능최저 3합7 필수 (이대는 과목별 반영)',
+           '교과 1.3 이내 — 선택과목·세특 경쟁력',
+           '종합 1.4 내외 — 학생부·탐구 역량 우수 (특목·자사 제외)',
+           '종합 1.7 이내 — 학생부 + 수능 역량 우수'] },
+  { id:'gdh', name:'건동홍숙', tier:'중상위',
+    unis:['건국대','동국대','홍익대','숙명여대'],
+    gyo:[1.35,1.45], jong:[1.50,1.55],
+    caution:'전형이 <b>교과/종합/논술/수능</b>으로 단순. 교과·최저학종 모두 2합5 수준.',
+    notes:['교과 1.35 이내 — 최저 2합5',
+           '교과 1.45 이내 — 학생부 충실도·깊이 (또는 선택과목·세특 + 최저 3합8)',
+           '종합 1.5 내외 — 학생부 역량 + 수능최저 2합5',
+           '종합 1.55 내외 — 학생부·탐구 역량 우수 (특목·자사 제외)'] },
+  { id:'ksp', name:'국숭세과단', tier:'중위',
+    unis:['국민대','숭실대','세종대','서울과기대'],
+    gyo:[1.50,1.60], jong:[1.70,1.90],
+    caution:'대학별 <b>진로선택 반영(등급 vs 성취도)</b>·강조 키워드 차이가 큼 → 대학 검색으로 확인.',
+    notes:['교과 1.5 이내 — 수능최저 자신 없을 때',
+           '교과 1.55 이내 — 최저 2합6 (성신 2합7)',
+           '교과 1.6 이내 — 최저 2합5',
+           '종합 1.7 내외 — 학교생활 충실',
+           '종합 1.8~9 내외 — 학생부 관리 + 면접 강점',
+           '교과 1.9 이내 — 최저 2합5~6',
+           '종합 1.9 내외 — 학교생활 충실 + 최저 2합5~6'] },
+  { id:'dha', name:'단국·항아인', tier:'중위',
+    unis:['단국대(죽전)','항공대','아주대','인하대'],
+    gyo:[1.50,1.60], jong:[1.70,1.90],
+    caution:'<b>항공대 교과 최저 없음</b>, 아주·인하는 학생부 좋으면 합격 사례 多.',
+    notes:['교과 1.6 내외 — 진로선택 등급 vs 성취도 중 우수 반영(항공대)',
+           '종합 1.7~1.9 — 학생부·진로역량 중심',
+           '아주대 논술 최저 2합5 / 종합 진로역량 50% 계열적합'] },
+  { id:'sgb', name:'성신·경북·부산', tier:'중위',
+    unis:['성신여대','경북대','부산대'],
+    gyo:[1.55,1.90], jong:[1.80,2.10],
+    caution:'<b>경북대 선택과목 성취도</b> 중시, <b>부산대 교과 탐구전형</b> 신설.',
+    notes:['교과 1.55~1.9 — 선택과목·진로 성취도, 서류/원점수 반영',
+           '종합 1.8~2.1 — 탐구 역량·깊이가 핵심',
+           '성신 종합 최저 2합6~7 / 경북 종합 최저 2합6~7 / 부산 종합 탐구 50%'] },
+  { id:'kms', name:'광명상가', tier:'중하위',
+    unis:['광운대','명지대','상명대','가톨릭대'],
+    gyo:[1.80,2.10], jong:[2.00,2.10],
+    caution:'<b>명지 종합 최저 有</b>, <b>광운 교과 최저 신설</b>, 가톨릭 진로역량 50%.',
+    notes:['교과 1.8 이내 — 최저 자신 없을 때',
+           '교과 1.9 이내 — 최저 2합6~7',
+           '교과 2.1 이내 — 최저 자신 없을 때',
+           '종합 2.0 내외 — 과목이수·진로 성적·학교생활 충실도',
+           '종합 2.1 내외 — 학생부 관리 + 면접 자신'] },
+  { id:'igk', name:'인가경', tier:'하위 인서울·수도권',
+    unis:['인천대','가천대','경기대'],
+    gyo:[2.10,2.20], jong:[2.00,2.10],
+    caution:'<b>가천대 지우개 찬스</b>·지역균형 면접, 라인 대부분 탐구 1과목 반영.',
+    notes:['교과 2.1 이내 — 최저 자신 없을 때',
+           '교과 2.2 이내 — 최저 2합5~6',
+           '종합 2.1 내외 — 학생부 + 면접',
+           '정시 다수 과목 미반영(가천대 5과목 중 3~4개)'] },
+  { id:'yeo', name:'여대', tier:'하위 인서울·수도권',
+    unis:['서울여대','동덕여대','덕성여대'],
+    gyo:[2.00,2.20], jong:[2.20,2.50],
+    caution:'<b>서울여대 전과목+최저(유일)</b>, 동덕여대 종합 면접 60%.',
+    notes:['교과 ~2.2 — 전 과목 등급(서울) / 등급·성취도 중 우수(동덕)',
+           '종합 2.2~중반 — 학생부 좋으면 2점 중반도 도전권(덕성)',
+           '서울여대 최저 2합7 / 덕성여대 최저 2합7'] },
+  { id:'low', name:'인서울 하위 (한성대 등)', tier:'2점 중반↓',
+    unis:['한성대','서경대 등'],
+    gyo:[2.30,2.60], jong:[2.30,2.60],
+    caution:'<b>최저 없는 전형 위주</b> + 자유전공·약술형 논술 적극 활용.',
+    notes:['교과 미래인재 등 — 최저 없는 전형 위주',
+           '인서울을 희망하는 2등급 중반 이하 학생들의 경합지'] },
+];
+
+const UNIS = [
+  // SKY
+  { name:'서울대', aliases:['서울대학교','설대','snu'], line:'SKY (서울대·연세대·고려대)', gyo:null, jong:[1.00,1.40],
+    keys:'교과전형 없음 · 종합 지역균형(면접 30%, 일반고 3명 추천, 3합7 최저 폐지) · 종합 일반전형(면접 50%, 어려운 면접·II과목)',
+    tips:'일반고는 지역균형이 압도적 유리(최저 폐지). 자사고는 일반전형. 면접 변별이 큼(역대 면접 예시로 대비). 정시도 학생부 40% 반영 — 수능·교과 영향력이 큼.' },
+  { name:'연세대', aliases:['연대','연세'], line:'SKY (서울대·연세대·고려대)', gyo:[1.10,1.50], jong:[1.30,1.60],
+    keys:'교과추천(2단계 서류 20%, 최저 2합4 국수 중1 포함) · 종합 탐구인재(면접 40%, 최저 없음) · 종합 종합인재(면접 30%, 최저 2합4) · 논술 3합6',
+    tips:'기조 명확 — 일반고는 내신 압도 + 어려운 과목 경쟁 + 원점수 확보. 교과평가는 세특 정성평가. 종합은 제시문 기반 면접(어려움).' },
+  { name:'고려대', aliases:['고대','고려'], line:'SKY (서울대·연세대·고려대)', gyo:[1.10,1.80], jong:[1.30,1.60],
+    keys:'교과 학교추천(서류 20%, 성취도, 최저 폐지) · 종합 학업우수(면접 부활 20%, 최저 4합9) · 종합 계열적합(특목자사 강세) · 논술 4합8',
+    tips:'1.1이내면 서류 챙겨 추천, 1.5면 서류+최저로 학업우수. 교과↔학업우수 중복지원 폐지. 교과우수전형 백분위 반영(교과 영향 큼). 교과전형 쓰려면 1.8이내.' },
+  // 서성한
+  { name:'서강대', aliases:['서강'], line:'서성한 (서강·성균관·한양)', gyo:[1.20,1.50], jong:[1.30,1.60],
+    keys:'교과 지역균형(교과90 등급80/성취10+출결, 최저 4개 중 3개 3이내) · 종합 일반Ⅰ(최저 없음) · 종합 일반Ⅱ(최저 3합7) · 논술(90+교과10, 3합7)',
+    tips:'내신의 왕이면 서강대(최저 3개 각3, 과목 선택 안 봄). 면접 있는 종합 없음 → 수시 합격 시 정시 기회 없음에 유의. 특목/자사 강세. 교과 반영 전형은 백분위 활용.' },
+  { name:'성균관대', aliases:['성대','성균관','성균'], line:'서성한 (서강·성균관·한양)', gyo:[1.20,1.50], jong:[1.40,1.60],
+    keys:'교과추천(학생부100 공통35/선택35/정성30, 최저 3합6~7) · 종합 융합/탐구(서류100) · 성균/과학인재(면접 30% 인적성·수과) · 논술 3합5~6',
+    tips:'계열 관련 과목 선택+성적+세특 충실 + 최저 3합7이면 교과. 최저 3합6 뚫고 융합인재 종합. 정시 수능100(특화형 신설로 특정 과목 비율↓).' },
+  { name:'한양대', aliases:['한양'], line:'서성한 (서강·성균관·한양)', gyo:[1.20,1.50], jong:[1.40,1.60],
+    keys:'교과추천(서류 10%→40%, 최저 3합7→3개 각3이내 수학) · 종합 학업형(서류100, 최저 3합7 수학) · 종합 면접형(면접 30%, 자연 제시문) · 논술 3합7',
+    tips:'교과전형도 창체까지 보는 ‘교과 탈 쓴 종합’. 내신 따기 어려운 학교서 경쟁했다면 교과도 주목. 종합 제시문 면접(기출 활용). 자유전공 입결 상위 20~40%.' },
+  // 국숭세과단
+  { name:'국민대', aliases:['국민'], line:'국숭세과단', gyo:[1.50,1.60], jong:[1.70,1.90],
+    keys:'교과 일반선택>진로선택(진로 15% 등급) · 종합 전공적합성 40% · 수능 탐구 1과목',
+    tips:'탐구 1과목 성적이 낮으면 적극 고려. 강조 학생부 키워드(이수과목 난이도·전공 개념 학습·사회 기여)가 있으면 적극.' },
+  { name:'숭실대', aliases:['숭실'], line:'국숭세과단', gyo:[1.50,1.60], jong:[1.70,1.90],
+    keys:'교과 진로선택 20% 성취도 · 종합 진로 관련 1등급 개수 중요',
+    tips:'인문은 국·영·사, 자연은 수·과 1등급 개수가 많으면 적극. 사회·과학 융합선택 점수 우수하면 비교우위.' },
+  { name:'세종대', aliases:['세종'], line:'국숭세과단', gyo:[1.50,1.60], jong:[1.70,1.90],
+    keys:'교과 진로선택 20% 성취도, 최저 2합5 · 종합 창의융합역량 평가',
+    tips:'최저가 강하면 세종대 집중 공략(2합5). 문제의식 설정·해결 경험이 있으면 종합 적극.' },
+  { name:'서울과기대', aliases:['과기대','서울과학기술','서울과기','과기'], line:'국숭세과단', gyo:[1.50,1.60], jong:[1.70,1.90],
+    keys:'교과 진로선택 비율설정 X · 종합 학생부 키워드(1단계 합격 多) · 학종 융합인재 최저 3합6',
+    tips:'공통·일반선택이 아쉽고 진로선택 등급이 우수하면 집중 공략. 학생부 우수 학생 1단계 합격 사례 많음.' },
+  // 단국·항아인
+  { name:'단국대(죽전)', aliases:['단국','죽전'], line:'단국·항아인', gyo:[1.50,1.60], jong:[1.70,1.90],
+    keys:'교과 교과우수 최저 2합6 · 종합 서류/면접 · 논술 최저 2합6',
+    tips:'표준적 전형 구성. 해당 지역 선호도 높은 ‘경기 4대장’ 라인.' },
+  { name:'항공대', aliases:['한국항공','항공'], line:'단국·항아인', gyo:[1.50,1.60], jong:[1.70,1.90],
+    keys:'교과 진로선택 등급 vs 성취도 중 우수 반영 · 교과 최저 없음',
+    tips:'진로선택 성취도는 우수한데 등급이 밀렸다면 기회. 내신 높은데 최저 자신 없으면(최저 없는 유일 교과전형) 적극.' },
+  { name:'아주대', aliases:['아주'], line:'단국·항아인', gyo:[1.50,1.60], jong:[1.70,1.90],
+    keys:'교과 전 과목 등급/성취도(사회과학 융합 5과목) · 논술 최저 2합5 · 종합 진로역량 50% 계열적합',
+    tips:'등급·성취도 밸런스형 유리, 사회과학 융합 성취도 좋으면 기회. 학생부 좋으면 합격 사례 多.' },
+  { name:'인하대', aliases:['인하'], line:'단국·항아인', gyo:[1.50,1.60], jong:[1.70,1.90],
+    keys:'교과 진로/융합선택 성취도 반영 · 종합',
+    tips:'2학년 1학기까지 성적이 매우 중요, 일반선택 성적 좋으면 적극. 학생부 좋으면 합격 사례 多.' },
+  // 성신·경북·부산
+  { name:'성신여대', aliases:['성신'], line:'성신·경북·부산', gyo:[1.55,1.90], jong:[1.80,2.10],
+    keys:'교과 서류 20% + 공통/진로/융합 상위 10과목 · 종합 탐구 중요, 최저 2합6~7',
+    tips:'2학년 과목부터 상위 10개가 우수하면 적극. 내신 아쉬워도 탐구 깊이 있으면 종합.' },
+  { name:'경북대', aliases:['경북'], line:'성신·경북·부산', gyo:[1.55,1.90], jong:[1.80,2.10],
+    keys:'교과 선택과목·진로 성취도 중시 · 종합 최저 2합6~7',
+    tips:'학과별 선택과목 확인 → 원점수 높으면 적극. 내신 2점 중반이라도 최저+진로+탐구 갖추면. 2025 입결(최저 높을 때)은 주의해서 해석.' },
+  { name:'부산대', aliases:['부산'], line:'성신·경북·부산', gyo:[1.55,1.90], jong:[1.80,2.10],
+    keys:'교과 탐구전형 신설 · 종합 탐구 50% · 논술 AAT · 수능 백분위',
+    tips:'탐구+면접 역량 있으면 교과 탐구전형. 내신 2.1 내외 + 탐구 좋으면 종합. 논술은 인문(단답·약술)·자연(과학논술) 유형 확인.' },
+  // 광명상가
+  { name:'광운대', aliases:['광운'], line:'광명상가', gyo:[1.80,2.10], jong:[2.00,2.10],
+    keys:'교과 최저 신설 · 진로선택 성취도 반영',
+    tips:'최저 신설로 이전 대비 입결 하락 가능성↑ → 최저 되면 더 적극. 진로선택 성취도 우수하면 적극.' },
+  { name:'명지대', aliases:['명지'], line:'광명상가', gyo:[1.80,2.10], jong:[2.00,2.10],
+    keys:'종합 최저 보는 전형(인문 2합6·자연 2합7) · 면접형 교과전형',
+    tips:'내신 아쉽지만 학생부+최저 가능하면 종합. 면접형 교과는 일반보다 내신 0.2 낮아도 가능(20분 기초자료 + 전공 이해도 면접).' },
+  { name:'상명대', aliases:['상명'], line:'광명상가', gyo:[1.80,2.10], jong:[2.00,2.10],
+    keys:'교과 등급표기 전 과목(진로선택 대부분 성취도) · 수능 탐구 1과목, 백분위',
+    tips:'등급 높은 과목 개수가 충분하면 적극. 탐구 1과목 성적 낮거나 백분위 경쟁력 있으면 적극.' },
+  { name:'가톨릭대', aliases:['가톨릭','가대'], line:'광명상가', gyo:[1.80,2.10], jong:[2.00,2.10],
+    keys:'종합 진로역량 50% · 교과 진로선택 성취도 반영',
+    tips:'학생부 우수하면 역전 사례 多(키워드: 성적 오름추세·과목선택·공동교육 이수·지속 봉사). 공통·일반 우수 + 진로 성취도 우수하면 적극.' },
+  // 인가경
+  { name:'경기대', aliases:['경기'], line:'인가경', gyo:[2.10,2.20], jong:[2.00,2.10],
+    keys:'교과 성적우수자 최저 2합7 + 등급 산출 과목 · 교과 2개→1개 통합',
+    tips:'최저 충족 + 등급 산출 과목이 지원권이면 적극. 입결은 최저 있던 교과성적우수자 입결을 참조.' },
+  { name:'가천대', aliases:['가천'], line:'인가경', gyo:[2.10,2.20], jong:[2.00,2.10],
+    keys:'교과 학생부우수: 국·영·수 5 + 사·과 5 지우개 찬스, 최저 2합6 · 지역균형 사·과 상위 10과목, 2단계 면접 50% · 정시 5과목 중 3~4개',
+    tips:'특정 과목 등급이 나빠도 미반영 가능(가천대식 등급 계산 필수). 지역균형은 사·과 좋으면 1단계 가능(생기부 기반 면접이라 타 과목 노출 주의).' },
+  { name:'인천대', aliases:['인천'], line:'인가경', gyo:[2.10,2.20], jong:[2.00,2.10],
+    keys:'교과 학교장추천: 일반선택 등급, 진로선택 성취도/등급 중 우수',
+    tips:'진로선택 등급은 아쉽지만 성취도가 좋으면 적극 지원.' },
+  // 여대
+  { name:'서울여대', aliases:['서울여'], line:'여대', gyo:[2.00,2.20], jong:[2.20,2.50],
+    keys:'교과 전 과목 등급 반영 + 최저 2합7 (동일 라인 유일)',
+    tips:'국·수·영·사·과 전 과목 등급이 고르게 높으면 적극 지원.' },
+  { name:'동덕여대', aliases:['동덕'], line:'여대', gyo:[2.00,2.20], jong:[2.20,2.50],
+    keys:'교과 전 과목 등급/성취도 중 우수 + 진로선택 이수학점 가산 · 종합 면접 60%',
+    tips:'등급이 아쉬워도 성취도만 좋으면 지원 가능. 진로 관련 선택과목 개수 가산점까지 고려.' },
+  { name:'덕성여대', aliases:['덕성'], line:'여대', gyo:[2.00,2.20], jong:[2.20,2.50],
+    keys:'교과 계열별 국수영사/국수영과 반영, 최저 2합7',
+    tips:'학생부 관리가 잘 되어 있으면 내신 아쉬워도 도전, 2점 중반도 충분히 도전권.' },
+];
+
+/* ---------- helpers ---------- */
+function classify(r, g){
+  if(!r) return null;
+  const [min,max]=r;
+  if(g < min - 1e-9) return {k:'safe', t:'안정'};
+  if(g <= max + 1e-9) return {k:'fit', t:'적정'};
+  if(g <= max + 0.25 + 1e-9) return {k:'reach', t:'도전'};
+  return {k:'out', t:'어려움'};
+}
+const RANK = {fit:0, reach:1, safe:2, out:3};
+function pct(v){ return ((v - SCALE_MIN) / (SCALE_MAX - SCALE_MIN)) * 100; }
+function fmt(r){ return r ? `${r[0].toFixed(2)}~${r[1].toFixed(2)}` : '—'; }
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function norm(s){ return s.toLowerCase().replace(/\s/g,''); }
+
+function gaugeHTML(range, g){
+  const c = classify(range, g);
+  const left = Math.max(0, Math.min(100, pct(range[0])));
+  const right = Math.max(0, Math.min(100, pct(range[1])));
+  const w = Math.max(2, right-left);
+  const gp = Math.max(0, Math.min(100, pct(g)));
+  return `<div class="gauge">
+      <div class="band ${c.k}" style="left:${left}%; width:${w}%"></div>
+      <div class="mark" style="left:${gp}%"></div>
+    </div>`;
+}
+
+function trackRow(label, range, g){
+  const c = classify(range, g);
+  return `<div class="track">
+      <span class="tk-label">${label}</span>
+      ${gaugeHTML(range, g)}
+      <span class="badge ${c.k}">${c.t} · ${fmt(range)}</span>
+    </div>`;
+}
+
+/* ---------- grade mode render ---------- */
+function renderGrade(){
+  const raw = parseFloat(document.getElementById('grade').value);
+  const box = document.getElementById('grade-results');
+  if(isNaN(raw)){ box.innerHTML = `<div class="empty">내신 등급을 입력하세요 (예: 1.70)</div>`; return; }
+  const g = raw;
+
+  const scored = LINES.map(L=>{
+    const cg = classify(L.gyo,g), cj = classify(L.jong,g);
+    const best = Math.min(cg?RANK[cg.k]:9, cj?RANK[cj.k]:9);
+    return {L, best};
+  });
+  const buckets = [
+    {k:'fit', label:'적정 · 지원권'},
+    {k:'reach', label:'도전'},
+    {k:'safe', label:'안정 (성적이 컷보다 우수)'},
+    {k:'out', label:'현 성적으로는 어려움'},
+  ];
+  let html='';
+  buckets.forEach(b=>{
+    const items = scored.filter(s=>s.best===RANK[b.k]);
+    if(!items.length) return;
+    html += `<div class="bucket"><h2>${b.label}</h2><span class="cnt">${items.length}개 라인</span><span class="bar"></span></div>`;
+    items.forEach(({L})=>{
+      const dim = b.k==='out' ? ' dim':'';
+      html += `<article class="card${dim}">
+        <div class="card-top">
+          <div><h3 class="line-name">${esc(L.name)}</h3><p class="tier">${esc(L.tier)}</p></div>
+        </div>
+        <div class="unis">${L.unis.map(u=>`<button class="uni-tag" data-uni="${esc(u)}">${esc(u)}</button>`).join('')}</div>
+        <div class="tracks">
+          ${trackRow('교과', L.gyo, g)}
+          ${trackRow('종합', L.jong, g)}
+        </div>
+        <p class="caution">${L.caution}</p>
+        <details class="notes"><summary>전형별 유의사항 (${L.notes.length})</summary>
+          <ul>${L.notes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul>
+        </details>
+      </article>`;
+    });
+  });
+  box.innerHTML = html;
+}
+
+/* ---------- uni mode render ---------- */
+function uniCard(u){
+  const L = LINES.find(x=>x.name===u.line);
+  return `<article class="card uni-card">
+    <h3 class="line-name">${esc(u.name)} <span class="line-pill">${esc(u.line)}</span></h3>
+    <div class="meta">
+      <div class="m"><span>교과 내신</span><b>${fmt(u.gyo)}</b></div>
+      <div class="m"><span>종합 내신</span><b>${fmt(u.jong)}</b></div>
+      <div class="m"><span>라인 군</span><b>${L?esc(L.tier):'—'}</b></div>
+    </div>
+    <div class="kv"><p class="k">전형 · 반영 키워드</p><p class="v">${esc(u.keys)}</p></div>
+    <div class="kv"><p class="k">공략 포인트 · 유의사항</p><p class="v">${esc(u.tips)}</p></div>
+  </article>`;
+}
+
+function lineFallbackCard(uniName, L){
+  return `<article class="card uni-card">
+    <h3 class="line-name">${esc(uniName)} <span class="line-pill">${esc(L.name)}</span></h3>
+    <div class="meta">
+      <div class="m"><span>교과 내신</span><b>${fmt(L.gyo)}</b></div>
+      <div class="m"><span>종합 내신</span><b>${fmt(L.jong)}</b></div>
+      <div class="m"><span>라인 군</span><b>${esc(L.tier)}</b></div>
+    </div>
+    <div class="kv"><p class="k">라인 유의사항</p><p class="v">${L.caution}</p></div>
+    <div class="kv"><p class="k">전형별 유의사항</p>
+      <ul>${L.notes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul></div>
+    <p class="fb-note">이 라인은 설명회 자료에 대학별 세부가 따로 분리되어 있지 않아, ${esc(L.name)} 라인 기준 정보를 표시합니다. 대학별 정밀 컷·전형은 모집요강을 확인하세요.</p>
+  </article>`;
+}
+
+function renderUni(){
+  const q = norm(document.getElementById('uniq').value);
+  const box = document.getElementById('uni-results');
+  if(!q){
+    // grouped full list — every member university is a clickable chip
+    let html='';
+    LINES.forEach(L=>{
+      html += `<div class="grouplabel">${esc(L.name)} <small>${esc(L.tier)} · 교과 ${fmt(L.gyo)} / 종합 ${fmt(L.jong)}</small></div>
+        <div class="chipgrid">${L.unis.map(u=>`<button class="chip" data-uni="${esc(u)}">${esc(u)}</button>`).join('')}</div>`;
+    });
+    box.innerHTML = html;
+    return;
+  }
+  const cards=[]; const seen=new Set();
+  LINES.forEach(L=>{
+    const matchLine = norm(L.name).includes(q);
+    L.unis.forEach(uname=>{
+      const detail = UNIS.find(u=>u.name===uname);
+      const matchName = norm(uname).includes(q);
+      const matchAlias = detail && detail.aliases.some(a=>norm(a).includes(q));
+      if(matchName || matchAlias || matchLine){
+        if(seen.has(uname)) return; seen.add(uname);
+        cards.push(detail ? uniCard(detail) : lineFallbackCard(uname, L));
+      }
+    });
+  });
+  if(!cards.length){
+    box.innerHTML = `<div class="empty">‘${esc(document.getElementById('uniq').value.trim())}’에 해당하는 대학이 없습니다. 대학명·줄임말·라인 이름으로 검색하세요.</div>`;
+    return;
+  }
+  box.innerHTML = cards.join('');
+}
+
+/* ---------- wiring ---------- */
+const tabGrade = document.getElementById('tab-grade');
+const tabUni = document.getElementById('tab-uni');
+const viewGrade = document.getElementById('view-grade');
+const viewUni = document.getElementById('view-uni');
+const subGrade = document.getElementById('sub-grade');
+const subUni = document.getElementById('sub-uni');
+
+function setMode(mode){
+  const grade = mode==='grade';
+  tabGrade.setAttribute('aria-selected', grade);
+  tabUni.setAttribute('aria-selected', !grade);
+  subGrade.classList.toggle('hidden', !grade);
+  subUni.classList.toggle('hidden', grade);
+  viewGrade.classList.toggle('hidden', !grade);
+  viewUni.classList.toggle('hidden', grade);
+  if(grade) renderGrade(); else renderUni();
+}
+tabGrade.addEventListener('click', ()=>setMode('grade'));
+tabUni.addEventListener('click', ()=>setMode('uni'));
+
+document.getElementById('grade').addEventListener('input', renderGrade);
+document.querySelectorAll('.quick .chip').forEach(c=>{
+  c.addEventListener('click', ()=>{ document.getElementById('grade').value = c.dataset.g; renderGrade(); });
+});
+document.getElementById('grade-results').addEventListener('click', e=>{
+  const b = e.target.closest('[data-uni]');
+  if(!b) return;
+  document.getElementById('uniq').value = b.dataset.uni;
+  setMode('uni');
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+document.getElementById('uniq').addEventListener('input', renderUni);
+document.getElementById('uni-results').addEventListener('click', e=>{
+  const b = e.target.closest('[data-uni]');
+  if(!b) return;
+  document.getElementById('uniq').value = b.dataset.uni;
+  renderUni();
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+renderGrade();
+renderUni();
+</script>
+</body>
+</html>
