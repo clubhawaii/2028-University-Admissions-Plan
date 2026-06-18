@@ -9,31 +9,33 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
 :root{
+  --maxw:1240px;
   --ch-pink:#FF5F9F; --ch-pink-deep:#E03C7E;
   --ch-ink:#191919;  --ch-bg:#FFF7FA;
   --ch-card:#ffffff; --ch-chip:#F5F4F2;
-  --ch-line:#F0EEE8; --ch-muted:#9A8D92;
+  --ch-line:#F0EEE8; --ch-muted:#333333;
   --bg-purple:#F3EAFB; --tx-purple:#5A23A0;
   --bg-blue:#EAF0FD;   --tx-blue:#2A4F9A;
   --bg-green:#E3F6EE;  --tx-green:#0C6E51;
   --bg-amber:#FDF0DC;  --tx-amber:#9A5A0C;
   --bg-teal:#E6F4FB;   --tx-teal:#0A6675;
   --bg-pink:#FFE2EE;   --tx-pink:#C0356B;
-  --bg-neutral:#EEEFF1;--tx-neutral:#4A4D52;
+  --bg-neutral:#EEEFF1;--tx-neutral:#333333;
 }
 
 body{
   font-family:'Pretendard',system-ui,-apple-system,sans-serif;
   background:#fff;
   color:var(--ch-ink);
-  line-height:1.6;
+  line-height:1.7;
   -webkit-font-smoothing:antialiased;
 }
+section[id]{scroll-margin-top:84px;}
 
 /* ─── HEADER ─── */
 .site-header{
   position:sticky;top:0;z-index:200;
-  height:60px;background:#fff;
+  height:76px;background:#fff;
   border-bottom:1px solid transparent;
   transition:border-color .2s,box-shadow .2s;
 }
@@ -42,23 +44,31 @@ body{
   box-shadow:0 1px 0 var(--ch-line);
 }
 .header-inner{
-  max-width:1240px;margin:0 auto;height:100%;
+  max-width:var(--maxw);margin:0 auto;height:100%;
   padding:0 2rem;
-  display:flex;align-items:center;justify-content:space-between;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
 }
+.header-left{display:flex;align-items:center;gap:12px;}
 .logo{
   display:flex;align-items:center;gap:10px;
   text-decoration:none;color:var(--ch-ink);
 }
-.logo-badge{
-  width:34px;height:34px;border-radius:9px;
-  background:var(--ch-pink);color:#fff;
-  display:flex;align-items:center;justify-content:center;
-  font-size:15px;font-weight:800;flex-shrink:0;
-  letter-spacing:-0.02em;
+.header-title{
+  font-size:19px;font-weight:700;letter-spacing:-0.02em;
+  color:var(--ch-ink);
+  white-space:nowrap;
 }
-.logo-name{font-size:15px;font-weight:700;letter-spacing:-0.02em;}
-.logo-name span{color:var(--ch-muted);font-weight:400;font-size:14px;}
+.logo-badge{
+  height:24px;width:auto;
+  display:block;flex-shrink:0;
+}
+.header-nav{display:flex;align-items:center;gap:2px;margin-left:auto;margin-right:-6px;}
+.header-nav a{
+  font-size:14px;font-weight:600;color:var(--ch-ink);
+  text-decoration:none;padding:8px 14px;border-radius:8px;white-space:nowrap;
+  transition:color .15s,background .15s;
+}
+.header-nav a:hover{color:var(--ch-pink);background:var(--ch-bg);}
 .header-cta{
   display:inline-flex;align-items:center;gap:6px;
   padding:8px 20px;
@@ -73,47 +83,100 @@ body{
 .header-cta.show{opacity:1;pointer-events:auto;transform:translateY(0);}
 .header-cta:hover{background:var(--ch-pink-deep);}
 
+/* ── 모바일 햄버거 메뉴 ── */
+.nav-toggle{display:none;}
+.nav-toggle-bar{
+  display:block;width:22px;height:2px;border-radius:2px;
+  background:var(--ch-ink);
+  transition:transform .25s,opacity .2s;
+}
+.mobile-menu{display:none;}
+.mobile-menu a{
+  font-size:16px;font-weight:600;color:var(--ch-ink);
+  text-decoration:none;padding:14px 6px;border-radius:10px;
+  border-bottom:1px solid var(--ch-line);
+}
+.mobile-menu a:last-child{border-bottom:0;}
+.mobile-menu a:active{background:var(--ch-bg);color:var(--ch-pink);}
+@keyframes menuDrop{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:none;}}
+
 /* ─── HERO ─── */
 .hero{
-  padding:88px 2rem 72px;
+  padding:148px 3.5rem 128px;
   background:#fff;
-  text-align:center;
+  text-align:left;
+  overflow:hidden;
 }
-.hero-inner{max-width:720px;margin:0 auto;}
-
-.eyebrow{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:5px 16px;
-  background:var(--ch-chip);color:var(--ch-muted);
-  border-radius:22px;
-  font-size:11.5px;font-weight:600;letter-spacing:0.06em;
-  text-transform:uppercase;
-  margin-bottom:32px;
+.hero-inner{
+  max-width:var(--maxw);margin:0 auto;
+  display:grid;grid-template-columns:1.05fr 1.1fr;
+  gap:48px;align-items:center;
 }
-.eyebrow-dot{
-  width:5px;height:5px;border-radius:50%;
-  background:var(--ch-muted);
+.hero-copy{max-width:540px;}
+.hero-check{
+  display:inline-flex;align-items:center;gap:9px;
+  font-size:13px;font-weight:700;color:var(--ch-ink);
+  margin-bottom:20px;
 }
+.hero-check-ico{
+  width:22px;height:22px;border-radius:50%;flex-shrink:0;
+  background:var(--ch-pink);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+}
+.hero-check-ico svg{width:13px;height:13px;}
 
 .hero h1{
-  font-size:clamp(38px,5.5vw,60px);
+  font-size:clamp(30px,4.6vw,50px);
   font-weight:800;
   letter-spacing:-0.035em;
-  line-height:1.12;
+  line-height:1.3;
   color:var(--ch-ink);
-  margin-bottom:18px;
+  margin-bottom:20px;
+  max-width:680px;
 }
-.hero h1 strong{
-  color:var(--ch-ink);
+.hero-accent{
+  position:relative;
+  color:transparent;
   font-weight:800;
+  white-space:nowrap;
+}
+.hero-accent::before{
+  content:"2028 대입";
+  position:absolute;left:0;top:0;
+  color:var(--ch-pink);
+  white-space:nowrap;overflow:hidden;
+  width:0;
+  animation:heroFill .9s cubic-bezier(.22,1,.36,1) .2s forwards;
+}
+.hero-accent::after{
+  content:'';
+  position:absolute;left:0;right:0;bottom:-3px;
+  height:3px;border-radius:2px;
+  background:var(--ch-ink);
+}
+@keyframes heroFill{to{width:100%;}}
+@media(prefers-reduced-motion:reduce){
+  .hero-accent::before{width:100%;animation:none;}
+}
+.hero-keyline{
+  font-size:clamp(16px,2vw,20px);
+  font-weight:600;
+  line-height:1.7;
+  color:var(--ch-ink);
+  letter-spacing:-0.01em;
+  margin-bottom:38px;
+  max-width:680px;
+  word-break:keep-all;
 }
 .hero-sub{
   font-size:15.5px;
   color:var(--ch-muted);
-  line-height:1.75;
-  margin-bottom:36px;
+  line-height:1.9;
+  margin-bottom:44px;
+  max-width:680px;
   word-break:keep-all;
 }
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;}
 .hero-cta{
   display:inline-flex;align-items:center;gap:8px;
   padding:14px 30px;
@@ -122,60 +185,299 @@ body{
   font:700 15px 'Pretendard',sans-serif;
   text-decoration:none;
   transition:background .15s,transform .15s,box-shadow .15s;
-  margin-bottom:52px;
 }
 .hero-cta:hover{
   background:var(--ch-pink-deep);
   transform:translateY(-2px);
   box-shadow:0 8px 24px rgba(255,95,159,.3);
 }
+.hero-cta-ghost{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 26px;
+  background:#fff;color:var(--ch-ink);
+  border:1.5px solid var(--ch-line);
+  border-radius:22px;
+  font:700 15px 'Pretendard',sans-serif;
+  text-decoration:none;
+  transition:border-color .15s,transform .15s;
+}
+.hero-cta-ghost:hover{border-color:var(--ch-ink);transform:translateY(-2px);}
 
-/* hero features */
+/* hero visual (floating coded mockups) */
+.hero-visual{position:relative;--s:.7;height:calc(450px*var(--s)*1.42);}
+.hero-blob{
+  position:absolute;inset:4% -8% 8% 4%;z-index:0;
+  background:var(--ch-bg);
+  border-radius:46% 54% 58% 42%/46% 44% 56% 54%;
+}
+.shot{
+  position:absolute;margin:0;overflow:hidden;
+  width:calc(720px*var(--s));height:calc(450px*var(--s));
+  border-radius:14px;background:#fff;
+  border:1px solid rgba(0,0,0,.06);
+  box-shadow:0 30px 60px -24px rgba(20,28,70,.35);
+}
+.mk{
+  width:720px;height:450px;overflow:hidden;background:#fff;
+  zoom:var(--s);
+  font-family:'Pretendard',sans-serif;color:var(--ch-ink);
+  text-align:left;
+}
+.shot-b{
+  top:0;left:0;z-index:1;
+  --rot:-4deg;transform:rotate(var(--rot));
+  animation:heroFloat 7.5s ease-in-out .5s infinite;
+}
+.shot-a{
+  bottom:0;right:0;z-index:2;
+  --rot:3deg;transform:rotate(var(--rot));
+  animation:heroFloat 6s ease-in-out infinite;
+}
+@keyframes heroFloat{
+  0%,100%{transform:translateY(0) rotate(var(--rot));}
+  50%{transform:translateY(-14px) rotate(var(--rot));}
+}
+@media(prefers-reduced-motion:reduce){
+  .shot-a,.shot-b{animation:none;}
+}
+
+/* ── mockup (mk-*) shared ── */
+.mk *{box-sizing:border-box;}
+.mk-bar{
+  display:flex;align-items:center;gap:14px;
+  height:52px;padding:0 22px;border-bottom:1px solid var(--ch-line);
+}
+.mk-home{
+  font-size:13px;font-weight:700;color:#3A3A3A;
+  border:1px solid var(--ch-line);border-radius:8px;padding:6px 11px;
+}
+.mk-brand{display:inline-flex;align-items:center;gap:8px;font-size:16px;font-weight:800;letter-spacing:-.02em;}
+.mk-dot{width:8px;height:8px;border-radius:50%;background:var(--ch-pink);}
+.mk-tabs{display:inline-flex;align-items:center;gap:6px;margin-left:auto;}
+.mk-tabs b{font-size:13px;font-weight:700;color:var(--ch-muted);padding:7px 13px;border-radius:8px;}
+.mk-tabs b.on{color:#fff;background:var(--ch-pink);}
+.mk-tabs b.mk-pill{color:#fff;background:var(--ch-pink);}
+.mk-body{padding:26px 26px 0;}
+.mk-body-center{text-align:center;}
+
+/* plan mockup */
+.mk-title{font-size:25px;font-weight:800;letter-spacing:-.02em;line-height:1.3;text-align:center;margin-bottom:18px;}
+.mk-title span{color:var(--ch-ink);}
+.mk-search{
+  display:flex;align-items:center;gap:10px;
+  border:1.5px solid var(--ch-line);border-radius:12px;
+  padding:12px 16px;font-size:14px;color:#BBB;margin-bottom:14px;
+}
+.mk-mag{
+  width:15px;height:15px;border-radius:50%;flex-shrink:0;
+  border:2px solid #BBB;position:relative;
+}
+.mk-mag::after{content:'';position:absolute;right:-4px;bottom:-3px;width:6px;height:2px;background:#BBB;transform:rotate(45deg);border-radius:2px;}
+.mk-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px;}
+.mk-chips-center{justify-content:center;}
+.mk-chip{
+  font-size:12.5px;font-weight:600;color:#3A3A3A;
+  border:1px solid var(--ch-line);border-radius:999px;padding:6px 12px;
+}
+.mk-chip.on{color:#fff;background:var(--ch-pink);border-color:var(--ch-pink);}
+.mk-region{font-size:12px;color:var(--ch-muted);margin-bottom:11px;}
+.mk-region b{color:var(--ch-ink);font-weight:800;}
+.mk-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.mk-uni{border:1.5px solid var(--ch-line);border-radius:12px;padding:13px 14px;}
+.mk-uni-top{display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:800;margin-bottom:8px;}
+.mk-uni-top em{color:var(--ch-muted);font-style:normal;font-weight:600;margin-right:5px;}
+.mk-cmp{font-size:11px;font-weight:700;color:#3A3A3A;border:1px solid var(--ch-line);border-radius:6px;padding:3px 7px;}
+.mk-major{display:inline-block;font-size:10.5px;font-weight:700;color:#fff;background:var(--ch-ink);border-radius:5px;padding:2px 7px;margin-bottom:8px;}
+.mk-loc{font-size:11.5px;color:var(--ch-muted);margin-bottom:9px;}
+.mk-tags{display:flex;flex-wrap:wrap;gap:5px;}
+.mk-tags span{font-size:11px;font-weight:600;color:var(--ch-ink);border:1px solid #E6E6E6;border-radius:6px;padding:3px 7px;}
+.mk-tags span.lo{color:#5A6BD8;background:#EEF1FF;border-color:#DDE3FF;}
+
+/* grade mockup */
+.mk-h2{font-size:21px;font-weight:800;letter-spacing:-.02em;margin-bottom:18px;}
+.mk-grade-box{
+  width:150px;margin:0 auto 18px;
+  border:1.5px solid var(--ch-ink);border-radius:14px;
+  font-size:30px;font-weight:800;text-align:center;padding:10px 0;
+}
+.mk-line-card{border:1px solid var(--ch-line);border-radius:14px;padding:14px 16px;margin-bottom:11px;text-align:left;}
+.mk-line-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px;}
+.mk-line-top b{font-size:15px;font-weight:800;}
+.mk-badge{font-size:11.5px;font-weight:800;border-radius:999px;padding:3px 10px;}
+.mk-badge.fit{color:#2A4F9A;background:#EAF0FD;}
+.mk-badge.reach{color:#9A5A0C;background:#FDF0DC;}
+.mk-track{display:grid;grid-template-columns:34px 1fr;align-items:center;gap:11px;margin:7px 0;}
+.mk-tk{font-size:12px;font-weight:700;color:#3A3A3A;}
+.mk-gauge{position:relative;height:8px;border-radius:6px;background:var(--ch-chip);}
+.mk-band{position:absolute;top:0;bottom:0;left:30%;right:20%;border-radius:6px;opacity:.55;}
+.mk-band.fit{background:#2A4F9A;}
+.mk-band.reach{background:#9A5A0C;}
+.mk-mark{position:absolute;top:-4px;left:55%;width:3px;height:16px;border-radius:2px;background:var(--ch-ink);transform:translateX(-50%);box-shadow:0 0 0 2px #fff;}
+
+/* hero features — 체크 트러스트 바 */
 .hero-feats{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
+  margin:30px 0 0;
+  display:flex;flex-wrap:wrap;
+  align-items:center;justify-content:flex-start;
+  gap:14px 26px;
 }
 .hero-feat{
-  padding:24px 18px;
-  text-align:center;
-  border:1px solid var(--ch-line);
-  border-radius:14px;
-  background:var(--ch-card);
-  transition:border-color .2s,transform .2s;
+  display:inline-flex;align-items:center;gap:9px;
 }
-.hero-feat:hover{border-color:var(--ch-pink);transform:translateY(-2px);}
 .hero-feat-ico{
-  width:40px;height:40px;border-radius:11px;
-  margin:0 auto 12px;
-  display:flex;align-items:center;justify-content:center;
-  background:var(--ch-chip);color:var(--ch-pink);
+  width:auto;height:auto;border-radius:0;margin:0;
+  background:none;color:var(--ch-pink);
+  display:inline-flex;flex-shrink:0;
 }
-.hero-feat-ico svg{width:21px;height:21px;}
+.hero-feat-ico svg{width:17px;height:17px;}
 .hero-feat-title{
-  font-size:15px;font-weight:800;
-  color:var(--ch-ink);letter-spacing:-0.02em;
-  margin-bottom:4px;
+  font-size:14px;font-weight:600;
+  color:var(--ch-ink);letter-spacing:-0.01em;
+  white-space:nowrap;margin:0;
 }
-.hero-feat-sub{
-  font-size:12.5px;color:var(--ch-muted);
-  font-weight:500;line-height:1.5;word-break:keep-all;
+
+/* ─── STORY SECTION (배경 스토리) ─── */
+.story-section{
+  background:#fff;
+  padding:104px 2rem 108px;
+}
+.story-inner{max-width:var(--maxw);margin:0 auto;}
+.story-block + .story-block{margin-top:0;}
+.story-head{text-align:center;margin-bottom:34px;}
+.story-kicker{
+  display:block;
+  font-size:13px;font-weight:800;letter-spacing:0.12em;
+  text-transform:uppercase;color:var(--ch-pink);
+  margin-bottom:12px;
+}
+.story-head .section-title{
+  display:block;text-align:center;line-height:1.32;
+  font-size:clamp(25px,3.4vw,34px);
+}
+.story-lead{
+  max-width:600px;margin:24px auto 0;text-align:center;
+  font-size:17px;color:var(--ch-muted);line-height:1.95;
+  word-break:keep-all;
+}
+
+/* 고민 말풍선 */
+.story-chat{
+  max-width:760px;margin:0 auto;
+  display:flex;flex-direction:column;gap:26px;
+}
+.story-bubble{
+  position:relative;max-width:78%;
+  padding:18px 22px;border-radius:18px;
+  font-size:16.5px;font-weight:700;line-height:1.65;
+  letter-spacing:-0.01em;word-break:keep-all;
+}
+.story-bubble::after{
+  content:'';position:absolute;bottom:11px;
+  width:0;height:0;border:8px solid transparent;
+}
+.story-bubble.left{align-self:flex-start;border-bottom-left-radius:5px;}
+.story-bubble.right{align-self:flex-end;border-bottom-right-radius:5px;}
+.story-bubble.left::after{left:-7px;border-right-color:inherit;border-left:0;}
+.story-bubble.right::after{right:-7px;border-left-color:inherit;border-right:0;}
+.story-bubble .q{display:inline-flex;gap:9px;}
+.story-bubble .q i{font-style:normal;opacity:.85;}
+.story-bubble.b1{background:var(--bg-blue);color:var(--tx-blue);border-color:var(--bg-blue);}
+.story-bubble.b2{background:var(--bg-green);color:var(--tx-green);border-color:var(--bg-green);}
+.story-bubble.b3{background:var(--bg-purple);color:var(--tx-purple);border-color:var(--bg-purple);}
+.story-bubble.b4{background:var(--bg-pink);color:var(--tx-pink);border-color:var(--bg-pink);}
+.story-bubble.fade-up:nth-child(2){transition-delay:.08s;}
+.story-bubble.fade-up:nth-child(3){transition-delay:.16s;}
+.story-bubble.fade-up:nth-child(4){transition-delay:.24s;}
+
+/* 화살표 디바이더 */
+.story-arrow{
+  display:flex;justify-content:center;
+  color:var(--ch-muted);margin:46px 0;
+}
+.story-arrow svg{
+  width:30px;height:30px;
+  animation:storyBounce 1.8s ease-in-out infinite;
+}
+@keyframes storyBounce{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(6px);}
+}
+@media(prefers-reduced-motion:reduce){
+  .story-arrow svg{animation:none;}
+}
+
+/* 해결 — 통계 카드 */
+.story-stats{
+  max-width:880px;margin:42px auto 0;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+}
+.story-stat{
+  background:#fff;border:1px solid var(--ch-line);
+  border-radius:16px;padding:26px 22px;text-align:center;
+}
+.story-stat b{
+  display:block;
+  font-size:27px;font-weight:800;letter-spacing:-0.02em;
+  color:var(--ch-pink);margin-bottom:7px;
+}
+.story-stat span{
+  font-size:15.5px;font-weight:600;color:var(--ch-muted);
+}
+.story-cta-wrap{text-align:center;margin-top:26px;}
+.story-cta{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 30px;
+  background:var(--ch-pink);color:#fff;
+  border-radius:22px;
+  font:700 16px 'Pretendard',sans-serif;
+  text-decoration:none;
+  transition:background .15s,transform .15s,box-shadow .15s;
+}
+.story-cta:hover{
+  background:var(--ch-pink-deep);transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(255,95,159,.3);
+}
+
+/* 마무리 강조 */
+.story-closing{
+  max-width:760px;margin:36px auto 0;
+  background:var(--ch-bg);border-radius:20px;
+  padding:60px 48px;text-align:center;
+}
+.story-closing p{
+  font-size:clamp(20px,2.6vw,27px);font-weight:800;
+  letter-spacing:-0.025em;line-height:1.5;color:var(--ch-ink);
+  word-break:keep-all;
+}
+.story-closing-sub{
+  display:block;margin-bottom:14px;
+  font-size:16.5px;font-weight:700;color:var(--ch-muted);
+  letter-spacing:-0.01em;
+}
+.story-closing .em{color:var(--ch-pink);}
+.story-closing .mute{
+  display:block;margin-top:6px;
+  font-size:16.5px;font-weight:600;color:var(--ch-muted);
+}
+
+@media(max-width:860px){
+  .story-stats{grid-template-columns:1fr;max-width:420px;}
+  .story-bubble{max-width:92%;}
+}
+@media(max-width:640px){
+  .story-section{padding:84px 1.5rem 92px;}
+  .story-closing{padding:36px 24px;}
 }
 
 /* ─── TOOLS SECTION ─── */
 .tools-section{
   background:var(--ch-bg);
-  padding:80px 2rem 88px;
+  padding:112px 2rem 120px;
 }
 .section-head{
-  max-width:1240px;margin:0 auto 44px;
+  max-width:var(--maxw);margin:0 auto 60px;
   display:flex;align-items:flex-end;justify-content:space-between;
   flex-wrap:wrap;gap:12px;
-}
-.section-kicker{
-  font-size:11.5px;font-weight:600;letter-spacing:0.1em;
-  color:var(--ch-muted);text-transform:uppercase;
-  margin-bottom:8px;
 }
 .section-title{
   font-size:26px;font-weight:800;
@@ -186,99 +488,63 @@ body{
   text-align:right;line-height:1.5;
 }
 
-.tools-grid{
-  max-width:1240px;margin:0 auto;
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:14px;
-}
+/* ── 상황 안내 ── */
+.situation{max-width:880px;margin:0 auto 52px;text-align:center;}
+.situation .section-title{margin-bottom:10px;}
+.situation-sub{font-size:15px;color:var(--ch-muted);}
 
-/* ── TOOL CARD ── */
-.tool-card{
-  background:var(--ch-card);
-  border:1.5px solid var(--ch-line);
-  border-radius:14px;
-  padding:0;
-  overflow:hidden;
-  text-decoration:none;
-  color:inherit;
-  display:flex;flex-direction:column;
-  transition:transform .22s cubic-bezier(.22,1,.36,1),
-             border-color .2s,
-             box-shadow .22s cubic-bezier(.22,1,.36,1);
+/* ── 솔루션 카드 그리드 ── */
+.sol-grid{
+  max-width:var(--maxw);margin:0 auto;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
 }
-.tool-card:hover{
-  transform:translateY(-4px);
-  border-color:var(--tool-color,var(--ch-pink));
-  box-shadow:0 12px 32px rgba(0,0,0,.07);
+.sol-card{
+  position:relative;display:flex;flex-direction:column;
+  min-height:196px;padding:26px 28px;
+  background:#fff;border:1px solid var(--ch-line);border-radius:18px;
+  text-decoration:none;color:inherit;
+  transition:transform .2s,border-color .2s,box-shadow .2s;
 }
+.sol-card:hover{
+  border-color:var(--ch-pink);transform:translateY(-4px);
+  box-shadow:0 14px 34px rgba(0,0,0,.08);
+}
+.sol-card-title{
+  font-size:19px;font-weight:800;letter-spacing:-0.02em;
+  color:var(--ch-ink);line-height:1.3;margin-bottom:6px;word-break:keep-all;
+}
+.sol-card-sub{font-size:13.5px;font-weight:600;color:var(--ch-muted);}
+.sol-card-foot{
+  margin-top:auto;padding-top:20px;
+  display:flex;align-items:flex-end;justify-content:space-between;
+}
+.sol-icon{font-size:38px;line-height:1;}
+.sol-arrow{
+  width:42px;height:42px;border-radius:50%;flex-shrink:0;
+  background:var(--ch-pink);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .15s,transform .15s;
+}
+.sol-arrow svg{width:18px;height:18px;}
+.sol-card:hover .sol-arrow{background:var(--ch-pink-deep);transform:translateX(2px);}
 
-.tool-card-accent{
-  height:4px;
-  background:var(--tool-color,var(--ch-pink));
+/* 부록 카드 — 무채색(차분) */
+.sol-card--muted .sol-card-title{color:#555;font-weight:700;}
+.sol-card--muted .sol-card-sub{color:var(--ch-muted);}
+.sol-card--muted .sol-arrow{background:#fff;border:1.5px solid var(--ch-line);color:#777;}
+.sol-card--muted:hover{border-color:#cfcfcf;}
+.sol-card--muted:hover .sol-arrow{background:#fff;border-color:#bbb;transform:translateX(2px);}
+.sol-card--muted .sol-icon{filter:grayscale(1);opacity:.55;}
+.sol-tag{
+  align-self:flex-start;
+  font-size:11px;font-weight:700;color:var(--ch-muted);
+  border:1px solid var(--ch-line);border-radius:6px;padding:2px 8px;margin-bottom:10px;
 }
-
-.tool-card-body{padding:26px 26px 24px;flex:1;display:flex;flex-direction:column;}
-
-.tool-card-top{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:16px;
-}
-.tool-badge{
-  padding:5px 12px;border-radius:7px;
-  font-size:12.5px;font-weight:700;
-  background:var(--badge-bg);color:var(--badge-tx);
-  letter-spacing:0.01em;
-}
-.tool-num{
-  font-size:11.5px;font-weight:600;
-  color:var(--ch-muted);
-  font-variant-numeric:tabular-nums;
-}
-
-.tool-name{
-  font-size:21px;font-weight:800;
-  letter-spacing:-0.025em;
-  margin-bottom:8px;
-  color:var(--ch-ink);
-  line-height:1.2;
-}
-.tool-desc{
-  font-size:14px;color:var(--ch-muted);
-  line-height:1.7;margin-bottom:20px;
-  word-break:keep-all;
-}
-.tool-divider{height:1px;background:var(--ch-line);margin-bottom:16px;}
-.tool-features{
-  list-style:none;
-  display:flex;flex-direction:column;gap:10px;
-  flex:1;
-  margin-bottom:22px;
-}
-.tool-features li{
-  font-size:14px;color:#2E3035;
-  display:flex;align-items:flex-start;gap:9px;line-height:1.55;
-}
-.tool-features li::before{
-  content:'';
-  width:5px;height:5px;border-radius:50%;
-  background:var(--tool-color,var(--ch-pink));
-  flex-shrink:0;margin-top:6px;
-}
-
-.tool-open{
-  display:inline-flex;align-items:center;gap:5px;
-  font-size:14px;font-weight:700;
-  color:var(--tool-color,var(--ch-pink));
-  transition:gap .15s;
-}
-.tool-card:hover .tool-open{gap:8px;}
-.tool-open svg{flex-shrink:0;}
 
 /* ─── HOW SECTION ─── */
 .how-section{
   background:#fff;
-  padding:80px 2rem;
+  padding:112px 2rem;
 }
 .how-inner{max-width:900px;margin:0 auto;}
 .how-inner .section-head{
@@ -318,35 +584,31 @@ body{
 /* ─── LECTURES SECTION ─── */
 .lecture-section{
   background:var(--ch-bg);
-  padding:80px 2rem 88px;
+  padding:112px 2rem 120px;
 }
 .lecture-section .section-head{
-  max-width:1240px;margin:0 auto 44px;
+  max-width:var(--maxw);margin:0 auto 60px;
   flex-direction:column;align-items:center;text-align:center;
   justify-content:center;
 }
-.lecture-grid{
-  max-width:1240px;margin:0 auto;
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px;
+/* 카드 그리드 */
+.lecture-list{
+  max-width:var(--maxw);margin:0 auto;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
 }
-.lecture-card{
-  background:var(--ch-card);
-  border:1.5px solid var(--ch-line);
-  border-radius:14px;
-  overflow:hidden;
+.lecture-item{
   display:flex;flex-direction:column;
-  transition:transform .22s cubic-bezier(.22,1,.36,1),border-color .2s,box-shadow .22s;
+  background:#fff;border:1px solid var(--ch-line);
+  border-radius:16px;overflow:hidden;
+  text-decoration:none;color:inherit;
+  transition:transform .2s,border-color .2s,box-shadow .2s;
 }
-.lecture-card:hover{
-  transform:translateY(-4px);
-  border-color:var(--ch-pink);
-  box-shadow:0 12px 32px rgba(0,0,0,.07);
+.lecture-item:hover{
+  border-color:var(--ch-pink);transform:translateY(-4px);
+  box-shadow:0 14px 34px rgba(0,0,0,.08);
 }
 .lecture-thumb{
-  position:relative;
-  aspect-ratio:16/9;
+  position:relative;width:100%;aspect-ratio:16/9;
   background:var(--ch-chip) center/cover no-repeat;
   display:flex;align-items:center;justify-content:center;
   border-bottom:1px solid var(--ch-line);
@@ -356,59 +618,59 @@ body{
   background:rgba(255,255,255,.92);
   display:flex;align-items:center;justify-content:center;
   color:var(--ch-pink);
-  box-shadow:0 4px 14px rgba(0,0,0,.12);
+  transition:transform .15s;
 }
-.lecture-thumb .play svg{width:20px;height:20px;margin-left:2px;}
+.lecture-item:hover .lecture-thumb .play{transform:scale(1.08);}
+.lecture-thumb .play svg{width:19px;height:19px;margin-left:2px;}
 .lecture-no{
   position:absolute;top:10px;left:10px;
-  padding:3px 9px;border-radius:7px;
-  background:rgba(25,25,25,.78);color:#fff;
-  font-size:11px;font-weight:700;letter-spacing:0.02em;
+  padding:4px 10px;border-radius:8px;
+  background:rgba(25,25,25,.82);color:#fff;
+  font-size:12px;font-weight:700;letter-spacing:0.02em;
 }
-.lecture-body{padding:20px 20px 22px;flex:1;display:flex;flex-direction:column;}
+.lecture-body{flex:1;min-width:0;display:flex;flex-direction:column;padding:18px 18px 20px;}
+.lecture-badge{
+  align-self:flex-start;
+  padding:3px 10px;border-radius:7px;margin-bottom:11px;
+  background:var(--ch-chip);color:var(--ch-muted);
+  font-size:11.5px;font-weight:700;letter-spacing:0.01em;
+}
 .lecture-title{
-  font-size:16.5px;font-weight:800;letter-spacing:-0.02em;
-  color:var(--ch-ink);line-height:1.3;margin-bottom:8px;
+  font-size:17px;font-weight:800;letter-spacing:-0.02em;
+  color:var(--ch-ink);line-height:1.35;margin-bottom:8px;
+  transition:color .15s;
 }
+.lecture-item:hover .lecture-title{color:var(--ch-pink-deep);}
 .lecture-desc{
-  font-size:13.5px;color:var(--ch-muted);line-height:1.6;
-  word-break:keep-all;margin-bottom:14px;flex:1;
+  font-size:14px;color:var(--ch-muted);line-height:1.6;
+  word-break:keep-all;margin-bottom:16px;
+  display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
 }
-.lecture-meta{
-  display:flex;align-items:center;gap:7px;
-  font-size:12.5px;color:#2E3035;font-weight:600;
-  margin-bottom:16px;
+.lecture-more{
+  margin-top:auto;
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:13.5px;font-weight:700;color:var(--ch-ink);
+  transition:gap .15s,color .15s;
 }
-.lecture-meta .dot{width:4px;height:4px;border-radius:50%;background:var(--ch-pink);}
-.lecture-btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:6px;
-  padding:11px 16px;
-  background:var(--ch-pink);color:#fff;
-  border-radius:10px;
-  font:700 13.5px 'Pretendard',sans-serif;
-  text-decoration:none;
-  transition:background .15s,transform .15s;
-}
-.lecture-btn:hover{background:var(--ch-pink-deep);transform:translateY(-1px);}
-.lecture-btn svg{width:14px;height:14px;}
+.lecture-item:hover .lecture-more{gap:8px;color:var(--ch-pink-deep);}
+.lecture-more svg{width:14px;height:14px;}
 
 /* ─── HAWAII OPEN NEWS ─── */
 .news-section{
   background:#fff;
-  padding:80px 2rem;
+  padding:112px 2rem;
 }
 .news-card{
   max-width:900px;margin:0 auto;
   background:var(--ch-bg);
   border:1.5px solid var(--ch-line);
   border-radius:20px;
-  padding:48px 40px;
+  padding:60px 48px;
   text-align:center;
 }
 .news-badge{
-  display:inline-flex;align-items:center;gap:7px;
-  padding:6px 16px;border-radius:22px;
-  background:var(--ch-pink);color:#fff;
+  display:inline-block;
+  color:var(--ch-pink);
   font-size:11.5px;font-weight:700;letter-spacing:0.08em;
   text-transform:uppercase;
   margin-bottom:20px;
@@ -419,7 +681,7 @@ body{
   margin-bottom:14px;line-height:1.2;
 }
 .news-card p{
-  font-size:15px;color:var(--ch-muted);line-height:1.75;
+  font-size:15px;color:var(--ch-muted);line-height:1.9;
   word-break:keep-all;max-width:560px;margin:0 auto 24px;
 }
 .news-open{
@@ -461,7 +723,7 @@ body{
 /* ─── CTA BANNER ─── */
 .cta-banner{
   background:var(--ch-ink);
-  padding:64px 2rem;
+  padding:88px 2rem;
   text-align:center;
 }
 .cta-banner h2{
@@ -495,7 +757,7 @@ body{
   padding:28px 2rem;
 }
 .footer-inner{
-  max-width:1240px;margin:0 auto;
+  max-width:var(--maxw);margin:0 auto;
   display:flex;align-items:center;justify-content:space-between;
   flex-wrap:wrap;gap:16px;
 }
@@ -521,255 +783,373 @@ body{
 /* ─── FADE-UP ANIMATION ─── */
 .fade-up{
   opacity:0;
-  transform:translateY(18px);
-  transition:opacity .5s ease,transform .5s ease;
+  transform:translateY(22px);
+  transition:opacity .6s cubic-bezier(.22,1,.36,1),transform .6s cubic-bezier(.22,1,.36,1);
 }
-.fade-up.in{opacity:1;transform:translateY(0);}
-.tool-card.fade-up:nth-child(2){transition-delay:.06s;}
-.tool-card.fade-up:nth-child(3){transition-delay:.12s;}
-.tool-card.fade-up:nth-child(4){transition-delay:.18s;}
-.tool-card.fade-up:nth-child(5){transition-delay:.24s;}
-.tool-card.fade-up:nth-child(6){transition-delay:.30s;}
+.fade-up.in{opacity:1;transform:none;}
+.sol-card.fade-up:nth-child(2){transition-delay:.06s;}
+.sol-card.fade-up:nth-child(3){transition-delay:.12s;}
+.sol-card.fade-up:nth-child(4){transition-delay:.18s;}
+.sol-card.fade-up:nth-child(5){transition-delay:.24s;}
+.sol-card.fade-up:nth-child(6){transition-delay:.30s;}
+
+/* 방향 슬라이드 — 스토리 말풍선 */
+.story-bubble.left.fade-up{transform:translateX(-24px);}
+.story-bubble.right.fade-up{transform:translateX(24px);}
+
+/* 그룹 순차 등장(스태거) */
+.story-stat.fade-up:nth-child(2){transition-delay:.08s;}
+.story-stat.fade-up:nth-child(3){transition-delay:.16s;}
+.steps .step.fade-up:nth-child(3){transition-delay:.1s;}
+.steps .step.fade-up:nth-child(5){transition-delay:.2s;}
+.lecture-item.fade-up:nth-child(2){transition-delay:.07s;}
+.lecture-item.fade-up:nth-child(3){transition-delay:.14s;}
+.lecture-item.fade-up:nth-child(4){transition-delay:.21s;}
+.lecture-item.fade-up:nth-child(5){transition-delay:.28s;}
+.cta-banner .fade-up:nth-child(2){transition-delay:.08s;}
+.cta-banner .fade-up:nth-child(3){transition-delay:.16s;}
+
+/* 히어로 첫 진입(로드) */
+@keyframes heroRise{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+.hero-copy > *{opacity:0;animation:heroRise .7s cubic-bezier(.22,1,.36,1) both;}
+.hero-copy > *:nth-child(1){animation-delay:.05s;}
+.hero-copy > *:nth-child(2){animation-delay:.12s;}
+.hero-copy > *:nth-child(3){animation-delay:.20s;}
+.hero-copy > *:nth-child(4){animation-delay:.28s;}
+.hero-copy > *:nth-child(5){animation-delay:.34s;}
+.hero-copy > *:nth-child(6){animation-delay:.40s;}
+
+/* 스크롤 진행 바 */
+.scroll-progress{
+  position:fixed;top:0;left:0;height:3px;width:100%;
+  background:var(--ch-pink);z-index:300;
+  transform:scaleX(0);transform-origin:left;will-change:transform;
+}
+
 @media(prefers-reduced-motion:reduce){
   .fade-up{opacity:1;transform:none;transition:none;}
+  .hero-copy > *{opacity:1;animation:none;}
+  .mobile-menu.open{animation:none;}
 }
 
 /* ─── RESPONSIVE ─── */
-@media(max-width:1040px){
-  .tools-grid{grid-template-columns:repeat(2,1fr);}
-  .lecture-grid{grid-template-columns:repeat(2,1fr);}
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr;gap:24px;}
+  .hero-copy{max-width:none;}
+  .hero-visual{--s:.6;height:calc(450px*var(--s)*1.42);width:100%;max-width:470px;margin:8px auto 0;}
+  .sol-grid{grid-template-columns:repeat(2,1fr);}
+  .lecture-list{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:560px){
+  .sol-grid{grid-template-columns:1fr;}
+  .lecture-list{grid-template-columns:1fr;}
 }
 @media(max-width:860px){
-  .logo-name span{display:none;}
+  .header-title{display:none;}
 }
 @media(max-width:640px){
-  .tools-grid{grid-template-columns:1fr;}
-  .lecture-grid{grid-template-columns:1fr;}
-  .hero{padding:64px 1.5rem 56px;}
-  .hero h1{font-size:36px;}
-  .hero-feats{grid-template-columns:1fr;}
+  .header-nav{display:none;}
+  .nav-toggle{
+    display:inline-flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;
+    width:42px;height:42px;margin-left:auto;margin-right:-8px;
+    padding:0;background:none;border:0;cursor:pointer;
+  }
+  .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2){opacity:0;}
+  .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+  .mobile-menu{
+    position:absolute;top:100%;left:0;right:0;
+    flex-direction:column;
+    background:#fff;
+    border-top:1px solid var(--ch-line);
+    border-bottom:1px solid var(--ch-line);
+    padding:8px 1.5rem 14px;
+  }
+  .mobile-menu.open{display:flex;animation:menuDrop .2s ease;}
+  .hero{padding:108px 1.5rem 84px;}
+  .hero h1{font-size:34px;}
+  .hero-visual{--s:.42;max-width:320px;}
+  .hero-feats{flex-direction:column;align-items:flex-start;gap:12px;margin-top:40px;}
   .news-card{padding:36px 24px;border-radius:16px;}
-  .lecture-section{padding:60px 1.5rem 68px;}
-  .news-section{padding:60px 1.5rem;}
+  .lecture-section{padding:80px 1.5rem 88px;}
+  .news-section{padding:80px 1.5rem;}
   .steps{
     grid-template-columns:1fr;
-    gap:28px;
+    gap:40px;
   }
   .step-connector{display:none;}
   .section-head{flex-direction:column;align-items:flex-start;}
   .section-note{text-align:left;}
-  .tools-section{padding:60px 1.5rem 68px;}
+  .tools-section{padding:80px 1.5rem 88px;}
 }
 </style>
 </head>
 <body>
 
+<div class="scroll-progress" id="scrollProgress"></div>
+
 <!-- ── HEADER ── -->
 <header class="site-header" id="js-header">
   <div class="header-inner">
-    <a href="#" class="logo">
-      <div class="logo-badge">하</div>
-      <span class="logo-name">2028 대입 검색기 <span>· 클럽하와이</span></span>
-    </a>
-    <a href="#tools" class="header-cta">도구 바로 사용하기 →</a>
+    <div class="header-left">
+      <a href="#" class="logo"><img class="logo-badge" src="image/클럽하와이 로고 (검정).png" alt="CLUB HAWAII"></a>
+      <span class="header-title">2028 대입 검색기</span>
+    </div>
+    <nav class="header-nav">
+      <a href="#tools">검색 도구</a>
+      <a href="#lectures">강의</a>
+      <a href="#how">사용 방법</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobileMenu">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
   </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="모바일 메뉴">
+    <a href="#tools">검색 도구</a>
+    <a href="#lectures">강의</a>
+    <a href="#how">사용 방법</a>
+  </nav>
 </header>
 
 <!-- ── HERO ── -->
 <section class="hero">
   <div class="hero-inner">
-    <div class="eyebrow">
-      <span class="eyebrow-dot"></span>
-      CLUB HAWAII · MINI 시스템
+    <div class="hero-copy">
+      <div class="hero-check">
+        <span class="hero-check-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+        2028 최신 시행계획 그대로 반영
+      </div>
+      <h1><span class="hero-accent">2028 대입</span> 전략 시행 계획</h1>
+      <p class="hero-keyline">이제 찾는 시간보다 전략 세우는 시간에 집중하세요.</p>
+      <p class="hero-sub">
+        의대 · 치한약수 · 64개 대학 · 등급별 · 전형 변경 · 전문대<br>
+        궁금한 입시 조건을 한 곳에서 검색하세요.
+      </p>
+      <div class="hero-actions">
+        <a href="#tools" class="hero-cta">6가지 도구 사용하기 →</a>
+        <a href="#how" class="hero-cta-ghost">사용 방법 보기</a>
+      </div>
+
+      <div class="hero-feats">
+        <div class="hero-feat">
+          <span class="hero-feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+          <span class="hero-feat-title">설치 없이 바로 실행</span>
+        </div>
+        <div class="hero-feat">
+          <span class="hero-feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+          <span class="hero-feat-title">가입·로그인 없이</span>
+        </div>
+        <div class="hero-feat">
+          <span class="hero-feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+          <span class="hero-feat-title">오직 클럽하와이에서만</span>
+        </div>
+      </div>
     </div>
-    <h1>2028 대입,<br><strong>6가지</strong> 전문 검색 도구</h1>
-    <p class="hero-sub">
-      의대 · 치한약수 · 64개 대학 · 등급별 · 전형 변경 · 전문대<br>
-      궁금한 입시 조건을 한 곳에서 검색하세요.
-    </p>
-    <a href="#tools" class="hero-cta">6가지 도구 사용하기 ↓</a>
-    <div class="hero-feats">
-      <div class="hero-feat">
-        <div class="hero-feat-ico">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+
+    <div class="hero-visual fade-up" aria-hidden="true">
+      <div class="hero-blob"></div>
+
+      <!-- 뒤 카드: 1~3등급 지원전략 검색기 목업 -->
+      <figure class="shot shot-b">
+        <div class="mk mk-grade">
+          <div class="mk-bar">
+            <span class="mk-home">⌂ 홈</span>
+            <span class="mk-brand"><i class="mk-dot"></i>1~3등급 지원전략 검색기</span>
+            <span class="mk-tabs"><b class="on">성적으로 찾기</b><b>대학으로 찾기</b></span>
+          </div>
+          <div class="mk-body mk-body-center">
+            <div class="mk-h2">성적으로 예상하는 대학 라인</div>
+            <div class="mk-grade-box">1.70</div>
+            <div class="mk-chips mk-chips-center">
+              <span class="mk-chip">1.10</span><span class="mk-chip">1.30</span><span class="mk-chip">1.50</span>
+              <span class="mk-chip on">1.70</span><span class="mk-chip">1.90</span><span class="mk-chip">2.10</span>
+            </div>
+            <div class="mk-line-card">
+              <div class="mk-line-top"><b>인문 적정 라인</b><span class="mk-badge fit">적정 · 지원권</span></div>
+              <div class="mk-track"><span class="mk-tk">교과</span><span class="mk-gauge"><i class="mk-band fit"></i><i class="mk-mark"></i></span></div>
+              <div class="mk-track"><span class="mk-tk">종합</span><span class="mk-gauge"><i class="mk-band fit" style="left:18%;right:30%"></i><i class="mk-mark" style="left:46%"></i></span></div>
+            </div>
+            <div class="mk-line-card">
+              <div class="mk-line-top"><b>상위 도전 라인</b><span class="mk-badge reach">도전 · 상향</span></div>
+              <div class="mk-track"><span class="mk-tk">교과</span><span class="mk-gauge"><i class="mk-band reach" style="left:8%;right:46%"></i><i class="mk-mark" style="left:30%"></i></span></div>
+            </div>
+          </div>
         </div>
-        <div class="hero-feat-title">설치 없이 바로</div>
-        <div class="hero-feat-sub">브라우저만 있으면<br>즉시 실행됩니다</div>
-      </div>
-      <div class="hero-feat">
-        <div class="hero-feat-ico">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
+      </figure>
+
+      <!-- 앞 카드: 2028 대입 시행계획 목업 -->
+      <figure class="shot shot-a">
+        <div class="mk mk-plan">
+          <div class="mk-bar">
+            <span class="mk-home">⌂ 홈</span>
+            <span class="mk-brand"><i class="mk-dot"></i>2028 대입 시행계획</span>
+            <span class="mk-tabs"><b class="on">대학별</b><b>한눈에</b><b class="mk-pill">수능최저 용어 정리</b></span>
+          </div>
+          <div class="mk-body">
+            <div class="mk-title">2028 대학입학 전형 시행계획<br><span>어느 대학을 찾으세요?</span></div>
+            <div class="mk-search"><span class="mk-mag"></span>대학·전형·수능최저·변경내용 검색</div>
+            <div class="mk-chips">
+              <span class="mk-chip on">✓ 전체보기 267</span><span class="mk-chip">교과전형 96</span>
+              <span class="mk-chip">종합전형 127</span><span class="mk-chip">논술전형 44</span><span class="mk-chip">수능최저 없음 131</span>
+            </div>
+            <div class="mk-region"><b>서울</b> 32개 교</div>
+            <div class="mk-cards">
+              <div class="mk-uni"><div class="mk-uni-top"><span><em>01</em> 서울대학교</span><span class="mk-cmp">+비교</span></div><span class="mk-major">주요대</span><div class="mk-loc">서울특별시 관악구</div><div class="mk-tags"><span>종합 2</span><span class="lo">최저없음</span></div></div>
+              <div class="mk-uni"><div class="mk-uni-top"><span><em>02</em> 연세대학교</span><span class="mk-cmp">+비교</span></div><span class="mk-major">주요대</span><div class="mk-loc">서울특별시 서대문구</div><div class="mk-tags"><span>교과 1</span><span>종합 3</span><span class="lo">최저없음</span></div></div>
+              <div class="mk-uni"><div class="mk-uni-top"><span><em>03</em> 고려대학교</span><span class="mk-cmp">+비교</span></div><span class="mk-major">주요대</span><div class="mk-loc">서울특별시 성북구</div><div class="mk-tags"><span>교과 1</span><span>논술 1</span><span class="lo">최저없음</span></div></div>
+              <div class="mk-uni"><div class="mk-uni-top"><span><em>04</em> 성균관대학교</span><span class="mk-cmp">+비교</span></div><span class="mk-major">주요대</span><div class="mk-loc">서울 / 경기 수원</div><div class="mk-tags"><span>교과 1</span><span>종합 4</span><span class="lo">최저없음</span></div></div>
+            </div>
+          </div>
         </div>
-        <div class="hero-feat-title">로그인 없이</div>
-        <div class="hero-feat-sub">가입·로그인 없이<br>바로 검색하세요</div>
-      </div>
-      <div class="hero-feat">
-        <div class="hero-feat-ico">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-        </div>
-        <div class="hero-feat-title">완전 무료</div>
-        <div class="hero-feat-sub">모든 검색 도구를<br>항상 무료로 제공</div>
-      </div>
+      </figure>
     </div>
   </div>
 </section>
 
-<!-- ── 6 TOOLS ── -->
-<section class="tools-section" id="tools">
-  <div class="section-head">
-    <div>
-      <p class="section-kicker">6 Search Tools</p>
-      <h2 class="section-title">원하는 도구를 선택하세요</h2>
+<!-- ── STORY (배경 스토리) ── -->
+<section class="story-section" id="story">
+  <div class="story-inner">
+
+    <!-- 1. 고민 -->
+    <div class="story-block">
+      <div class="story-head fade-up">
+        <h2 class="section-title">원장님들의 고민에서 시작했습니다</h2>
+      </div>
+      <div class="story-chat">
+        <div class="story-bubble left b1 fade-up"><span class="q"><i>💬</i>“2028 시행계획이 너무 방대해요.”</span></div>
+        <div class="story-bubble right b2 fade-up"><span class="q"><i>💬</i>“상담할 때 필요한 내용을 찾는 데 시간이 걸려요.”</span></div>
+        <div class="story-bubble left b3 fade-up"><span class="q"><i>💬</i>“자료는 있는데, 상담에서 어떻게 설명해야 할지 고민돼요.”</span></div>
+        <div class="story-bubble right b4 fade-up"><span class="q"><i>💬</i>“변경된 전형을 실제 학생 상담에 적용하기 어려워요.”</span></div>
+      </div>
     </div>
-    <p class="section-note">설치 없이 · 로그인 없이 · 오직 클럽하와이에서</p>
+
+    <!-- 화살표 -->
+    <div class="story-arrow fade-up" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+    </div>
+
+    <!-- 2. 해결 -->
+    <div class="story-block">
+      <div class="story-head fade-up">
+        <h2 class="section-title">그래서 정리했습니다</h2>
+        <p class="story-lead">
+          입시 컨설턴트가 2028 대입 시행계획을 직접 검토하고,<br>
+          상담에 필요한 정보를 대학별·전형별로 빠르게 찾을 수 있도록 구성했습니다.
+        </p>
+      </div>
+      <div class="story-stats">
+        <div class="story-stat fade-up"><b>64개 대학</b><span>시행계획 정리</span></div>
+        <div class="story-stat fade-up"><b>6개 검색도구</b><span>상담 상황별 탐색</span></div>
+        <div class="story-stat fade-up"><b>교육 제공</b><span>상담 적용까지 안내</span></div>
+      </div>
+      <div class="story-cta-wrap">
+        <a href="#tools" class="story-cta">도구 사용하기 ↓</a>
+      </div>
+    </div>
+
+    <!-- 화살표 -->
+    <div class="story-arrow fade-up" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+    </div>
+
+    <!-- 3. 강조 -->
+    <div class="story-block">
+      <div class="story-head fade-up">
+        <h2 class="section-title">검색기는 시작일 뿐입니다</h2>
+        <p class="story-lead">
+          입시 정보를 찾는 것만으로는 좋은 상담이 완성되지 않습니다.<br><br>
+          클럽하와이는 검색기와 함께<br>
+          자료를 어떻게 읽고, 어떤 기준으로 설명하며,<br>
+          학생별 상담에 어떻게 적용할지 교육까지 제공합니다.
+        </p>
+      </div>
+      <div class="story-closing fade-up">
+        <span class="story-closing-sub">단순한 자료 제공을 넘어</span>
+        <p>
+          클럽하와이는 원장님이 상담 현장에서 바로 활용할 수 있는<br>
+          <span class="em">입시 상담 시스템</span>을 만들어갑니다.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── TOOLS (상황 기반) ── -->
+<section class="tools-section" id="tools">
+
+  <div class="situation fade-up">
+    <h2 class="section-title">오늘 무엇을 확인해야 하나요?</h2>
+    <p class="situation-sub">↓ 원하는 상황을 선택하면 빠르게 도구로 이동해요</p>
   </div>
 
-  <div class="tools-grid">
+  <div class="sol-grid">
 
-    <a class="tool-card fade-up"
-       href="2028_대입시행계획_64개대학.html"
-       style="--tool-color:#2A4F9A;--badge-bg:#EAF0FD;--badge-tx:#2A4F9A">
-      <div class="tool-card-accent"></div>
-      <div class="tool-card-body">
-        <div class="tool-card-top">
-          <span class="tool-badge">교과 · 종합 · 논술</span>
-        </div>
-        <div class="tool-name">2028 대입 시행계획</div>
-        <div class="tool-desc">주요 64개 대학의 2028 수시 시행계획을 한 번에 검색하고 비교합니다.</div>
-        <div class="tool-divider"></div>
-        <ul class="tool-features">
-          <li>대학·전형 유형별 모집 인원 비교</li>
-          <li>수능 최저 기준 및 조건 필터</li>
-          <li>PDF 저장하기 기능 지원</li>
-        </ul>
-        <span class="tool-open">열기
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </span>
+    <a class="sol-card fade-up" href="2028_대입시행계획_64개대학.html">
+      <div class="sol-card-title">대학별 전형 빠르게 확인</div>
+      <div class="sol-card-sub">2028 대입 시행계획</div>
+      <div class="sol-card-foot">
+        <span class="sol-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        <span class="sol-icon">📄</span>
       </div>
     </a>
 
-    <a class="tool-card fade-up"
-       href="1~2등급 성적 · 대학 검색기.html"
-       style="--tool-color:#5A23A0;--badge-bg:#F3EAFB;--badge-tx:#5A23A0">
-      <div class="tool-card-accent"></div>
-      <div class="tool-card-body">
-        <div class="tool-card-top">
-          <span class="tool-badge">성적 기반</span>
-        </div>
-        <div class="tool-name">1~3등급 대학 검색</div>
-        <div class="tool-desc">내 성적대에 맞는 대학과 학과를 안정·적정·도전으로 분류해 탐색합니다.</div>
-        <div class="tool-divider"></div>
-        <ul class="tool-features">
-          <li>등급별 안정 · 적정 · 도전 분류</li>
-          <li>지역 · 계열 복합 필터 검색</li>
-          <li>모집 인원 및 전형 조건 확인</li>
-        </ul>
-        <span class="tool-open">열기
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </span>
+    <a class="sol-card fade-up" href="1~2등급 성적 · 대학 검색기.html">
+      <div class="sol-card-title">성적 맞는 대학 찾기</div>
+      <div class="sol-card-sub">1~3등급 대학 검색</div>
+      <div class="sol-card-foot">
+        <span class="sol-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        <span class="sol-icon">📊</span>
       </div>
     </a>
 
-    <a class="tool-card fade-up"
-       href="2028_의대_수시모집_검색기.html"
-       style="--tool-color:#C0356B;--badge-bg:#FFE2EE;--badge-tx:#C0356B">
-      <div class="tool-card-accent"></div>
-      <div class="tool-card-body">
-        <div class="tool-card-top">
-          <span class="tool-badge">의대 전문</span>
-          <span class="tool-num">03 / 06</span>
-        </div>
-        <div class="tool-name">의대 수시 검색</div>
-        <div class="tool-desc">전국 40개 의과대학의 수시 전형 조건을 완전 분석하고 비교합니다.</div>
-        <div class="tool-divider"></div>
-        <ul class="tool-features">
-          <li>전형 유형 · 수능 최저 기준 비교</li>
-          <li>지역인재 전형 필터</li>
-          <li>합·불 판정 도우미 제공</li>
-        </ul>
-        <span class="tool-open">열기
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </span>
+    <a class="sol-card fade-up" href="2028_의대_수시모집_검색기.html">
+      <div class="sol-card-title">의대 진학 상담</div>
+      <div class="sol-card-sub">의대 수시 검색</div>
+      <div class="sol-card-foot">
+        <span class="sol-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        <span class="sol-icon">🩺</span>
       </div>
     </a>
 
-    <a class="tool-card fade-up"
-       href="치한약수_2028_수시_전형_검색기.html"
-       style="--tool-color:#0A6675;--badge-bg:#E6F4FB;--badge-tx:#0A6675">
-      <div class="tool-card-accent"></div>
-      <div class="tool-card-body">
-        <div class="tool-card-top">
-          <span class="tool-badge">계열 전문</span>
-          <span class="tool-num">04 / 06</span>
-        </div>
-        <div class="tool-name">치한약수 전형 검색</div>
-        <div class="tool-desc">치대 · 한의대 · 약대 · 수의대 전 계열의 수시 전형을 통합 검색합니다.</div>
-        <div class="tool-divider"></div>
-        <ul class="tool-features">
-          <li>4개 계열 동시 비교 검색</li>
-          <li>수능 최저 기준 일괄 확인</li>
-          <li>지역인재 · 일반 전형 분류</li>
-        </ul>
-        <span class="tool-open">열기
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </span>
+    <a class="sol-card fade-up" href="치한약수_2028_수시_전형_검색기.html">
+      <div class="sol-card-title">치·한·약·수 계열 비교</div>
+      <div class="sol-card-sub">치한약수 전형 검색</div>
+      <div class="sol-card-foot">
+        <span class="sol-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        <span class="sol-icon">💊</span>
       </div>
     </a>
 
-    <a class="tool-card fade-up"
-       href="대입전형_2026vs2027_탐색앱.html"
-       style="--tool-color:#9A5A0C;--badge-bg:#FDF0DC;--badge-tx:#9A5A0C">
-      <div class="tool-card-accent"></div>
-      <div class="tool-card-body">
-        <div class="tool-card-top">
-          <span class="tool-badge">변경 추적</span>
-          <span class="tool-num">05 / 06</span>
-        </div>
-        <div class="tool-name">2026→2027 전형 변경</div>
-        <div class="tool-desc">연도별 전형 계획 변경 사항을 나란히 비교해 달라진 점을 한눈에 파악합니다.</div>
-        <div class="tool-divider"></div>
-        <ul class="tool-features">
-          <li>2026 · 2027 나란히 비교 뷰</li>
-          <li>증감 인원 자동 하이라이트</li>
-          <li>대학 · 계열 · 전형 유형 필터</li>
-        </ul>
-        <span class="tool-open">열기
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </span>
+    <a class="sol-card fade-up" href="전문대_입시검색_통합.html">
+      <div class="sol-card-title">전문대 진학 상담</div>
+      <div class="sol-card-sub">전문대 입시 검색</div>
+      <div class="sol-card-foot">
+        <span class="sol-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        <span class="sol-icon">🎓</span>
       </div>
     </a>
 
-    <a class="tool-card fade-up"
-       href="전문대_입시검색_통합.html"
-       style="--tool-color:#0C6E51;--badge-bg:#E3F6EE;--badge-tx:#0C6E51">
-      <div class="tool-card-accent"></div>
-      <div class="tool-card-body">
-        <div class="tool-card-top">
-          <span class="tool-badge">전문대</span>
-          <span class="tool-num">06 / 06</span>
-        </div>
-        <div class="tool-name">전문대 입시 검색</div>
-        <div class="tool-desc">전국 전문대학의 입시 조건을 통합 검색하고 원하는 학과를 탐색합니다.</div>
-        <div class="tool-divider"></div>
-        <ul class="tool-features">
-          <li>학과 · 지역 복합 필터 검색</li>
-          <li>모집 인원 및 전형 일정 확인</li>
-          <li>전형 유형별 분류 및 비교</li>
-        </ul>
-        <span class="tool-open">열기
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </span>
+    <a class="sol-card fade-up sol-card--muted" href="대입전형_2026vs2027_탐색앱.html">
+      <span class="sol-tag">부록</span>
+      <div class="sol-card-title">지난 변경내용 확인</div>
+      <div class="sol-card-sub">2026 → 2027 전형 변경</div>
+      <div class="sol-card-foot">
+        <span class="sol-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+        <span class="sol-icon">↺</span>
       </div>
     </a>
 
   </div>
+
 </section>
 
 <!-- ── HOW IT WORKS ── -->
 <section class="how-section" id="how">
   <div class="how-inner">
-    <div class="section-head">
-      <p class="section-kicker">How It Works</p>
+    <div class="section-head fade-up">
       <h2 class="section-title">3단계로 바로 사용</h2>
     </div>
     <div class="steps">
@@ -797,114 +1177,115 @@ body{
 <!-- ── LECTURES ── -->
 <!-- TODO: 각 강의의 썸네일(.lecture-thumb style의 background-image), 제목, 요약, 강사명, 교육 링크(href)를 실제 값으로 교체하세요. -->
 <section class="lecture-section" id="lectures">
-  <div class="section-head">
-    <p class="section-kicker">LECTURES</p>
+  <div class="section-head fade-up">
     <h2 class="section-title">입시 상담을 하신다면 필수 시청</h2>
     <p class="section-note">2028 대입 시행계획 강의 · 총 5강</p>
   </div>
 
-  <div class="lecture-grid">
+  <div class="lecture-list">
 
     <!-- 강의 1 -->
-    <div class="lecture-card fade-up">
-      <!-- TODO: background-image:url('썸네일1.jpg') 로 교체 -->
+    <!-- TODO: href를 실제 교육 링크로, .lecture-thumb의 background-image:url('썸네일1.jpg') 로 교체 -->
+    <a href="#" data-fill="lecture-link" class="lecture-item fade-up">
       <div class="lecture-thumb">
         <span class="lecture-no">1강</span>
         <span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
       </div>
       <div class="lecture-body">
+        <span class="lecture-badge">강의</span>
         <div class="lecture-title">강의 1 제목</div>
         <div class="lecture-desc">강의 1의 간단한 요약 소개 문구가 들어갑니다. 실제 내용으로 교체하세요.</div>
-        <div class="lecture-meta"><span class="dot"></span>강사명</div>
-        <a href="#" data-fill="lecture-link" class="lecture-btn">교육 바로가기
+        <span class="lecture-more">더보기
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
+        </span>
       </div>
-    </div>
+    </a>
 
     <!-- 강의 2 -->
-    <div class="lecture-card fade-up">
+    <a href="#" data-fill="lecture-link" class="lecture-item fade-up">
       <div class="lecture-thumb">
         <span class="lecture-no">2강</span>
         <span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
       </div>
       <div class="lecture-body">
+        <span class="lecture-badge">강의</span>
         <div class="lecture-title">강의 2 제목</div>
         <div class="lecture-desc">강의 2의 간단한 요약 소개 문구가 들어갑니다. 실제 내용으로 교체하세요.</div>
-        <div class="lecture-meta"><span class="dot"></span>강사명</div>
-        <a href="#" data-fill="lecture-link" class="lecture-btn">교육 바로가기
+        <span class="lecture-more">더보기
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
+        </span>
       </div>
-    </div>
+    </a>
 
     <!-- 강의 3 -->
-    <div class="lecture-card fade-up">
+    <a href="#" data-fill="lecture-link" class="lecture-item fade-up">
       <div class="lecture-thumb">
         <span class="lecture-no">3강</span>
         <span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
       </div>
       <div class="lecture-body">
+        <span class="lecture-badge">강의</span>
         <div class="lecture-title">강의 3 제목</div>
         <div class="lecture-desc">강의 3의 간단한 요약 소개 문구가 들어갑니다. 실제 내용으로 교체하세요.</div>
-        <div class="lecture-meta"><span class="dot"></span>강사명</div>
-        <a href="#" data-fill="lecture-link" class="lecture-btn">교육 바로가기
+        <span class="lecture-more">더보기
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
+        </span>
       </div>
-    </div>
+    </a>
 
     <!-- 강의 4 -->
-    <div class="lecture-card fade-up">
+    <a href="#" data-fill="lecture-link" class="lecture-item fade-up">
       <div class="lecture-thumb">
         <span class="lecture-no">4강</span>
         <span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
       </div>
       <div class="lecture-body">
+        <span class="lecture-badge">강의</span>
         <div class="lecture-title">강의 4 제목</div>
         <div class="lecture-desc">강의 4의 간단한 요약 소개 문구가 들어갑니다. 실제 내용으로 교체하세요.</div>
-        <div class="lecture-meta"><span class="dot"></span>강사명</div>
-        <a href="#" data-fill="lecture-link" class="lecture-btn">교육 바로가기
+        <span class="lecture-more">더보기
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
+        </span>
       </div>
-    </div>
+    </a>
 
     <!-- 강의 5 -->
-    <div class="lecture-card fade-up">
+    <a href="#" data-fill="lecture-link" class="lecture-item fade-up">
       <div class="lecture-thumb">
         <span class="lecture-no">5강</span>
         <span class="play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
       </div>
       <div class="lecture-body">
+        <span class="lecture-badge">강의</span>
         <div class="lecture-title">강의 5 제목</div>
         <div class="lecture-desc">강의 5의 간단한 요약 소개 문구가 들어갑니다. 실제 내용으로 교체하세요.</div>
-        <div class="lecture-meta"><span class="dot"></span>강사명</div>
-        <a href="#" data-fill="lecture-link" class="lecture-btn">교육 바로가기
+        <span class="lecture-more">더보기
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
+        </span>
       </div>
-    </div>
+    </a>
 
   </div>
 </section>
 
 <!-- ── HAWAII OPEN NEWS ── -->
-<!-- TODO: 오픈 소식 본문 문구와 티저 영상 링크(href)를 실제 값으로 교체하세요. -->
 <section class="news-section" id="news">
   <div class="news-card fade-up">
     <div class="news-badge">
-      <span class="eyebrow-dot" style="background:#fff"></span>
       COMING SOON
     </div>
     <h2>클럽하와이 웹사이트가<br>곧 오픈합니다</h2>
     <p>
-      입시 검색 도구부터 강의·상담 콘텐츠까지, 클럽하와이의 모든 입시 자료를
-      한 곳에서 만나보세요. 새롭게 단장한 통합 웹사이트가 여러분을 찾아갑니다.
+      이번 2028 대입 시행계획 검색기는<br>
+      새롭게 달라질 클럽하와이를 먼저 경험해보는 첫 번째 콘텐츠입니다.
+    </p>
+    <p>
+      원장님들의 상담력과 학원 운영 경쟁력을 높이기 위해,<br>
+      클럽하와이는 지금 더 강력한 플랫폼으로 새롭게 준비되고 있습니다.
     </p>
     <div class="news-open"><span class="pulse"></span>7월 중순 오픈</div>
     <div class="news-cta">
-      <a href="#" data-fill="teaser-link" class="news-cta-btn">
+      <a href="https://youtube.com/shorts/lHrHbk6Iqj8?feature=share" target="_blank" rel="noopener" class="news-cta-btn">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
         티저 보러가기
       </a>
@@ -914,9 +1295,9 @@ body{
 
 <!-- ── CTA BANNER ── -->
 <section class="cta-banner">
-  <h2>지금 바로 시작하세요</h2>
-  <p>설치 없이, 로그인 없이, 완전 무료로 사용할 수 있습니다.</p>
-  <a href="#tools" class="cta-banner-btn">도구 보기 →</a>
+  <h2 class="fade-up">지금 바로 시작하세요</h2>
+  <p class="fade-up">설치 없이, 로그인 없이, 완전 무료로 사용할 수 있습니다.</p>
+  <a href="#tools" class="cta-banner-btn fade-up">도구 보기 →</a>
 </section>
 
 <!-- ── FOOTER ── -->
@@ -943,9 +1324,21 @@ body{
 <script>
 (function(){
   var hdr = document.getElementById('js-header');
-  window.addEventListener('scroll', function(){
+  var bar = document.getElementById('scrollProgress');
+  var ticking = false;
+  function onScroll(){
     hdr.classList.toggle('scrolled', window.scrollY > 8);
+    if(bar){
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      var r = h > 0 ? window.scrollY / h : 0;
+      bar.style.transform = 'scaleX(' + Math.min(Math.max(r,0),1) + ')';
+    }
+    ticking = false;
+  }
+  window.addEventListener('scroll', function(){
+    if(!ticking){ ticking = true; requestAnimationFrame(onScroll); }
   }, { passive: true });
+  onScroll();
 
   var obs = new IntersectionObserver(function(entries){
     entries.forEach(function(e){
@@ -953,18 +1346,6 @@ body{
     });
   }, { threshold: 0.08 });
   document.querySelectorAll('.fade-up').forEach(function(el){ obs.observe(el); });
-
-  // 헤더 CTA: "6 Search Tools" 섹션이 화면에 보이기 시작하면 노출
-  var cta = document.querySelector('.header-cta');
-  var tools = document.getElementById('tools');
-  if(cta && tools){
-    var ctaObs = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        cta.classList.toggle('show', e.isIntersecting || e.boundingClientRect.top < 0);
-      });
-    }, { threshold: 0, rootMargin: '-60px 0px 0px 0px' });
-    ctaObs.observe(tools);
-  }
 
   document.querySelectorAll('a[href^="#"]').forEach(function(a){
     a.addEventListener('click', function(e){
@@ -974,6 +1355,35 @@ body{
       if(t){ e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
     });
   });
+
+  /* ── 모바일 햄버거 메뉴 토글 ── */
+  var navToggle = document.getElementById('navToggle');
+  var mobileMenu = document.getElementById('mobileMenu');
+  if(navToggle && mobileMenu){
+    function closeMenu(){
+      mobileMenu.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      navToggle.setAttribute('aria-label', '메뉴 열기');
+    }
+    navToggle.addEventListener('click', function(){
+      var open = mobileMenu.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      navToggle.setAttribute('aria-label', open ? '메뉴 닫기' : '메뉴 열기');
+    });
+    mobileMenu.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', closeMenu);
+    });
+    document.addEventListener('click', function(e){
+      if(mobileMenu.classList.contains('open') &&
+         !mobileMenu.contains(e.target) && !navToggle.contains(e.target)){
+        closeMenu();
+      }
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape') closeMenu();
+    });
+  }
+
 })();
 </script>
 </body>
