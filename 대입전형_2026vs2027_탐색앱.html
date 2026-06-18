@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>2026 → 2027 대입전형 변경사항</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFF7FA;
+  --surface:#FBFAF7;
+  --surface-2:#F5F4F2;
+  --ink:#191919;
+  --muted:#9A8D92;
+  --faint:#9A8D92;
+  --line:#F0EEE8;
+  --line-strong:#E8E4DF;
+  --c26:#D97706;
+  --c26-bg:#FCEFD9;
+  --c26-mark:#F6D79B;
+  --c26-line:#EFD3A0;
+  --c27:#2563EB;
+  --c27-bg:#E6EDFF;
+  --c27-mark:#BBD0FB;
+  --c27-line:#C3D6FB;
+  --new:#16A34A;
+  --new-bg:#DCFCE7;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+  --sans:'Pretendard Variable',-apple-system,system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--sans);
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  padding-bottom:48px;
+}
+.wrap{max-width:1240px;margin:0 auto;padding:0 2rem}
+
+/* ── Header ───────────────────────────── */
+header{
+  background:#fff;
+  color:var(--ink);
+  border-bottom:1px solid var(--line);
+}
+.head-inner{max-width:1240px;margin:0 auto;padding:22px 2rem 20px}
+.kicker{
+  font-family:var(--mono);
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:#FF5F9F;margin-bottom:8px;
+}
+h1{
+  font-size:clamp(21px,3.4vw,30px);font-weight:800;letter-spacing:-.02em;
+  display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+}
+h1 .arrow{color:var(--c27);font-family:var(--mono);font-weight:600}
+h1 .y26{color:var(--c26)}
+h1 .y27{color:var(--c27)}
+.sub{margin-top:7px;font-size:13px;color:var(--muted)}
+
+/* ── Dashboard ────────────────────────── */
+.dash{
+  display:grid;grid-template-columns:repeat(6,1fr);gap:1px;
+  background:var(--line);border:1px solid var(--line);border-radius:12px;
+  overflow:hidden;margin:18px 0 4px;
+}
+.stat{
+  background:var(--surface);padding:13px 14px;cursor:default;
+  transition:background .12s;
+}
+.stat.click{cursor:pointer}
+.stat.click:hover{background:var(--surface-2)}
+.stat.on{background:var(--ink)}
+.stat.on .num,.stat.on .lab{color:#fff}
+.stat .num{font-family:var(--mono);font-size:23px;font-weight:600;letter-spacing:-.02em;line-height:1.1}
+.stat .lab{font-size:11.5px;color:var(--muted);margin-top:3px;font-weight:500}
+.stat.t교과 .num{color:#3A4656}
+.stat.on .num{color:#fff}
+
+/* ── Controls ─────────────────────────── */
+.controls{
+  background:var(--surface);border:1px solid var(--line);border-radius:12px;
+  padding:14px 16px;margin:14px 0 18px;
+}
+.search{position:relative;margin-bottom:13px}
+.search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--faint)}
+.search input{
+  width:100%;font-family:var(--sans);font-size:15px;color:var(--ink);
+  padding:11px 38px 11px 40px;border:1.5px solid var(--line-strong);border-radius:9px;
+  background:var(--surface-2);transition:border-color .12s,background .12s;
+}
+.search input:focus{outline:none;border-color:var(--c27);background:#fff}
+.search .clr{position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  border:none;background:none;color:var(--faint);cursor:pointer;font-size:18px;
+  width:24px;height:24px;border-radius:50%;display:none;line-height:1}
+.search .clr:hover{color:var(--ink);background:var(--line)}
+
+.filt-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:9px}
+.filt-row:last-child{margin-bottom:0}
+.flabel{font-size:11px;font-weight:700;color:var(--faint);letter-spacing:.05em;
+  width:42px;flex:none;font-family:var(--mono);text-transform:uppercase}
+.chip{
+  font-family:var(--sans);font-size:12.5px;font-weight:500;
+  padding:5px 11px;border:1px solid var(--line-strong);border-radius:999px;
+  background:#fff;color:var(--muted);cursor:pointer;transition:all .11s;white-space:nowrap;
+}
+.chip:hover{border-color:var(--c27);color:var(--c27)}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip .c{font-family:var(--mono);font-size:11px;opacity:.6;margin-left:4px}
+.chip.on .c{opacity:.75}
+
+.row2{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:11px;
+  padding-top:11px;border-top:1px dashed var(--line)}
+.toggle{display:inline-flex;align-items:center;gap:7px;cursor:pointer;user-select:none;font-size:13px;font-weight:500;color:var(--muted)}
+.toggle input{display:none}
+.tt{width:36px;height:20px;border-radius:999px;background:var(--line-strong);position:relative;transition:background .14s;flex:none}
+.tt::after{content:"";position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:2px;left:2px;transition:left .14s;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.toggle input:checked + .tt{background:var(--new)}
+.toggle input:checked + .tt::after{left:18px}
+.toggle.on{color:var(--new);font-weight:700}
+.spacer{flex:1}
+.sortsel{font-family:var(--sans);font-size:12.5px;color:var(--ink);border:1px solid var(--line-strong);
+  border-radius:8px;padding:6px 9px;background:#fff;cursor:pointer}
+.reset{font-size:12.5px;color:var(--muted);background:none;border:1px solid var(--line-strong);
+  border-radius:8px;padding:6px 11px;cursor:pointer;font-weight:500}
+.reset:hover{border-color:var(--c26);color:var(--c26)}
+
+/* ── Result meta ──────────────────────── */
+.meta{display:flex;align-items:center;justify-content:space-between;
+  margin:0 2px 12px;font-size:13px;color:var(--muted)}
+.meta b{color:var(--ink);font-family:var(--mono);font-weight:600}
+.legend{display:flex;gap:13px;align-items:center;font-size:11.5px;color:var(--faint)}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.lg{width:13px;height:13px;border-radius:3px;display:inline-block}
+.lg.add{background:var(--c27-mark)}
+.lg.del{background:var(--c26-mark)}
+
+/* ── Cards ────────────────────────────── */
+.list{display:flex;flex-direction:column;gap:12px}
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:12px;
+  overflow:hidden;box-shadow:0 1px 2px rgba(20,29,41,.03);
+}
+.card.new-card{border-color:var(--new-bg);box-shadow:0 0 0 1px var(--new-bg)}
+.chead{display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+  padding:13px 16px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.uname{font-size:16px;font-weight:800;letter-spacing:-.01em}
+.rtag{font-size:11.5px;color:var(--muted);background:#fff;border:1px solid var(--line-strong);
+  padding:2px 8px;border-radius:6px;font-weight:600}
+.ttag{font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:6px;letter-spacing:-.01em}
+.ttag.교과{background:#EAF1FB;color:#2563B5}
+.ttag.종합{background:#F0EBFB;color:#6A45B0}
+.ttag.수능{background:#FBEFEA;color:#B5572C}
+.ttag.논술{background:#E9F4EF;color:#1E7A52}
+.newtag{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.06em;
+  background:var(--new);color:#fff;padding:3px 8px;border-radius:6px}
+.cidx{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--faint)}
+
+.cols{display:grid;grid-template-columns:1fr 1fr}
+.col{padding:14px 16px}
+.col.c-26{background:var(--c26-bg);border-right:1px solid var(--line)}
+.col.c-27{background:#fff}
+.col-h{display:flex;align-items:center;gap:7px;margin-bottom:9px;
+  font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.05em}
+.col.c-26 .col-h{color:var(--c26)}
+.col.c-27 .col-h{color:var(--c27)}
+.col-h .dot{width:7px;height:7px;border-radius:50%}
+.col.c-26 .dot{background:var(--c26)}
+.col.c-27 .dot{background:var(--c27)}
+.col-h .yr{font-size:13px;font-weight:700}
+.body{font-size:13.5px;line-height:1.62;color:#28313F;word-break:break-word}
+.body .seg{display:block;padding:1px 0}
+.body .seg + .seg{margin-top:1px}
+mark.add{background:var(--c27-mark);color:#13327F;border-radius:3px;padding:0 1px;font-weight:600}
+mark.del{background:var(--c26-mark);color:#7A4A1E;border-radius:3px;padding:0 1px;text-decoration:line-through;text-decoration-color:rgba(122,74,30,.5)}
+.empty-old{color:var(--faint);font-style:normal;font-size:13px}
+
+/* ── Empty / footer ──────────────────── */
+.empty{text-align:center;padding:60px 20px;color:var(--muted)}
+.empty .big{font-size:17px;font-weight:700;color:var(--ink);margin-bottom:6px}
+footer{text-align:center;margin-top:28px;font-size:11.5px;color:var(--faint);font-family:var(--mono)}
+
+@media (max-width:760px){
+  .dash{grid-template-columns:repeat(3,1fr)}
+  .cols{grid-template-columns:1fr}
+  .col.c-26{border-right:none;border-bottom:1px solid var(--line)}
+  .flabel{width:100%}
+  .head-inner{padding:18px 16px 16px}
+  .col{padding:13px 14px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+
+/* ===== HCUI shared layer (theme-consistent home / terms / FAB) ===== */
+:root{ --hc-brand:#FF5F9F; --hc-brand2:#E03C7E; --hc-accent:#FF5F9F; --hc-accent2:#E03C7E;
+  --hc-ink:#191919; --hc-muted:#9A8D92; --hc-line:#F0EEE8; --hc-paper:#fff; --hc-soft:#FFE2EE;
+  --hc-good:#0C6E51; --hc-good-bg:#E3F6EE; --hc-mid:#9A5A0C; --hc-mid-bg:#FDF0DC;
+  --hc-weak:#DC2626; --hc-weak-bg:#FEE2E2; --hc-none:#9aa6b4; }
+.hc-fab{position:fixed;top:14px;right:16px;z-index:2147483000;display:flex;gap:9px;align-items:center}
+.hc-btn{display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer;font-family:inherit;
+  font-weight:800;border-radius:13px;transition:transform .14s,box-shadow .14s;line-height:1}
+.hc-btn:hover{transform:translateY(-2px)}
+.hc-term{background:var(--hc-brand);color:#fff;
+  font-size:15px;padding:13px 18px;box-shadow:0 8px 22px -6px rgba(255,95,159,.45)}
+.hc-term .ic{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;
+  background:rgba(255,255,255,.28);font-size:15px;font-weight:900}
+.hc-home{background:var(--hc-paper);color:var(--hc-brand);border:1.5px solid var(--hc-line);
+  font-size:14px;padding:12px 15px;box-shadow:0 6px 18px -8px rgba(0,0,0,.12)}
+.hc-home:hover{border-color:var(--hc-brand2)}
+.hc-home .ic{font-size:17px}
+@media(max-width:640px){
+  .hc-fab{top:10px;right:10px;gap:7px}
+  .hc-term{font-size:13px;padding:11px 13px}
+  .hc-term .lbl-full{display:none}.hc-term .lbl-short{display:inline}
+  .hc-home{padding:11px 12px}.hc-home .lbl{display:none}
+}
+@media(min-width:641px){ .hc-term .lbl-short{display:none} }
+
+/* overlay shell (guide + terms) */
+.hc-ov{position:fixed;inset:0;z-index:2147482000;background:rgba(12,40,40,.55);
+  backdrop-filter:blur(4px);display:none;align-items:flex-start;justify-content:center;
+  padding:26px 16px;overflow:auto}
+.hc-ov.open{display:flex}
+.hc-sheet{background:var(--hc-paper);width:100%;max-width:860px;border-radius:22px;overflow:hidden;
+  box-shadow:0 30px 80px -30px rgba(12,40,40,.6);animation:hcpop .26s cubic-bezier(.2,.9,.3,1)}
+@keyframes hcpop{from{transform:translateY(14px);opacity:.4}to{transform:none;opacity:1}}
+.hc-sheet.sm{max-width:600px}
+
+/* guide (poster-style) */
+.hc-ghead{background:linear-gradient(135deg,var(--hc-brand),var(--hc-brand2));color:#fff;
+  padding:28px 30px 26px;position:relative;overflow:hidden}
+.hc-ghead .wm{position:absolute;right:-10px;bottom:-34px;font-size:130px;font-weight:900;
+  letter-spacing:-.04em;color:rgba(255,255,255,.08);line-height:1;pointer-events:none}
+.hc-eyebrow{font-size:12px;font-weight:800;letter-spacing:.2em;color:rgba(255,255,255,.7);text-transform:uppercase}
+.hc-ghead h2{font-size:30px;font-weight:900;letter-spacing:-.03em;line-height:1.12;margin:9px 0 0;position:relative}
+.hc-ghead p{font-size:15px;color:rgba(255,255,255,.85);margin:12px 0 0;max-width:90%;line-height:1.5;position:relative}
+.hc-gclose{position:absolute;top:18px;right:20px;z-index:3;width:36px;height:36px;border-radius:50%;
+  border:none;background:rgba(255,255,255,.2);color:#fff;font-size:20px;cursor:pointer;line-height:1}
+.hc-gclose:hover{background:rgba(255,255,255,.34)}
+.hc-gbody{padding:26px 30px 20px}
+.hc-kick{font-size:14px;font-weight:800;color:var(--hc-brand);letter-spacing:.02em;display:flex;
+  align-items:center;gap:10px;margin:0 0 14px}
+.hc-kick::after{content:"";flex:1;height:2px;background:var(--hc-line)}
+.hc-methods{display:flex;flex-direction:column;gap:11px;margin-bottom:20px}
+.hc-m{display:flex;gap:15px;align-items:flex-start;border:1.5px solid var(--hc-line);border-radius:15px;padding:15px 16px;background:#fff}
+.hc-m .no{flex:none;width:46px;height:46px;border-radius:13px;background:var(--hc-soft);color:var(--hc-brand);
+  display:grid;place-items:center;font-size:22px;font-weight:900}
+.hc-m .ti{font-size:18px;font-weight:800;letter-spacing:-.01em}
+.hc-m .de{font-size:14px;color:var(--hc-muted);margin-top:4px;line-height:1.5}
+.hc-m .out{font-size:12.5px;color:var(--hc-brand);font-weight:700;margin-top:7px}
+.hc-m .out::before{content:"→ "}
+.hc-read{border:1.5px solid var(--hc-line);border-radius:15px;padding:16px 18px;margin-bottom:18px}
+.hc-read h3{font-size:14px;font-weight:800;color:var(--hc-ink);margin:0 0 11px}
+.hc-read .r{font-size:13.5px;color:var(--hc-ink);line-height:1.5;display:flex;gap:8px;margin-bottom:8px}
+.hc-read .r:last-child{margin-bottom:0}
+.hc-read .r::before{content:"●";color:var(--hc-brand);font-size:8px;margin-top:6px}
+.hc-read .r b{color:var(--hc-brand2)}
+.hc-scale{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+.hc-gb{min-width:54px;text-align:center;font-weight:800;border-radius:9px;padding:7px 6px;font-size:14px}
+.hc-gb.g{background:var(--hc-good-bg);color:var(--hc-good)}
+.hc-gb.m{background:var(--hc-mid-bg);color:var(--hc-mid)}
+.hc-gb.w{background:var(--hc-weak-bg);color:var(--hc-weak)}
+.hc-gb.n{background:#eef1f4;color:#9aa6b4}
+.hc-start{width:100%;margin-top:4px;border:none;border-radius:16px;padding:18px;cursor:pointer;font-family:inherit;
+  background:var(--hc-brand);color:#fff;display:flex;align-items:center;
+  justify-content:center;gap:12px;box-shadow:0 14px 30px -12px rgba(255,95,159,.45);transition:transform .15s}
+.hc-start:hover{transform:translateY(-2px)}
+.hc-start .t{font-size:17px;font-weight:800}
+.hc-start .ar{font-size:20px}
+.hc-cap{background:#FFF5F8;border-top:1.5px solid var(--hc-line);padding:14px 30px;font-size:12px;
+  color:var(--hc-muted);line-height:1.6}
+.hc-cap b{color:var(--hc-ink)}
+
+/* terms modal */
+.hc-thead{background:linear-gradient(135deg,var(--hc-accent),var(--hc-accent2));color:#fff;
+  padding:18px 22px;display:flex;align-items:center;gap:12px;position:sticky;top:0}
+.hc-thead .ic{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.25);display:grid;place-items:center;font-size:18px;font-weight:900;flex:none}
+.hc-thead h2{font-size:18px;font-weight:800;margin:0;flex:1}
+.hc-thead .x{width:32px;height:32px;border-radius:8px;border:none;background:rgba(255,255,255,.22);color:#fff;font-size:19px;cursor:pointer;line-height:1}
+.hc-thead .x:hover{background:rgba(255,255,255,.38)}
+.hc-tbody{padding:8px 22px 22px;max-height:72vh;overflow:auto}
+.hc-tsect{font-size:11.5px;font-weight:800;color:var(--hc-muted);letter-spacing:.06em;margin:16px 0 4px}
+.hc-trow{display:grid;grid-template-columns:130px 1fr;gap:12px;padding:11px 0;border-bottom:1px dashed var(--hc-line)}
+.hc-trow:last-child{border-bottom:none}
+.hc-tterm{font-weight:800;color:var(--hc-brand);font-size:13.5px}
+.hc-tdesc{font-size:13px;color:var(--hc-ink);line-height:1.5}
+@media(max-width:560px){ .hc-trow{grid-template-columns:1fr;gap:3px} }
+
+</style>
+</head>
+<body>
+<header>
+  <div class="head-inner">
+    <div class="kicker">대학입학전형 시행계획 비교</div>
+    <h1><span class="y26">2026</span><span class="arrow">→</span><span class="y27">2027</span> 대입전형 변경사항</h1>
+    <div class="sub" id="sub">전국 123개 대학 · 224건 변경 · 지역·전형·키워드 다각도 탐색</div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="dash" id="dash"></div>
+
+  <div class="controls">
+    <div class="search">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="q" type="text" placeholder="대학명 또는 키워드 검색  (예: 수능최저, 반영비율, 간호, 진로선택)" autocomplete="off">
+      <button class="clr" id="clr" aria-label="검색어 지우기">×</button>
+    </div>
+    <div class="filt-row" id="regionRow"><span class="flabel">지역</span></div>
+    <div class="filt-row" id="typeRow"><span class="flabel">전형</span></div>
+    <div class="row2">
+      <label class="toggle" id="newToggle"><input type="checkbox" id="newChk"><span class="tt"></span><span>신설 전형만</span></label>
+      <span class="spacer"></span>
+      <select class="sortsel" id="sort">
+        <option value="orig">기본 정렬 (지역·대학)</option>
+        <option value="univ">대학명순</option>
+        <option value="type">전형구분순</option>
+        <option value="region">지역순</option>
+      </select>
+      <button class="reset" id="reset">필터 초기화</button>
+    </div>
+  </div>
+
+  <div class="meta">
+    <div><b id="cnt">224</b>건 표시</div>
+    <div class="legend">
+      <span><i class="lg add"></i>2027 추가·변경</span>
+      <span><i class="lg del"></i>2026 삭제·이전</span>
+    </div>
+  </div>
+
+  <div class="list" id="list"></div>
+  <footer id="foot"></footer>
+</div>
+
+<script>
+const DATA = [{"id": 1, "region": "서울", "univ": "감리교신학대", "type": "학생부교과", "y2027": "1. 학생부 반영방법 | 각 학년에서 국,영,사/과를 각 1과목씩 3과목 반영, 총 9과목 반영", "y2026": "1. 학생부 반영방법 | 1학년 국,영,사 각 1과목(3과목), 2학년 국,영,사/과 각 1과목(3과목), 3학년 국,영,사/과 각 1과목(3과목), 총 9과목 반영", "isNew": false}, {"id": 2, "region": "서울", "univ": "강서대", "type": "학생부교과", "y2027": "1. 학생부 반영방법 | 학생부교과 | - 신학과, G2빅데이터경영학과, 사회복지학과, 상담심리학과, 실용음악학과: 영,국/수,사/과 각 3과목씩 총 9과목 | - 식품영양학과: 수, 국/영, 사/과 각 3과목씩 총 9과목 | - 간호학과: 국,수,영,사/과 각 5과목씩 총 20과목 | ※ 진로선택과목 A:3, B:2, C:1", "y2026": "1. 학생부 반영방법 | 학생부교과 | - 신학과, G2빅데이터경영학과, 사회복지학과, 상담심리학과, 실용음악학과: 영,국/수,사/과 3개 교과 전과목 | - 식품영양학과: 수, 영, 사/과 3개 교과 전과목 | - 간호학과: 국,수,영,사/과 4개 교과 전과목 | ※ 진로선택과목 A:5, B:4, C:2", "isNew": false}, {"id": 3, "region": "서울", "univ": "경희대", "type": "학생부교과", "y2027": "1. 학생부 반영방법 | 학생부교과(지역균형) | 3년간 총 미인정 결석 일수 및 미인정 지각·조퇴·결과 반영(미인정 지각·조퇴·결과 2회당 미인정 결석 1일로 반영, 소수점 이하 버림)", "y2026": "1. 학생부 반영방법 | 학생부교과(지역균형) | 3년간 총 미인정 결석 일수만 반영", "isNew": false}, {"id": 4, "region": "서울", "univ": "국민대", "type": "학생부교과", "y2027": "1. 전형명 | 학생부교과(교과우수자(학교장추천))", "y2026": "1. 전형명 | 학생부교과(교과성적우수자)", "isNew": false}, {"id": 4, "region": "서울", "univ": "국민대", "type": "학생부종합", "y2027": "1. 전형명 신설 | 학생부종합(국제인재,알고리즘우수자) | 1단계(3배수): 서류100 | 2단계: 1단계70+면접30", "y2026": "(신설)", "isNew": true}, {"id": 4, "region": "서울", "univ": "국민대", "type": "수능", "y2027": "1. 수능반영방법 | 수능(일반)/인문계열: 국40,수30,영10,사/과(2)20 | 자연계열: 국30,수40,영10,사/과(2)20 | (수(미/기),과 과목당 표준점수 5% 가산)", "y2026": "1. 수능반영방법 | 수능(일반)/인문계열: 국30,수30,영20,사/과(2)20 | 자연계열: 국20,수30,영20,사/과(2)30 | (수(미/기),과 과목당 표준점수 3% 가산)", "isNew": false}, {"id": 5, "region": "서울", "univ": "덕성여대", "type": "학생부교과", "y2027": "1. 수능최저학력기준 | 학생부교과(고교추천) | - 글로벌융합대학: 국,수,영,사/과(1) 중 2개 합 7(제2외국어 영으로 대체 가능) | - 약학대학: 국,수,영,사/과(1) 중 3개 합 5(수 포함) | (등급 합산 시 영/사 상위 1개 영역만 적용) | 2. 학생부 반영방법 | 학생부교과(고교추천) | 진로선택과목 국,수,영,사,과 전과목 반영", "y2026": "1. 수능최저학력기준 | 학생부교과(고교추천) | - 글로벌융합대학: 국,수,영,사/과(1) 중 2개 합 7 | - 약학대학: 국,수,영,과(1) 중 3개 합 5(수 포함) | 2. 학생부 반영방법 | 학생부교과(고교추천) | 진로선택과목 국,수,영,사,과중 3과목 반영", "isNew": false}, {"id": 5, "region": "서울", "univ": "덕성여대", "type": "논술", "y2027": "1. 수능최저학력기준 | 논술(논술) | - 글로벌융합대학: 국,수,영,사/과(1) 중 2개 합 7(제2외국어 영으로 대체 가능) | - 약학대학: 국,수,영,사/과(1) 중 3개 합 5(수 포함) | (등급 합산 시 영/사 상위 1개 영역만 적용)", "y2026": "1. 수능최저학력기준 | 논술(논술) | - 글로벌융합대학: 국,수,영,사/과(1) 중 2개 합 7 | - 약학대학: 국,수,영,과(1) 중 3개 합 5(수 포함)", "isNew": false}, {"id": 5, "region": "서울", "univ": "덕성여대", "type": "수능", "y2027": "1. 전형명 | 정시(수능우수Ⅰ) | 정시(수능우수Ⅱ): 수능90+교과10 | 2. 학생부 반영방법 | 3학년 2학기까지 반영 | 공통·일반선택과목 1~2등급:100, 3~4등급:98, 5~7등급:94, 8등급:80, 9등급:0 | 3. 수능반영방법 | - 약학과 이외: 국,수,영,사/과(1) 중 백분위 우수 영역 순 30,25,25,20 | - 수능(수능우수Ⅰ)/약학과: 국25,수30,영20,사/과(2)25 (과 2과목 반영 시 사/과 20% 가산점)", "y2026": "1. 전형명 | 정시(수능100%) | 3. 수능반영방법 | 약학과 이외: 국35,수20,영35,사/과(1)10 | - 수능(수능우수Ⅰ)/약학과: 국25,수30,영20,과25", "isNew": false}, {"id": 6, "region": "서울", "univ": "동국대", "type": "학생부종합", "y2027": "1. 전형방법 | 학생부종합(Do Dream) | 면접평가 요소 및 반영비율: 전공적합성30,전형취지적합성20,인성및사회성20,발전가능성30 | 1단계 배수: 융합환경과학과 3배수 / 이외 3.5배수", "y2026": "1. 전형방법 | 학생부종합(Do Dream) | 면접평가 요소 및 반영비율: 전공적합성30,전형취지적합성20,인성및사회성30,발전가능성20 | 1단계 배수: 융합환경과학과 3.5배수 / 이외 4배수", "isNew": false}, {"id": 6, "region": "서울", "univ": "동국대", "type": "수능", "y2027": "1. 전형방법 | 수능(다군-일반)/경영대학,사범대학,열린전공학부,바이오시스템대학: 수능90+학생부10 | 2. 학생부 반영방법 | 수능(다군-일반): 무전공(광역화) 학생부교과관련 영역 / 사범대학 학생부 전(全)영역", "y2026": "1. 전형방법 | 수능(일반)/경영대학,사범대학,열린전공학부,바이오시스템대학: 수능100", "isNew": false}, {"id": 7, "region": "서울", "univ": "동덕여대", "type": "학생부교과", "y2027": "1. 수능최저학력기준 | 학생부교과(학생부교과우수자)/약학 제외: 국,수,영,사/과(1) 중 2개 합 6 | 2. 학생부 반영방법 | 학생부교과(학생부교과우수자특별) | - 인문대학,사회과학대학,경영대학,큐레이터학전공,글로벌MICE융합전공: 국,수,영,사/과 전과목 | - 자연정보과학대학,HCI사이언스전공,데이터사이언스전공: 국,수,영,사/과 전과목 | - 커뮤니케이션콘텐츠전공,문화예술경영전공: 국,수,영,사/과 전과목", "y2026": "1. 수능최저학력기준 | 학생부교과(학생부교과우수자)/약학 제외: 국,수,영,사/과(1) 중 2개 합 7 | 2. 학생부 반영방법 | 학생부교과(학생부교과우수자특별) | - 인문대학,사회과학대학,경영대학,큐레이터학전공,글로벌MICE융합전공: 국,수,영,사 전과목 | - 자연정보과학대학,HCI사이언스전공,데이터사이언스전공: 국,수,영,과 전과목 | - 커뮤니케이션콘텐츠전공,문화예술경영전공: 국,영,수/사/과 전과목", "isNew": false}, {"id": 7, "region": "서울", "univ": "동덕여대", "type": "논술", "y2027": "1. 수능최저학력기준 | 논술(논술우수자)/약학 제외: 국,수,영,사/과(1) 중 2개 합 6", "y2026": "1. 수능최저학력기준 | 논술(논술우수자)/약학 제외: 국,수,영,사/과(1) 중 2개 합 7", "isNew": false}, {"id": 7, "region": "서울", "univ": "동덕여대", "type": "수능", "y2027": "1. 수능반영방법 | 수능(수능우수자) | - 커뮤니케이션콘텐츠전공,문화예술경영전공: 국,수 중 우수한 영역 순 35,25, 영20, 사/과(1)20 | - 앙트러프러너십전공: 국,수 중 우수한 영역 순 35,25, 영20, 사/과(1)20 | - 자연정보과학대학,자연정보융합학부: 가산점 폐지", "y2026": "1. 수능반영방법 | 수능(수능우수자) | - 커뮤니케이션콘텐츠전공,문화예술경영전공: 국/수33.3, 영33.3, 사/과(1)33.3 | - 앙트러프러너십전공: 국20,수20,영50,사/과(1)10 | - 자연정보과학대학,자연정보융합학부: 국/수 중 우수한 영역 수(미/기) 선택 백분위 5% 가산점", "isNew": false}, {"id": 8, "region": "서울", "univ": "삼육대", "type": "학생부교과", "y2027": "1. 학생부 반영방법 | 학생부교과(학교장추천)/약학과 이외 | 등급별 환산점수 1~2등급:100, 3~4등급:99, 5등급:98, 6~7등급:90, 8~9등급:70 | 진로선택과목 A=100, B=99, C=98", "y2026": "1. 학생부 반영방법 | 학생부교과(학교장추천)/약학과 이외 | 등급별 환산점수 1등급:100, 2등급:99, 3등급:98, 4등급:96.5, 5등급:95, 6등급:92, 8등급:60, 9등급:0 | 진로선택과목 A=100, B=99, C=96.5", "isNew": false}, {"id": 9, "region": "서울", "univ": "서강대", "type": "학생부종합", "y2027": "1. 전형명 | 학생부종합(일반Ⅰ,일반Ⅱ): 서류100 | (일반Ⅰ 학과모집, 일반Ⅱ 학부/자유전공모집)", "y2026": "1. 전형명 | 학생부종합(일반): 서류100", "isNew": false}, {"id": 10, "region": "서울", "univ": "서경대", "type": "학생부교과", "y2027": "1. 전형방법 | 학생부교과(교과우수)/아트앤테크놀로지학과: 교과100", "y2026": "1. 전형방법 | 학생부교과(교과우수)/아트앤테크놀로지학과: 교과60+실기40", "isNew": false}, {"id": 10, "region": "서울", "univ": "서경대", "type": "논술", "y2027": "1. 전형방법 | 논술(논술우수자): 논술100", "y2026": "1. 전형방법 | 논술(논술우수자): 논술90+교과10", "isNew": false}, {"id": 11, "region": "서울", "univ": "서울교대", "type": "학생부교과", "y2027": "1. 수능최저학력기준 | 학생부교과(학교장추천): 국,수,영,사/과(2) 중 2개 합 6, 한 4", "y2026": "1. 수능최저학력기준 | 학생부교과(학교장추천): 국,수,영,사/과(2) 4개 합 10", "isNew": false}, {"id": 11, "region": "서울", "univ": "서울교대", "type": "학생부종합", "y2027": "1. 수능최저학력기준 | 학생부종합(교직인성우수자): 국,수,영,사/과(2) 중 2개 합 6, 한 4", "y2026": "1. 수능최저학력기준 | 학생부종합(교직인성우수자): 국,수,영,사/과(2) 4개 합 10", "isNew": false}, {"id": 12, "region": "서울", "univ": "서울기독대", "type": "학생부교과", "y2027": "1. 전형방법 | - 학생부교과(일반)/사회복지학과: 학생부100 | - 학생부교과(SCU인재-교회추천자)/기독교신학과: 학생부80+면접20 | - 학생부교과(SCU인재-학교장추천자): 학생부100", "y2026": "1. 전형방법 | - 학생부교과(일반)/사회복지학과: 학생부80+면접20 | - 학생부교과(SCU인재-교회추천자)/기독교신학과: 학생부70+면접30 | - 학생부교과(SCU인재-학교장추천자): 학생부70+면접30", "isNew": false}, {"id": 12, "region": "서울", "univ": "서울기독대", "type": "수능", "y2027": "1. 전형방법 | 수능(일반)/기독교신학과,사회복지학과: 수능60+학생부40 | 정시(SCU인재-교회추천자)/기독교신학과: 학생부80+면접20 | 수능(SCU인재-학교장추천자)/글로벌휴먼경영: 수능60+학생부40", "y2026": "1. 전형방법 | 수능(일반)/기독교신학과,사회복지학과: 수능50+학생부30+면접20 | 정시(SCU인재-교회추천자)/기독교신학과: 학생부70+면접30 | 정시(SCU인재-학교장추천자)/글로벌휴먼경영: 학생부100", "isNew": false}, {"id": 13, "region": "서울", "univ": "서울대", "type": "학생부종합", "y2027": "1. 수능최저학력기준 | 학생부종합(일반)/체육교육과: 미적용", "y2026": "1. 수능최저학력기준 | 학생부종합(일반)/체육교육과: 국,수,영,사/과(2) 중 2개 합 6", "isNew": false}, {"id": 14, "region": "서울", "univ": "서울시립대", "type": "학생부교과", "y2027": "1. 전형방법 | 학생부교과(지역균형선발): 교과80+서류20", "y2026": "1. 전형방법 | 학생부교과(지역균형선발): 교과90+서류10", "isNew": false}, {"id": 14, "region": "서울", "univ": "서울시립대", "type": "수능", "y2027": "1. 수능반영방법 | 수능(일반) | - 환경원예학과,융합응용학과,교통공학과,조경학과: 국30,수40,영10,사/과(2)20 | - 스포츠과학과: 국40,수35,영25", "y2026": "1. 수능반영방법 | 수능(일반) | - 환경원예학과,융합응용학과,교통공학과,조경학과: 국30,수35,영10,사/과(2)25 | - 스포츠과학과: 국40,수30,영30", "isNew": false}, {"id": 15, "region": "서울", "univ": "성균관대", "type": "학생부교과", "y2027": "1. 전형명 | 학생부교과(추천인재) | 2. 수능최저학력기준 | 학생부교과(추천인재) | - 인문과학계열,사회과학계열,경영학과,사범대학,영상학과,의상학과,자연과학계열,공학계열,건설환경공학부,건축학과(5년제): 국,수,영,사/과(2) 중 3개 합 7 | - 글로벌리더학부,글로벌경제학부,글로벌경영학과,자유전공계열,전자전기공학부,소프트웨어학과,반도체융합공학과,에너지학과,글로벌바이오메디컬공학과: 국,수,영,사/과(2) 중 3개 합 6 | - 의예과: 국,수,영,사/과(2) 4개 합 5", "y2026": "1. 전형명 | 학생부교과(학교장추천) | 2. 수능최저학력기준 | - 인문/사회/경영/사범/영상/의상/자연/공학/건설환경/건축(5년제): 국,수,영,사/과,사/과 중 3개 합 7 | - 글로벌리더학부,글로벌경제학부,글로벌경영학과,자유전공계열,전자전기공학부,소프트웨어학과,반도체융합공학과,에너지학과,글로벌바이오메디컬공학과: 국,수,영,사/과,사/과 중 3개 합 6 | - 의예과: 국,수,영,사/과(2) 중 3개 합 4", "isNew": false}, {"id": 15, "region": "서울", "univ": "성균관대", "type": "학생부종합", "y2027": "1. 전형명 | 학생부종합(융합인재) | 학생부종합(탐구인재) | 2. 전형방법 | 학생부종합(성균인재) | 글로벌융합학부 1단계 7배수 / 의예과 1단계 4배수 / 자유전공계열 1단계 7배수 | 3. 수능최저학력기준 | 학생부종합(융합인재): 국,수,영,사/과(2) 중 3개 합 6", "y2026": "1. 전형명 | 학생부종합(융합형) | 학생부종합(탐구형) | 2. 전형방법 | 학생부종합(성균인재) | 글로벌융합학부 1단계 5배수 / 의예과 1단계 6배수 / 자유전공계열 1단계 5배수 | 3. 수능최저학력기준 | 학생부종합(융합형): 미적용", "isNew": false}, {"id": 15, "region": "서울", "univ": "성균관대", "type": "논술", "y2027": "1. 수능최저학력기준 | 논술(논술우수) | - 글로벌융합학부,인문과학계열,사회과학계열,경영학과,자연과학계열,공학계열,건설환경공학부: 국,수,영,사/과(2) 중 3개 합 6 | - 글로벌리더학부,글로벌경제학부,글로벌경영학과,자유전공계열,전자전기공학부,반도체시스템공학과,소프트웨어학과,글로벌바이오메디컬공학과,지능형소프트웨어학과,약학과,반도체융합공학과,에너지학과: 국,수,영,사/과(2) 중 3개 합 5", "y2026": "1. 수능최저학력기준 | 논술(논술우수) | - 글로벌융합/인문/사회/경영/자연/공학/건설환경: 국,수,영,사/과,사/과 중 3개 합 6 | - 글로벌리더학부,글로벌경제학부,글로벌경영학과,자유전공계열,전자전기공학부,반도체시스템공학과,소프트웨어학과,글로벌바이오메디컬공학과,지능형소프트웨어학과,약학과,반도체융합공학과,에너지학과: 국,수,영,사/과,사/과 중 3개 합 5", "isNew": false}, {"id": 15, "region": "서울", "univ": "성균관대", "type": "수능", "y2027": "1. 전형명 신설 | 정시(학생부위주)/사범대학: 학생부100(정성평가) | 2. 수능최저학력기준 | 정시(학생부위주)/사범대학: 국,수,영,사/과(2) 중 3개 합 6 | 3. 수능반영방법 | 수능(일반) | - 자유전공계열,사회과학계열: 국,수 우수한 영역 순 45,35 / 사/과(2)10 / 영10 | - 글로벌경제학부,건설환경공학부,반도체융합공학과: 국,수 우수한 영역 순 45,35 / 사/과(2)10 / 영10 | - 의상학과,자연과학계열,반도체시스템공학과,약학과,글로벌융합학부: 국15 / 수,사/과(2) 우수한 영역 순 40,30 / 영15 | - 경영학과,영상학과,공학계열,소프트웨어학과: 국,수 우수한 영역 순 45,30 / 사/과(2)15 / 영10 | - 인문과학계열,글로벌리더학부,전자전기공학부,지능형소프트웨어학과: 국,수 우수한 영역 순 35,30 / 사/과(2)15 / 영20 | - 글로벌경영학과,배터리학과,글로벌바이오메디컬공학과,에너지학과,양자정보공학과: 국,수 우수한 영역 순 35,30 / 사/과(2)25 / 영10 | - 의예: 국30/수30/사/과(2)20/영20 | - 미술학과/디자인학과: 국45/과45/영10 | - 스포츠과학과: 국35/수25/사/과(1)30/영10 | 한국사 감산", "y2026": "3. 수능반영방법 | 수능(일반) | - 사회과학계열,글로벌경제학부,경영학과,영상학과,인문과학계열,글로벌리더학부,글로벌경영학부 ※유형A·B 중 상위 반영: 유형A 국40/수30/사/과(2)20/영10, 유형B 국30/수40/사/과(2)20/영10 | - 자유전공계열,자연과학계열,반도체시스템공학과,약학과,의예과,공학계열,소프트웨어학과,전자전기공학부,지능형소프트웨어학과,건설환경공학부,반도체융합공학과,배터리학과,글로벌바이오메디컬공학과,에너지학과,양자정보공학과 ※유형A·B 중 상위 반영: 유형A 국20/수40/사/과(2)30/영10, 유형B 국30/수40/사/과(2)20/영10", "isNew": false}, {"id": 16, "region": "서울", "univ": "성신여대", "type": "학생부교과", "y2027": "1. 학생부 반영방법 | 학생부교과(지역균형) | 진로선택과목 4과목 반영 | 인문: 국,수,영,사 전과목 | 자연: 국,수,영,과 전과목 | 창의융합학부(자유전공): 국,수,영,사/과 전과목 | 창의융합학부(예체능전공): 국,영,수/사 전과목", "y2026": "1. 학생부 반영방법 | 학생부교과(지역균형) | 진로선택과목 3과목 반영 | 인문: 국,수,영,사 전과목 | 자연: 국,수,영,과 전과목 | 창의융합학부(자유전공): 국,수,영,사/과 전과목 | 창의융합학부(예체능전공): 국,영,수/사 전과목", "isNew": false}, {"id": 17, "region": "서울", "univ": "세종대", "type": "학생부종합", "y2027": "1. 전형명 | 학생부종합(세종인재(서류형)) | 학생부종합(세종인재(면접형)) | 2. 전형방법 | 학생부종합(세종인재(면접형)): 전 모집단위 1단계 3배수 선발", "y2026": "1. 전형명 | 학생부종합(세종창의인재(서류형)) | 학생부종합(세종창의인재(면접형)) | 2. 전형방법 | 학생부종합(세종창의인재(면접형)) | 1단계 3배수: 국제학부,경영학부,호텔관광외식경영학부,생명시스템학부,전자정보통신공학과,컴퓨터공학과,AI로봇학과,인공지능데이터사이언스학과,창의소프트학부 / 1단계 4배수: 그 외 모집단위", "isNew": false}, {"id": 17, "region": "서울", "univ": "세종대", "type": "논술", "y2027": "1. 전형방법 | 논술(논술우수자): 논술80+교과20", "y2026": "1. 전형방법 | 논술(논술우수자): 논술70+교과30", "isNew": false}, {"id": 17, "region": "서울", "univ": "세종대", "type": "수능", "y2027": "1. 전형방법 | 수능(일반학생)/음악과: 수능50+서류30+교과20 | 2. 수능반영방법 | 수능(일반학생)/체육학과: 국50,영50", "y2026": "1. 전형방법 | 수능(일반학생)/음악과: 수능50+실기30+교과20 | 2. 수능반영방법 | 수능(일반학생)/체육학과: 국70,영30", "isNew": false}, {"id": 18, "region": "서울", "univ": "숙명여대", "type": "학생부교과", "y2027": "1. 전형방법 | 학생부교과(지역균형): 교과70+서류30 | 2. 수능최저학력기준 | 학생부교과(지역균형): 미적용", "y2026": "1. 전형방법 | 학생부교과(지역균형): 교과100 | 2. 수능최저학력기준 | 학생부교과(지역균형): 국,수,영,사/과(1) 중 2개 합 6", "isNew": false}, {"id": 18, "region": "서울", "univ": "숙명여대", "type": "학생부종합", "y2027": "1. 전형방법 | 학생부종합(숙명인재(면접형),소프트웨어인재) | 1단계(4배수): 서류100 | 2단계: 1단계70+면접30", "y2026": "1. 전형방법 | 학생부종합(숙명인재(면접형),소프트웨어인재) | 1단계(3배수): 서류100 | 2단계: 1단계60+면접40", "isNew": false}, {"id": 19, "region": "서울", "univ": "숭실대", "type": "학생부교과", "y2027": "1. 전형명 | 학생부교과(교과우수자) | 2. 수능최저학력기준 | /자연계열,자유전공학부(자연): 국,수,영,사/과(1) 중 2개 합 6 | 3. 학생부 반영방법 | - 자유전공학부(인문): 국,수,영,사,한 전과목 / 가중치 국30,수20,영30,사20 | - 자유전공학부(자연): 국,수,영,과 전과목 / 가중치 국15,수35,영25,과25", "y2026": "1. 전형명 | 학생부교과(학생부우수자) | 2. 수능최저학력기준 | /자연계열,자유전공학부(자연): 국,수(미/기),영,과(1) 중 2개 합 6 | 3. 학생부 반영방법 | - 융합특성화자유전공학부: 국,수,영,사,과,한 전과목 / 가중치 국15,수35,영25,사/과25", "isNew": false}, {"id": 19, "region": "서울", "univ": "숭실대", "type": "학생부종합", "y2027": "1. 전형명 | 학생부종합(SSU미래인재(면접형)) | 학생부종합(SSU미래인재(서류형)): 서류100 | 2. 전형방법 | (면접형) 1단계 3~3.5배수 선발", "y2026": "1. 전형명 | 학생부종합(SSU미래인재) | 2. 전형방법 | 1단계 3배수 선발", "isNew": false}, {"id": 19, "region": "서울", "univ": "숭실대", "type": "논술", "y2027": "1. 전형방법 | 논술(논술우수자): 논술90+교과10 | 2. 수능최저학력기준 | 국,수,영,사/과(1) 중 2개 합 6", "y2026": "1. 전형방법 | 논술(논술우수자): 논술80+교과20 | 2. 수능최저학력기준 | 국,수,영,사/과(1) 중 2개 합 5", "isNew": false}, {"id": 19, "region": "서울", "univ": "숭실대", "type": "수능", "y2027": "1. 수능반영방법 | 수능(일반) | - 인문계열: 사탐 응시자 백분위 각 3% 가산 / 영어 등급별 200/200/197/193/160/144/120/72/0 | - 자유전공학부(인문): 국30,수30,영15,사/과(2)25 (사탐 3% 가산) | - 경상계열: 국25,수35,영15,사/과(2)25 (사탐 3% 가산) | - 자연1·자연2계열: 국20,수35,영15,사/과(2)30 (과탐 3% 가산) | - 자유전공학부(자연): 국20,수35,영15,사/과(2)30 (수(미/기) 표준점수 5% 가산)", "y2026": "1. 수능반영방법 | 수능(일반) | - 인문계열: 사탐 2.5% 가산 / 영어 200/194/186/173/140/116/87/44/0 | - 융합특성화자유전공학부: 국20,수35,영20,사/과(2)25 | - 경상계열: 국25,수30,영20,사/과(2)25 (사탐 2.5% 가산) | - 자연1·자연2계열: 국20,수35,영20,사/과(2)25 (과탐 2.5% 가산)", "isNew": false}, {"id": 20, "region": "서울", "univ": "연세대(서울)", "type": "학생부교과", "y2027": "1. 수능최저학력기준 | 학생부교과(추천형)/응용통계학과(통합 선발, 인문 또는 자연 최저 요구) | 인문: 국,수,사/과(2) 중 2개 합 4(국/수 포함), 영3, 한4 | 자연: 국,수(미/기),과(2) 중 2개 합 5(수 포함), 영3, 한4", "y2026": "1. 수능최저학력기준 | 학생부교과(추천형)/응용통계학과(통합 선발) | 국,수,사/과(2) 중 2개 합 4(국/수 포함), 영3, 한4", "isNew": false}, {"id": 20, "region": "서울", "univ": "연세대(서울)", "type": "학생부종합", "y2027": "1. 전형명 | 학생부종합(국제인재) | 2. 전형방법 | 학생부종합(국제형(국내고)): 1단계 5배수 선발", "y2026": "1. 전형명 | 실기/실적(특기자(국제인재)) | 2. 전형방법 | 학생부종합(국제형(국내고)): 1단계 4배수 선발", "isNew": false}, {"id": 20, "region": "서울", "univ": "연세대(서울)", "type": "수능", "y2027": "1. 수능반영방법 | 수능(일반)/상경대학(경영학부,응용통계학과): 유형Ⅲ 적용 국200,수200,영100,사/과(2)100", "y2026": "1. 수능반영방법 | 수능(일반)/상경대학(경영학부,응용통계학과): 유형Ⅰ 적용 국300,수200,영100,사/과(2)200", "isNew": false}, {"id": 21, "region": "서울", "univ": "중앙대(서울)", "type": "학생부종합", "y2027": "1. 전형명 | 학생부종합(융합형인재) | 학생부종합(탐구형인재) | 학생부종합(성장형인재) | 2. 전형방법 | (성장형인재) 1단계(5배수): 서류100 / 2단계: 1단계70+면접30 | (탐구형인재) 영어영문학과·유럽문화학부(독일어·러시아어문학)·경제학부·경영학부(경영학) 1단계 3.5배수 / 융합공학부 1단계 5배수 / 국어국문학과·유럽문화학부(프랑스어문학)·아시아문화학부(일본·중국어문학)·광고홍보학과·국제물류학과·산업보안학과(인문)·경영학부(글로벌금융)·약학부·의학부·간호학과 1단계 3.5배수 / 정치국제학과·심리학과·사회복지학부·도시계획부동산학과·공공인재학부·미디어커뮤니케이션학부·화학과·생명과학과·사회기반시스템공학부(건설환경플랜트공학) 1단계 4배수 | 3. 수능최저학력기준(성장형인재) | 전 모집단위: 국,수,영,사/과(1) 중 3개 합 6, 한 4 | 약학부: 국,수,영,사/과(1) 중 4개 합 5, 한 4 | 의학부: 국,수,영,과(2) 4개 합 5, 한 4(탐구 2과목 평균)", "y2026": "1. 전형명 | 학생부종합(CAU융합형인재) | 학생부종합(CAU탐구형인재) | 학생부종합(성장형인재) | 2. 전형방법 | (탐구형인재) 영어영문학과·유럽문화학부(독일어·러시아어문학)·경제학부·경영학부(경영학) 1단계 4배수 / 융합공학부 1단계 4배수 / 국어국문학과·유럽문화학부(프랑스어문학)·아시아문화학부(일본·중국어문학)·광고홍보학과·국제물류학과·산업보안학과(인문)·경영학부(글로벌금융)·약학부·의학부·간호학과 1단계 5배수 / 정치국제학과·심리학과·사회복지학부·도시계획부동산학과·공공인재학부·미디어커뮤니케이션학부·화학과·생명과학과·사회기반시스템공학부(건설환경플랜트공학) 1단계 5배수", "isNew": false}, {"id": 21, "region": "서울", "univ": "중앙대(서울)", "type": "논술", "y2027": "1. 전형명 | 논술(일반형) - 최저 있음 | 논술(창의형) - 최저 없음 | 논술70+교과20+출결10 | 2. 수능최저학력기준 | 논술(일반형) | 전 모집단위: 국,수,영,사/과(1) 중 3개 합 6, 한 4 | 약학부: 국,수,영,사/과(1) 중 4개 합 5, 한 4 | 의학부: 국,수,영,과(2) 4개 합 5, 한 4(탐구 2과목 평균)", "y2026": "1. 전형명 | 논술(논술) - 최저 있음 | 논술70+교과20+출결10", "isNew": false}, {"id": 21, "region": "서울", "univ": "중앙대(서울)", "type": "수능", "y2027": "1. 전형방법 | 수능(일반): 수능90+출결10", "y2026": "1. 전형방법 | 수능(일반): 수능100", "isNew": false}, {"id": 22, "region": "서울", "univ": "추계예술대", "type": "학생부교과", "y2027": "1. 전형방법 | 학생부교과(미래인재) | 1단계(3배수): 교과100 | 2단계: 1단계40+면접60", "y2026": "1. 전형방법 | 학생부교과(미래인재): 교과100", "isNew": false}, {"id": 23, "region": "서울", "univ": "한국외대", "type": "학생부교과", "y2027": "1. 수능최저학력기준 | 학생부교과(학교장추천) | - 서울캠: 국,수,영,사/과(1) 중 2개 합 4 | - 글로벌캠: 국,수,영,사/과(1) 중 2개 합 6", "y2026": "1. 수능최저학력기준 | 학생부교과(학교장추천) | - 서울캠: 국,수,영,사/과(1) 중 2개 합 4, 한 4 | - 글로벌캠: 국,수,영,사/과(1) 중 1개 3, 한 4", "isNew": false}, {"id": 23, "region": "서울", "univ": "한국외대", "type": "논술", "y2027": "1. 수능최저학력기준 | 논술(논술) | - 서울캠: 국,수,영,사/과(1) 중 2개 합 4 | - 글로벌캠: 국,수,영,사/과(1) 중 2개 합 6", "y2026": "1. 수능최저학력기준 | 논술(논술) | - 서울캠(LD·LT학부 이외): 국,수,영,사/과(1) 중 2개 합 4, 한 4 | - LD·LT학부: 국,수,영,사/과(1) 중 2개 합 3, 한 4 | - 글로벌캠: 국,수,영,사/과(1) 중 1개 3, 한 4", "isNew": false}, {"id": 23, "region": "서울", "univ": "한국외대", "type": "수능", "y2027": "1. 수능반영방법 | 수능(일반) | 영어 등급별 환산점수(1~9등급) | - 반영비율 20% 모집단위: 200/198/194/188/180/170/150/120/0 | - 반영비율 15% 모집단위: 150/148.5/145.5/141/135/127.5/112.5/90/0 | 한국사 환산점수 1~3등급:0, 4등급:0.2, 5등급:0.4, 6등급:0.6, 7등급:0.8, 8등급:1, 9등급:2", "y2026": "1. 수능반영방법 | 수능(일반) | 영어 등급별 환산점수(1~9등급) | - 반영비율 20% 모집단위: 140/138/134/128/120/110/90/60/0 | - 반영비율 15% 모집단위: 인문 105/103.5/100.5/96/90/82.5/67.5/45/0, 자연 105/104.5/103.5/102/100/97.5/94.5/90/0 | 한국사 환산점수 인문 1~3등급:10, 4등급:9.8, 5등급:9.6, 6등급:9.4, 7등급:9.2, 8등급:9.0, 9등급:8.0 / 자연 1~4등급:10, 5등급:9.8, 6등급:9.6, 7등급:9.4, 8등급:9.2, 9등급:9.0", "isNew": false}, {"id": 24, "region": "서울", "univ": "한국체대", "type": "학생부교과", "y2027": "1. 전형방법 | 학생부교과(교과성적우수자) | - 사회체육학과: 학생부100 | - 스포츠청소년지도학과: 1단계(5배수) 학생부100 / 2단계 1단계85+실기15 | 2. 수능최저학력기준 | - 사회체육학과: 국,수,영,사/과(1) 중 2개 합 6, 각 4 | - 노인체육복지학과: 국,수,영,사/과(1) 중 3개 합 10", "y2026": "1. 전형방법 | 학생부교과(교과성적우수자) | - 사회체육학과: 1단계(5배수) 학생부100 / 2단계 1단계60+실기40 | - 스포츠청소년지도학과: 1단계(5배수) 학생부100 / 2단계 1단계80+실기20 | 2. 수능최저학력기준 | - 사회체육학과: 국,수,영,사/과(1) 중 2개 합 7 | - 노인체육복지학과: 국,수,영,사/과(1) 중 3개 각 4", "isNew": false}, {"id": 24, "region": "서울", "univ": "한국체대", "type": "수능", "y2027": "1. 전형방법 | 수능(일반학생) | - 사회체육학과: 학생부10+수능65+실기25 | - 스포츠청소년지도학과: 학생부20+수능65+실기15 | - 운동건강관리학과: 학생부10+수능70+실기20 | - 노인체육복지학과: 학생부20+수능60+실기20 | - 공연예술학과: 학생부20+수능50+실기30 | 수능(수능성적우수자)/노인체육복지학과: 수능100", "y2026": "1. 전형방법 | 수능(일반학생) | - 사회체육학과: 수능60+실기40 | - 스포츠청소년지도학과: 학생부30+수능45+실기25 | - 운동건강관리학과: 학생부25+수능55+실기20 | - 노인체육복지학과: 학생부30+수능45+실기25 | - 공연예술학과: 학생부30+수능30+실기40 | 수능(수능성적우수자)/노인체육복지학과: 미선발", "isNew": false}, {"id": 25, "region": "서울", "univ": "한성대", "type": "학생부교과", "y2027": "1. 학생부 반영방법 | 학생부교과(교과우수,지역균형) | 진로선택과목 성취도별 누적비율 산출 A:1등급, B:누적비율(B비율+C비율), C:누적비율(C비율) | 변환등급 100≥누적비율>89:1등급, 89≥누적비율>60:2등급, 60≥누적비율>0:4등급", "y2026": "1. 학생부 반영방법 | 학생부교과(교과우수,지역균형) | A:1등급, B:2등급, C:4등급", "isNew": false}, {"id": 25, "region": "서울", "univ": "한성대", "type": "수능", "y2027": "1. 수능반영방법 | 수능(수능)/ICT디자인학부(야) 이외: 국,수,사/과(1) 중 점수 높은 2개 영역만 각 40+영20", "y2026": "1. 수능반영방법 | 수능(수능): 야간 모집단위별 상이", "isNew": false}, {"id": 26, "region": "서울", "univ": "한양대", "type": "논술", "y2027": "1. 전형방법 | 논술(논술): 논술100", "y2026": "1. 전형방법 | 논술(논술): 논술90+학생부종합평가10", "isNew": false}, {"id": 27, "region": "서울", "univ": "홍익대", "type": "학생부교과", "y2027": "1. 수능최저학력기준 | 학생부교과(학교장추천자): 국,수,영,사/과(1) 중 2개 합 5, 한 4", "y2026": "1. 수능최저학력기준 | 학생부교과(학교장추천자): 국,수,영,사/과(1) 중 3개 합 8, 한 4", "isNew": false}, {"id": 27, "region": "서울", "univ": "홍익대", "type": "학생부종합", "y2027": "1. 수능최저학력기준 | 학생부종합(학교생활우수자): 국,수,영,사/과(1) 중 2개 합 5, 한 4", "y2026": "1. 수능최저학력기준 | 학생부종합(학교생활우수자): 국,수,영,사/과(1) 중 3개 합 8, 한 4", "isNew": false}, {"id": 27, "region": "서울", "univ": "홍익대", "type": "논술", "y2027": "1. 수능최저학력기준 | 논술(논술): 국,수,영,사/과(1) 중 2개 합 5, 한 4", "y2026": "1. 수능최저학력기준 | 논술(논술): 국,수,영,사/과(1) 중 3개 합 8, 한 4", "isNew": false}, {"id": 28, "region": "인천", "univ": "인천가톨릭대", "type": "학생부교과", "y2027": "1. 전형방법 | 학생부교과(ICCU미래인재)/자유전공: 1단계(4배수) 교과100 / 2단계 교과80+면접20 | 학생부교과(대건안드레아): 교과60+면접40(신체검사 결과 미포함) | 2. 학생부 반영방법 | (ICCU미래인재)/자유전공: 국,수,영,사,과,한 중 1·2·3학년 각 6과목 반영", "y2026": "1. 전형방법 | 학생부교과(ICCU미래인재)/자유전공: 교과100 | 학생부교과(대건안드레아): 1단계(3배수) 교과100 / 2단계 교과60+면접40(신체검사 결과 포함) | 2. 학생부 반영방법 | (ICCU미래인재)/자유전공: 국,영+수/과/사/한 중 3개 교과 중 1·2·3학년 각 5과목 반영", "isNew": false}, {"id": 29, "region": "인천", "univ": "인천대", "type": "학생부교과", "y2027": "1. 수능최저학력기준 | 학생부교과(교과성적우수자): 한국사 제외 최소 2개 이상의 영역에 응시", "y2026": "1. 수능최저학력기준 | 학생부교과(교과성적우수자): 충족 여부와 관계없이 수능 4개 영역 모두 응시", "isNew": false}, {"id": 29, "region": "인천", "univ": "인천대", "type": "수능", "y2027": "1. 전형방법 | 수능(일반학생)/스포츠과학부: 수능62.5+실기37.5", "y2026": "1. 전형방법 | 수능(일반학생)/스포츠과학부: 수능40+실기60", "isNew": false}, {"id": 30, "region": "인천", "univ": "인하대", "type": "학생부교과", "y2027": "1. 수능최저학력기준 | 학생부교과(지역균형)/전 모집단위: 수능 필수 응시영역 없음(한국사 필수)", "y2026": "1. 수능최저학력기준 | 학생부교과(지역균형)/전 모집단위: 수능 필수 응시영역 국,수,영,사/과(2),한 (의예과 과(2) 필수)", "isNew": false}, {"id": 30, "region": "인천", "univ": "인하대", "type": "논술", "y2027": "1. 전형방법 | 논술(논술우수자): 논술80+교과20 | 2. 수능최저학력기준 | 수능 필수 응시영역 없음(한국사 필수)", "y2026": "1. 전형방법 | 논술(논술우수자): 논술70+교과30 | 2. 수능최저학력기준 | 수능 필수 응시영역 국,수,영,과(2),한", "isNew": false}, {"id": 30, "region": "인천", "univ": "인하대", "type": "수능", "y2027": "1. 수능반영방법 | 수능(일반)/디자인테크놀로지학과: 국40,영40,사/과(2)20", "y2026": "1. 수능반영방법 | 수능(일반)/디자인테크놀로지학과: 국40,영40,수/사/과(2)20", "isNew": false}, {"id": 31, "region": "경기", "univ": "가천대", "type": "학생부교과", "y2027": "1. 학생부 반영방법 | 학생부교과(학생부우수자)/의약한 외: 2가지 유형 중 유리한 방법 적용(① 계열별 반영교과 등급별 변환등급 ② 우수한 10과목) | 학생부교과(지역균형) 1단계 변환등급표 | 일반선택 1~5등급:A, 6~7등급:B, 8~9등급:E | 진로선택 70점 이상:A, 50~70점 미만:B, 50점 미만:E | 배점 A:100, B:99.5, E:70", "y2026": "1. 학생부 반영방법 | 학생부교과(학생부우수자)/의약한 외: 계열별 반영교과 공통·일반선택 등급별 변환등급 | 학생부교과(지역균형) 1단계 변환등급표 | 일반선택 1~4등급:A, 5~7등급:B, 8~9등급:E | 진로선택 80점 이상:A, 60~80점 미만:B, 60점 미만:E | 배점 A:100, B:99.5, E:70", "isNew": false}, {"id": 31, "region": "경기", "univ": "가천대", "type": "학생부종합", "y2027": "1. 수능최저학력기준 | 한의예과: 국,수(미/기),영,과(2) 중 2개 각 1 | 약학과: 국,수(미/기),영,과(2) 중 3개 합 5", "y2026": "1. 수능최저학력기준 | 한의예과·약학과: 미선발", "isNew": false}, {"id": 31, "region": "경기", "univ": "가천대", "type": "수능", "y2027": "1. 수능반영방법 | 수능(일반1)/의약 제외: 국,수 중 우수한 영역 순 40,30 + 영,사/과(1) 중 우수한 영역 순 20,10 | 수능(일반2): 국,수 중 우수한 영역 순 40,30 + 영,사/과(1) 중 우수한 영역 순 20,10 | 활용지표: 등급", "y2026": "1. 수능반영방법 | 수능(일반1)/의약 제외: 국,수,영 중 우수한 영역 순 35,25,20 + 사/과(1)20 | 수능(일반2): 국,수,영,사/과(1) 중 우수한 영역 순 50,30,20 | 활용지표: 국·수 표준점수, 영 변환표준점수, 사/과 우수영역 표준점수×2", "isNew": false}, {"id": 32, "region": "경기", "univ": "가톨릭대", "type": "학생부교과", "y2027": "1. 학생부 반영방법 | 학생부교과(지역균형) 진로선택 A:1등급, B:2등급, C:4등급 | /자유전공학부,인문사회계열,자연공학계열: 국,수,영,사/과(1) 중 2개 합 6", "y2026": "1. 학생부 반영방법 | 학생부교과(지역균형) 진로선택 A:1등급, B:3등급, C:5등급 | /자유전공학부,인문사회계열,자연공학계열: 국,수,영,사/과(1) 중 2개 합 7", "isNew": false}, {"id": 32, "region": "경기", "univ": "가톨릭대", "type": "학생부종합", "y2027": "1. 학생부 반영방법 | 학생부종합 서류평가요소 및 반영비율: 학업역량40, 진로역량35, 공동체역량25", "y2026": "1. 학생부 반영방법 | 학생부종합 서류평가요소 및 반영비율: 학업역량40, 진로역량40, 공동체역량20", "isNew": false}, {"id": 32, "region": "경기", "univ": "가톨릭대", "type": "논술", "y2027": "1. 전형방법 | 논술(논술): 논술100", "y2026": "1. 전형방법 | 논술(논술): 논술80+교과20", "isNew": false}, {"id": 32, "region": "경기", "univ": "가톨릭대", "type": "수능", "y2027": "1. 전형명 | 수능(일반전형Ⅲ) | 2. 수능반영방법 | 수능(일반전형Ⅰ)/약학,간호 제외: 국,수 중 우수한 영역 순 35,25 + 영20,사/과(2)20 | 수능(일반전형Ⅱ)/자유전공학부,인문사회계열,자연공학계열: 활용지표 백분위, 국/수40,영30,사/과(2)30 | 영어 환산점수 100/98/95/85/70/50/30/10/0", "y2026": "1. 전형명 | 수능(일반전형 의예과) | 2. 수능반영방법 | 수능(일반전형Ⅰ)/약학,간호 제외: 국30,수30,영20,사/과(2)20 | 수능(일반전형Ⅱ)/자유전공학부,인문사회계열,자연공학계열: 활용지표 백분위, 국/수50,영 등급별 감점,사/과(2)50 | 영어 환산점수 100/97.5/95/92.5/90/87.5/85/80/70(적용 전형 상이)", "isNew": false}, {"id": 33, "region": "경기", "univ": "경기대", "type": "수능", "y2027": "1. 전형명 | 수능(일반학생Ⅰ) | 수능(일반학생Ⅱ) | 2. 전형방법 | 수능(일반학생Ⅱ): 수능95+교과5(출결 감점) | 교과 1~2등급:5, 3~4등급:4.95, 5~6등급:4.9, 7~8등급:4.75, 9등급:0 / 진로선택 A~B:5, C:4.95 | 출결 감점 6일 이하:0, 7~12일:0.05, 13~18일:0.1, 19~24일:0.25, 30일 이상:0.5 | 영어 등급별 100/100/96/92/80/70/60/50/0", "y2026": "1. 전형명 | 수능(일반학생) | 2. 전형방법 | 수능(일반학생): 수능100 | 영어 등급별 100/98/94/86/70/50/30/10/0", "isNew": false}, {"id": 34, "region": "경기", "univ": "단국대(죽전)", "type": "학생부교과", "y2027": "1. 전형방법 | 학생부교과(지역균형선발)/체교 제외: 교과95+출결5", "y2026": "1. 전형방법 | 학생부교과(지역균형선발)/체교 제외: 교과100", "isNew": false}, {"id": 34, "region": "경기", "univ": "단국대(죽전)", "type": "학생부종합", "y2027": "1. 전형방법 | 학생부종합(DKU인재(서류형))/광역모집단위: 학업역량,성장역량,공동체역량 종합평가", "y2026": "1. 전형방법 | 학생부종합(DKU인재(서류형))/광역모집단위: 학업역량,진로역량,공동체역량 종합평가", "isNew": false}, {"id": 34, "region": "경기", "univ": "단국대(죽전)", "type": "논술", "y2027": "1. 전형방법 | 논술(논술우수자): 논술90+교과10", "y2026": "1. 전형방법 | 논술(논술우수자): 논술80+교과20", "isNew": false}, {"id": 34, "region": "경기", "univ": "단국대(죽전)", "type": "수능", "y2027": "1. 수능반영방법 | 수능위주(일반학생)/공학계열광역,공과대학(건축학전공 외): 국20,수35,영20,사/과(2)25", "y2026": "1. 수능반영방법 | 수능위주(일반학생)/공학계열광역,공과대학(건축학전공 외): 국20,수35,영15,사/과(2)30", "isNew": false}, {"id": 35, "region": "경기", "univ": "대진대", "type": "학생부교과", "y2027": "1. 학생부 반영방법 | 학생부교과: 국,수,영,사,과 중 18과목(진로선택 최대 8과목 반영)", "y2026": "1. 학생부 반영방법 | 학생부교과: 국,영,수,사,과 중 15과목(진로선택 최대 5과목 반영)", "isNew": false}, {"id": 36, "region": "경기", "univ": "루터대", "type": "학생부교과", "y2027": "1. 학생부 반영방법 | 학생부교과: 국,수,영,사,과,한 중 6과목(진로선택 미반영)", "y2026": "1. 학생부 반영방법 | 학생부교과: 공통·일반선택 국,수,영,사,과,한 중 4과목 + 진로선택 국,수,영,사,과,한 중 2과목", "isNew": false}, {"id": 37, "region": "경기", "univ": "명지대", "type": "수능", "y2027": "1. 수능반영방법 | 수능(일반) 한국사 가산점: 1등급:3.0, 2등급:2.8, 3등급:2.6, 4등급:2.4, 5등급:2.2, 6등급:2.0, 7등급:1.8, 8등급:1.6, 9등급:1.4", "y2026": "1. 수능반영방법 | 수능(일반) 한국사 가산점: 1~6등급:3, 7~9등급:2", "isNew": false}, {"id": 38, "region": "경기", "univ": "성결대", "type": "학생부교과", "y2027": "1. 전형명 | 학생부교과(SKU창의) | 2. 학생부 반영방법 | 국,수,영,사,과,한 중 상위 12과목(진로 2과목 포함) A:1등급, B:3등급, C:5등급", "y2026": "1. 전형명 | 학생부교과(SKU창의적인재) | 2. 학생부 반영방법 | 국,수,영,사,과,한 중 상위 12과목(진로선택 미반영)", "isNew": false}, {"id": 38, "region": "경기", "univ": "성결대", "type": "학생부종합", "y2027": "1. 전형명 | 학생부종합(영암인재)", "y2026": "1. 전형명 | 학생부종합(영암학생부종합)", "isNew": false}, {"id": 38, "region": "경기", "univ": "성결대", "type": "수능", "y2027": "1. 수능반영방법 | 수능(일반): 한국사 필수 응시", "y2026": "1. 수능반영방법 | 수능(일반): 한국사 가산점 1~5등급:100, 6등급:98, 7등급:96, 8등급:94, 9등급:92", "isNew": false}, {"id": 39, "region": "경기", "univ": "신한대", "type": "학생부교과", "y2027": "1. 학생부 반영방법 | 학생부교과: 국,수,영,사,과,한 중 10과목(진로선택 최대 2과목 반영)", "y2026": "1. 학생부 반영방법 | 학생부교과: 국,수,영,사,과,한 중 10과목(진로선택 최대 1과목 반영)", "isNew": false}, {"id": 39, "region": "경기", "univ": "신한대", "type": "논술", "y2027": "1. 학생부 반영방법 | 논술(논술): 국,수,영,사,과,한 중 10과목(진로선택 최대 2과목 반영)", "y2026": "1. 학생부 반영방법 | 논술: 국,수,영,사,과,한 중 10과목(진로선택 최대 1과목 반영)", "isNew": false}, {"id": 39, "region": "경기", "univ": "신한대", "type": "수능", "y2027": "1. 수능반영방법 | 수능(일반Ⅱ): 국,수,영,탐(1),한 중 우수한 영역 순 55,30,15 반영", "y2026": "1. 수능반영방법 | 수능(일반Ⅱ): 국,수,영,탐(1),한 중 우수한 영역 순 50,35,15 반영", "isNew": false}, {"id": 40, "region": "경기", "univ": "안양대", "type": "학생부종합", "y2027": "1. 전형명 | 학생부종합(아리학생부종합): 서류100", "y2026": "1. 전형명 | 학생부종합(아리학생부종합Ⅰ) 면접형 | 학생부종합(아리학생부종합Ⅱ) 서류형", "isNew": false}, {"id": 41, "region": "경기", "univ": "중앙대(다빈치)", "type": "학생부종합", "y2027": "1. 전형명 | 학생부종합(융합형인재) | 학생부종합(탐구형인재) | 2. 전형방법 | (탐구형인재) 시스템생명공학과,첨단소재공학과 1단계 3.5배수", "y2026": "1. 전형명 | 학생부종합(CAU융합형인재) | 학생부종합(CAU탐구형인재) | 2. 전형방법 | (탐구형인재) 시스템생명공학과,첨단소재공학과 1단계 5배수", "isNew": false}, {"id": 41, "region": "경기", "univ": "중앙대(다빈치)", "type": "논술", "y2027": "1. 전형명 | 논술(일반형) | 2. 수능최저학력기준 | 논술(일반형): 미적용", "y2026": "1. 전형명 | 논술(논술) | 2. 수능최저학력기준 | 논술(논술): 국,수,영,사/과(1) 중 2개 합 6", "isNew": false}, {"id": 41, "region": "경기", "univ": "중앙대(다빈치)", "type": "수능", "y2027": "1. 전형방법 | 수능(일반): 수능90+출결10", "y2026": "1. 전형방법 | 수능(일반): 수능100", "isNew": false}, {"id": 42, "region": "경기", "univ": "평택대", "type": "학생부교과", "y2027": "2. 학생부 반영방법 | 학생부교과(PTU추천): 국,수,영,사,과,한 중 3과목 석차등급 평균 반영(진로선택 1과목 포함 가능)", "y2026": "1. 전형명 | 학생부교과(PTU자율전공) 폐지 | 2. 학생부 반영방법 | 국,수,영,사,과,한 중 3과목 석차등급 평균 반영(진로선택 미반영)", "isNew": false}, {"id": 43, "region": "경기", "univ": "한경국립대", "type": "학생부교과", "y2027": "1. 전형명 | 학생부교과(일반) 안성캠 | 학생부교과(일반) 평택캠", "y2026": "1. 전형명 | 학생부교과(일반A) | 학생부교과(일반P)", "isNew": false}, {"id": 43, "region": "경기", "univ": "한경국립대", "type": "수능", "y2027": "1. 수능반영방법 | 수능(일반)/HK자율전공학부: 수(미/기) 15% 가산점", "y2026": "1. 수능반영방법 | 수능(일반)/HK자율전공학부: 가산점 없음", "isNew": false}, {"id": 44, "region": "경기", "univ": "한국항공대", "type": "수능", "y2027": "1. 수능반영방법 | 수능(일반학생)/공과대학,AI융합대학,스마트드론공학과,AI자율주행시스템공학과,자유전공학부(공학적성): 과 5% 가산점", "y2026": "1. 수능반영방법 | 수능(일반학생)/공과대학,AI융합대학,스마트드론공학과,AI자율주행시스템공학과,자유전공학부(공학적성): 가산점 없음", "isNew": false}, {"id": 45, "region": "경기", "univ": "한세대", "type": "학생부종합", "y2027": "1. 전형명 신설 | 학생부종합(한세인재): 서류100", "y2026": "(신설)", "isNew": true}, {"id": 46, "region": "경기", "univ": "한양대(ERICA)", "type": "학생부종합", "y2027": "1. 전형명 | 학생부종합(서류형) | 학생부종합(면접형) | 2. 전형방법 | (면접형) 1단계(3배수) 서류100 / 2단계 1단계70+면접30", "y2026": "1. 전형명 | 학생부종합(일반)", "isNew": false}, {"id": 46, "region": "경기", "univ": "한양대(ERICA)", "type": "수능", "y2027": "1. 수능반영방법 | 수능(일반) 영어 등급별 환산점수(1~9등급): 100/99/96/91/80/60/40/20/0", "y2026": "1. 수능반영방법 | 수능(일반) 영어 등급별 환산점수(1~9등급): 100/99.5/99/98/96.5/95/92.5/90/85", "isNew": false}, {"id": 47, "region": "경기", "univ": "협성대", "type": "학생부교과", "y2027": "1. 전형명 | 학생부교과(교과성적우수자) | 학생부교과(웨슬리) | 학생부교과(미래창의인재) | 2. 전형방법 | (웨슬리,미래창의인재) 1단계(7배수) 교과100 / 2단계 1단계50+면접50 | 3. 학생부 반영방법 | (교과성적우수자) 국,수 5과목+영 4과목+사,과 5과목 총 14과목(진로 2과목 포함) | (교과성적우수자,웨슬리) 1등급:100, 2등급:98, 3등급:96, 4등급:94, 5등급:90, 6등급:85, 7등급:80, 8등급:70, 9등급:60 | (미래창의인재) 1~2등급:100, 3~4등급:95, 5등급:90, 6~7등급:82, 8~9등급:60", "y2026": "1. 전형명 | 학생부교과(학생부교과우수자) | 학생부교과(담임목회자추천) | 학생부교과(미래역량우수자) | 2. 전형방법 | (담임목회자추천,미래역량우수자) 교과60+면접40 | 3. 학생부 반영방법 | (학생부교과우수자) 국,수 5과목+영 5과목+사,과 5과목 총 15과목(진로 2과목 포함) | (학생부교과우수자,담임목회자추천) 1등급:100, 2등급:99, 3등급:97, 4등급:94, 5등급:90, 6등급:85, 7등급:80, 8등급:70, 9등급:60 | (미래역량우수자) 동일 환산", "isNew": false}, {"id": 47, "region": "경기", "univ": "협성대", "type": "학생부종합", "y2027": "1. 전형명 | 학생부종합(융합인재Ⅰ) | 학생부종합(융합인재Ⅱ) | 2. 전형방법 | (융합인재Ⅰ) 서류100 | (융합인재Ⅱ) 1단계(4배수) 서류100 / 2단계 1단계50+면접50", "y2026": "1. 전형명 | 학생부종합(협성창의인재Ⅰ) | 학생부종합(협성창의인재Ⅱ) | 2. 전형방법 | (협성창의인재Ⅰ) 서류100 | (협성창의인재Ⅱ) 1단계(4배수) 서류100 / 2단계 1단계40+면접60", "isNew": false}, {"id": 48, "region": "경기", "univ": "화성의과학대", "type": "학생부교과", "y2027": "1. 전형명 | 학생부교과(학생부교과우수자) | 2. 학생부 반영방법 | 국,수,영,사,과 9과목 반영(진로 3과목 포함 가능) A:1등급, B:4등급, C:7등급 / 학년별 가중치 없음 / 1등급:100, 2등급:99, 3등급:98, 4등급:96, 5등급:94, 6등급:92, 7등급:90, 8등급:70, 9등급:60", "y2026": "1. 전형명 | 학생부교과(일반) | 2. 학생부 반영방법 | 총 12과목 반영 | 1학년 국·영 학기별 각 1과목(4과목), 그 외 교과군 학기별 1과목(2과목) | 2·3학년 전 교과목 중 학기별 3과목(학기별 1개 교과군 1과목만 선택) | 진로 반영(제한 없음) A:1등급, B:4등급, C:7등급 / 학년별 가중치 1학년30,2학년40,3학년30", "isNew": false}, {"id": 48, "region": "경기", "univ": "화성의과학대", "type": "수능", "y2027": "1. 학생부 반영방법 | 수능(일반): 수능80+교과20 | 국,수,영,사,과 9과목 반영(진로 3과목 포함 가능) A:1등급, B:4등급, C:7등급 / 학년별 가중치 없음 / 등급 환산 1등급:100~9등급:60", "y2026": "1. 학생부 반영방법 | 수능(일반): 수능80+교과20 | 총 12과목 반영(1학년 일부, 2·3학년 학기별 3과목) 진로 반영 A:1등급, B:4등급, C:7등급 / 학년별 가중치 1학년30,2학년40,3학년30", "isNew": false}, {"id": 49, "region": "강원", "univ": "가톨릭관동대", "type": "학생부교과", "y2027": "1. 전형방법 | 학생부교과(일반): 교과93.1+출결6.9 (미인정결석 3일 이하 100점, 4~5일 97점)", "y2026": "1. 전형방법 | 학생부교과(일반): 교과100", "isNew": false}, {"id": 49, "region": "강원", "univ": "가톨릭관동대", "type": "학생부종합", "y2027": "1. 수능최저학력기준 | 학생부종합/의예과: 국,수(미/기),영,과(절사) 중 3개 합 6", "y2026": "1. 수능최저학력기준 | 학생부종합/의예과: 국,수(미/기),영,과(절사) 중 3개 합 5", "isNew": false}, {"id": 50, "region": "강원", "univ": "강원대", "type": "학생부종합", "y2027": "1. 전형명 신설 | 학생부종합(영농창업인재): 1단계 서류100 / 2단계 1단계60+면접40", "y2026": "(신설)", "isNew": true}, {"id": 51, "region": "강원", "univ": "국립강릉원주대", "type": "수능", "y2027": "1. 수능반영방법 | 수능/치의예과: 국20,수35,영20,과25 | 한 가산점 1등급 3점, 2등급 2점, 3등급 1점", "y2026": "1. 수능반영방법 | 수능/치의예과: 국20,수25,영20,과30,한5", "isNew": false}, {"id": 52, "region": "강원", "univ": "상지대", "type": "학생부교과", "y2027": "1. 학생부 반영방법 | 학생부교과(교과일반): 교과100 | 출결 감점 1~3회:0, 4~6회:5, 7~10회:10, 10~19회:15, 20회 이상:25", "y2026": "1. 학생부 반영방법 | 학생부교과(교과일반): 교과100 | 출결 체능에서만 감점 반영", "isNew": false}, {"id": 52, "region": "강원", "univ": "상지대", "type": "학생부종합", "y2027": "1. 전형방법 | 학생부종합(종합일반): 서류100 (한의예과 교과20+서류80)", "y2026": "1. 전형방법 | 학생부종합(종합일반): 교과30+서류70", "isNew": false}, {"id": 52, "region": "강원", "univ": "상지대", "type": "수능", "y2027": "1. 학생부 반영방법 | 수능(수능일반) | 출결 감점 1~3회:0, 4~6회:5, 7~10회:10, 10~19회:15, 20회 이상:25", "y2026": "1. 학생부 반영방법 | 수능(수능일반) | 출결 미반영", "isNew": false}, {"id": 53, "region": "강원", "univ": "연세대(미래)", "type": "학생부교과", "y2027": "1. 전형방법 | 학생부교과(추천형), 학생부교과(교과우수자(일반형)) 2개 전형 운영 | 전형방법(공통): /의예과 이외 교과90+출결10, /의예과 교과81+출결9+면접10 | 2. 수능최저학력기준 | 추천형: 국,수,영,과,과(2) 5개 중 4개 합 6, 영 2, 한 4 | 일반형: 국,수,영,과,과(2) 5개 중 4개 합 5, 영 2, 한 4 | 3. 학생부 반영방법 | 출결 반영(미인정결석 2일 이하:10, 2~4일:9.5, 4~6일:9, 6~10일:8, 10일 초과:5) | - 자율융합계열(인문) 국,수,영,사 10과목+진로 3과목 | - 자율융합계열(자연),AI반도체학부,데이터사이언스학부,소프트웨어학부,디지털헬스케어학부,임상병리학과,방사선학과 국,수,영,과 10과목+진로 3과목(수학 이수학점 20 이상 필수) | - 물리치료학과,작업치료학과,치위생학과,AI보건정보관리학과,간호학과 ※두 유형 중 높은 점수(① 국,수,영,사 10+진로3 ② 국,수,영,과 10+진로3) | - 의예과 국,수,영,과 전과목+진로 3과목(추천형·일반형 공통, 2026과 동일)", "y2026": "1. 전형방법 | /의예과 이외: 교과100 | /의예과: 교과80+면접20 | 2. 학생부 반영방법 | 출결 미반영 | (교과우수자(일반형)) 자율융합계열(인문·자연),AI반도체학부,데이터사이언스학부,소프트웨어학부,디지털헬스케어학부,임상병리학과,방사선학과,물리치료학과,작업치료학과,치위생학과,AI보건정보관리학과,간호학과: 국,수,영,사,과 10과목+진로 3과목 | 의예과: 국,수,영,과 전과목+진로 3과목", "isNew": false}, {"id": 53, "region": "강원", "univ": "연세대(미래)", "type": "학생부종합", "y2027": "1. 전형명 | 학생부종합(학교생활우수자(면접형)) ※면접형만 선발 | 학생부종합(학교생활우수자(서류형)) 폐지(2027 미선발)", "y2026": "1. 전형명 | 학생부종합(학교생활우수자)", "isNew": false}, {"id": 53, "region": "강원", "univ": "연세대(미래)", "type": "논술", "y2027": "1. 전형명 | 논술(논술우수자): 논술90+교과10 | 2. 수능최저학력기준 | 논술(논술우수자): 미적용", "y2026": "1. 전형명 | 논술(논술우수자(미래인재)) | 논술(논술우수자(창의인재)): 논술100 | 2. 수능최저학력기준 | (미래인재) 간호·의예 이외: 국,수,영,사/과(1) 중 2개 합 7 또는 국,수,사/과(1) 중 1개 2 / 간호학과: 국,수,영,사/과(1) 중 2개 합 5 또는 국,수 중 1개 1 / 의예과: 미선발 | (창의인재) 간호·의예 이외: 국,수,영,과(1) 중 2개 합 7 또는 국,수,과(1) 중 1개 2 / 간호학과: 국,수,영,과(1) 중 2개 합 5 또는 국,수 중 1개 1 / 의예과: 국,수(미/기),과1,과2 중 3개 1, 영2, 한4", "isNew": false}, {"id": 54, "region": "강원", "univ": "한림대", "type": "학생부종합", "y2027": "1. 전형방법 | 학생부종합(학교생활우수자)/의학과: 1단계(4배수) 서류100 / 2단계 1단계70+면접30", "y2026": "1. 전형방법 | 학생부종합(학교생활우수자)/의학과: 1단계(5배수) 서류100 / 2단계 1단계70+면접30", "isNew": false}, {"id": 54, "region": "강원", "univ": "한림대", "type": "수능", "y2027": "1. 전형방법 | 수능(일반)/의학과: 1단계(4배수) 수능100 / 2단계 1단계90+면접10 | 2. 수능반영방법 | /간호학과: 국/수 중 상위영역35 하위영역25, 영20, 사/과(2)20", "y2026": "1. 전형방법 | 수능(일반)/의학과: 1단계(5배수) 수능100 / 2단계 1단계90+면접10 | 2. 수능반영방법 | /간호학과: 수40,영30,국/사/과(2)30", "isNew": false}, {"id": 55, "region": "대전", "univ": "대전대", "type": "학생부교과", "y2027": "1. 전형방법 | 학생부교과(교과중점,지역인재Ⅰ·Ⅱ,군사학과): 미인정 출결 0이면 가산점 1점 | (교과면접): 미인정 출결 0이면 1단계 가산점 1점 / 전체 학과 1단계 8배수 | 2. 수능최저학력기준 | (군사학과) 미적용 | (교과면접,교과중점)/한의예과: 국,수,영,사/과(절사) 중 3개 합 5(수 포함), 한 5 | (지역인재Ⅰ,Ⅱ)/한의예과: 국,수,영,사/과(절사) 중 3개 합 6(수 포함), 한 5 | 3. 학생부 반영방법 | (지역인재)/한의예과: 진로선택 3과목 가산점(A=9,B=7,C=5)", "y2026": "1. 전형방법 | 학생부교과(교과면접): 전체 학과 전원 면접 / 보건·한의예 1단계 8배수 | 2. 수능최저학력기준 | (군사학과) 국,수,영 중 1개 5 | (교과면접,교과중점)/한의예과: 국,수,영,사/과(2) 중 3개 합 5(국·수·영 4) | (지역인재Ⅰ,Ⅱ)/한의예과: 국,수,영,사/과(2) 중 3개 합 6(국·수·영 4) | 3. 학생부 반영방법 | (지역인재)/한의예과: 진로선택 미반영", "isNew": false}, {"id": 55, "region": "대전", "univ": "대전대", "type": "학생부종합", "y2027": "1. 전형방법 | 학생부종합(혜화인재): 1단계(5배수) 서류100 / 2단계 1단계60+면접40 (학업역량30,진로역량40,공동체역량30) | 2. 수능최저학력기준 | (혜화인재)/한의예과: 국,수,영,사/과(절사) 중 3개 합 6(수 포함), 한 5", "y2026": "1. 전형방법 | 학생부종합(혜화인재): 1단계(5배수) 서류100 / 2단계 1단계70+면접30 (학업역량26,전공적합성26,인성24,발전가능성24) | 2. 수능최저학력기준 | (혜화인재)/한의예과: 국,수,영,사/과(2) 중 3개 합 6(국·수·영 4)", "isNew": false}, {"id": 56, "region": "대전", "univ": "우송대", "type": "학생부교과", "y2027": "1. 전형명 | 학생부교과(교과면접) | 2. 학생부 반영방법 | 진로선택 국,외,수,사,과 중 2과목 가산점(기본점수 4점) A:3, B:1.5, C:0.5", "y2026": "1. 전형명 | 학생부교과(면접) | 2. 학생부 반영방법 | 진로선택 국,외,수,사,과 중 3과목 가산점(기본점수 1점) A:3, B:1.5, C:0.5", "isNew": false}, {"id": 56, "region": "대전", "univ": "우송대", "type": "학생부종합", "y2027": "1. 전형명 | 학생부종합(종합서류형) | 학생부종합(종합면접형)", "y2026": "1. 전형명 | 학생부종합(서류형) | 학생부종합(면접형)", "isNew": false}, {"id": 56, "region": "대전", "univ": "우송대", "type": "수능", "y2027": "1. 수능반영방법 | 수능(일반)/간호학과: 수(미/기),과 반영 시 백분위 5% 가산점 각각 부여", "y2026": "1. 수능반영방법 | 수능(일반)/간호학과: 가산점 없음", "isNew": false}, {"id": 57, "region": "대전", "univ": "을지대", "type": "학생부교과", "y2027": "1. 전형명 | 학생부교과(지역균형 학교장추천) | 학생부교과(지역의료인재-일반형) | 2. 수능최저학력기준 | (지역균형(학교장추천))/안경광학과,의료경영학과: 미적용", "y2026": "1. 전형명 | 학생부교과(지역균형) | 학생부교과(지역의료인재) | 2. 수능최저학력기준 | (지역균형(학교장추천))/안경광학과,의료경영학과: 국,수,영,사/과(1) 중 1개 4", "isNew": false}, {"id": 57, "region": "대전", "univ": "을지대", "type": "학생부종합", "y2027": "1. 전형명 | 학생부종합(EU면접형) | 학생부종합(EU서류형)", "y2026": "1. 전형명 | 학생부종합(EU자기추천) | 학생부종합(EU미래인재)", "isNew": false}, {"id": 58, "region": "대전", "univ": "충남대", "type": "학생부교과", "y2027": "1. 수능최저학력기준 | 학생부교과(일반) | 국어교육·영어교육·교육학과: 국,수,영,탐(1) 중 3개 합 10 | 식품영양학과: 국,수,영,탐(1) 중 3개 합 12 | (일반,지역인재) | 인문사회계열(사범 이외): 국,수,영,탐(1) 중 3개 합 12 | 수학과,정보통계학과: 국,수,영,과(1) 중 3개 합 12 | 의류학과,소비자학과: 국,수,영,탐(1) 중 3개 합 12", "y2026": "1. 수능최저학력기준 | 학생부교과(일반) | 국어교육·영어교육·교육학과: 국,수,영,탐(1) 중 3개 합 9 | 식품영양학과: 국,수,영,과(1) 중 3개 합 12 | (일반,지역인재) | 인문사회계열(사범 이외): 국,수,영,탐(1) 중 3개 합 11 | 수학과,정보통계학과: 국,수,영,탐(1) 중 3개 합 12 | 의류학과,소비자학과: 국,수,영,탐(1) 중 3개 합 13", "isNew": false}, {"id": 58, "region": "대전", "univ": "충남대", "type": "학생부종합", "y2027": "1. 전형명 | 학생부종합Ⅰ(면접)", "y2026": "1. 전형명 | 학생부종합Ⅰ(일반)", "isNew": false}, {"id": 59, "region": "세종", "univ": "고려대(세종)", "type": "논술", "y2027": "1. 논술(일반,지역인재)/약학과 | 논술 출제 범위: 수학,수학Ⅰ,수학Ⅱ,확률과통계,미적분", "y2026": "1. 논술(일반,지역인재)/약학과 | 논술 출제 범위: 수학,수학Ⅰ,수학Ⅱ,확률과통계,미적분,기하", "isNew": false}, {"id": 59, "region": "세종", "univ": "고려대(세종)", "type": "수능", "y2027": "1. 수능반영방법 | 자연계열 수능지정영역: 국,수,영,사/과,한", "y2026": "1. 수능반영방법 | 자연계열 수능지정영역: 국,수(미/기),영,과,한", "isNew": false}, {"id": 60, "region": "세종", "univ": "대전가톨릭대", "type": "학생부교과", "y2027": "1. 전형명 | 학생부교과(성김대건A) | 학생부교과(성김대건B) | 학생부교과(성요셉 대졸 및 수도자) | 2. 전형방법 | (일반) 교과60+면접20+교리20 | 3. 수능최저학력기준 | (성김대건B): 국,수,영,사/과(절사),한 합 25 | 4. 학생부 반영방법 | 공통·일반선택 국,수,영 중 8개, 사/한국사/과 중 4개 | 진로선택 국,수,영,사,과 중 3과목(A:1등급,B:3등급,C:5등급) (전학년 100)", "y2026": "1. 전형명 | 학생부교과(성요셉-성직 희망자) | 학생부교과(수도회 허원자) | 2. 전형방법 | (일반) 교과70+면접10+교리20 | 4. 학생부 반영방법 | 국,수,영,사,과,제2외국어,한국사,한문,기술가정 전 과목(학년별 30:30:40)", "isNew": false}, {"id": 60, "region": "세종", "univ": "대전가톨릭대", "type": "수능", "y2027": "1. 전형명 | 수능(성김대건C) | 2. 전형방법 | 수능(일반,성김대건C): 학생부10+수능60+면접10+기타20", "y2026": "1. 전형명 | 수능(성김대건) | 2. 전형방법 | 수능(일반) 학생부33.3+수능55.6+면접2.8+기타8.3 | 수능(성김대건) 학생부23.5+수능58.8+면접5.9+기타11.8", "isNew": false}, {"id": 61, "region": "세종", "univ": "홍익대(세종)", "type": "논술", "y2027": "1. 전형명 | 논술(논술) 모집 확대 | 세종캠퍼스자율전공(인문·예능) 추가", "y2026": "1. 전형명 | 논술(논술) | 자율전공 중 세종캠퍼스자율전공(자연·예능)만 선발", "isNew": false}, {"id": 62, "region": "충남", "univ": "건양대", "type": "학생부교과", "y2027": "1. 전형명 | 일반[교과] / 지역[교과] / 일반[수능] / 일반[최저] / 지역[최저] / 지역[면접] / 지역[기초]", "y2026": "1. 전형명 | 일반[교과] / 지역[교과] / 일반[수능] / 일반학생[최저] / 지역인재[최저] / 지역인재[면접] / 지역인재[기초]", "isNew": false}, {"id": 63, "region": "충남", "univ": "나사렛대", "type": "학생부종합", "y2027": "1. 전형명 신설 | 학생부종합(서류형): 서류100", "y2026": "(신설)", "isNew": true}, {"id": 63, "region": "충남", "univ": "나사렛대", "type": "수능", "y2027": "1. 전형방법 | 수능(일반): 수능100 | 2. 수능반영방법 | 가산점 폐지", "y2026": "1. 전형방법 | 수능(일반) 1유형: 수능100 / 2유형: 수능70+면접30 | 2. 수능반영방법 | 수(미/기) 선택 시 5% 가산점", "isNew": false}, {"id": 64, "region": "충남", "univ": "남서울대", "type": "학생부교과", "y2027": "1. 전형방법 | 학생부교과(교과+면접,계약학과 채용조건형): 교과60+면접40 | 2. 학생부 반영방법 | 국,수,영,사,과,한 12과목 + 진로선택 3과목 총 15과목(A=100, B=80, C=60)", "y2026": "1. 전형방법 | 학생부교과(교과+면접,계약학과 채용조건형): 교과70+면접30 | 2. 학생부 반영방법 | 국,수,영,사,과,한 학기별 3과목씩 총 15과목(진로선택 포함, A=95, B=75, C=55)", "isNew": false}, {"id": 65, "region": "충남", "univ": "단국대(천안)", "type": "학생부교과", "y2027": "1. 전형방법 | 학생부교과(학생부교과우수자,지역메디바이오인재): 교과95+출결5", "y2026": "1. 전형방법 | 학생부교과(학생부교과우수자,지역메디바이오인재): 교과100", "isNew": false}, {"id": 65, "region": "충남", "univ": "단국대(천안)", "type": "학생부종합", "y2027": "1. 전형명 | 학생부종합(군사학과) 신설: 서류80+면접10+체력평가10 (인성검사·신체검사·신원조회 P/F) | 2. 전형방법 | 학생부종합(DKU인재(서류형))/광역모집단위: 학업역량,성장역량,공동체역량 종합평가", "y2026": "2. 전형방법 | 학생부종합(DKU인재(서류형))/광역모집단위: 학업역량,진로역량,공동체역량 종합평가", "isNew": false}, {"id": 65, "region": "충남", "univ": "단국대(천안)", "type": "논술", "y2027": "1. 전형명 폐지 | 논술(논술우수자)/의예,치의예", "y2026": "(폐지)", "isNew": false}, {"id": 65, "region": "충남", "univ": "단국대(천안)", "type": "수능", "y2027": "1. 전형명 폐지 | 수능(지역메디바이오인재)/의예,치의예,약학", "y2026": "(폐지)", "isNew": false}, {"id": 66, "region": "충남", "univ": "상명대(천안)", "type": "수능", "y2027": "1. 수능반영방법 | 수능(수능)/자연계열: 국25,수35,영20,사/과(1)20", "y2026": "1. 수능반영방법 | 수능(수능)/자연계열: 국/영40,수40,사/과(1)20", "isNew": false}, {"id": 67, "region": "충남", "univ": "순천향대", "type": "학생부교과", "y2027": "2. 학생부 반영방법 | 학생부교과: 국,수,영,사,과 전과목(진로선택 반영교과 전과목)", "y2026": "1. 전형명 폐지 | 학생부교과(교과면접) | 2. 학생부 반영방법 | 학생부교과: 국,수,영,사,과 중 3개 교과 전과목(진로선택 반영교과 중 3과목)", "isNew": false}, {"id": 68, "region": "충남", "univ": "한서대", "type": "학생부교과", "y2027": "1. 전형명 | 학생부교과(학생부교과) | 2. 학생부 반영방법 | - 항공관광학과 제외: 교과90+출결10 (출결 만점 기준 미인정결석 0일)", "y2026": "1. 전형명 | 학생부교과(학생부교과1) | 학생부교과(학생부교과2) | 2. 학생부 반영방법 | - 항공서비스학과 제외: 교과90+봉사10 (봉사 만점 기준 20시간 이상)", "isNew": false}, {"id": 69, "region": "충남", "univ": "호서대", "type": "학생부종합", "y2027": "1. 전형명 폐지 | 학생부종합(AI·SW인재)", "y2026": "(폐지)", "isNew": false}, {"id": 69, "region": "충남", "univ": "호서대", "type": "수능", "y2027": "1. 수능반영방법 | 수능(수능): 수(미/기) 가산점 5%(자연계열) | 한국사 가산점 폐지", "y2026": "1. 수능반영방법 | 수능(수능): 수(미/기) 가산점 5%(전계열) | 한국사 가산점 1~6등급:4, 7등급:3, 8등급:2, 9등급:1", "isNew": false}, {"id": 70, "region": "충북", "univ": "가톨릭꽃동네대", "type": "학생부교과", "y2027": "1. 전형방법 | 학생부교과(지역인재,지역인재-경제배려대상자): 교과60+면접40 | 2. 진로선택과목 반영 A=2등급, B=4등급, C=6등급", "y2026": "1. 전형방법 | 학생부교과(지역인재,지역인재-경제배려대상자): 교과100 | 2. 진로선택과목: 미반영", "isNew": false}, {"id": 71, "region": "충북", "univ": "건국대(글로컬)", "type": "학생부종합", "y2027": "1. 전형방법 | 학생부종합/의예과 1단계 3배수 | 2. 수능최저학력기준 | (Cogito자기추천)/의예과: 국,수,영,과(절사) 중 3개 합 5, 한 4 | (지역인재)/의예과: 국,수,영,과(1) 중 3개 합 5, 한 4", "y2026": "1. 전형방법 | 학생부종합/의예과 1단계 5배수 | 2. 수능최저학력기준 | (Cogito자기추천)/의예과: 국,수,영,과(절사) 중 3개 합 4, 한 4 | (지역인재)/의예과: 국,수,영,과(1) 중 3개 합 4, 한 4", "isNew": false}, {"id": 72, "region": "충북", "univ": "서원대", "type": "학생부교과", "y2027": "1. 전형방법 | 학생부교과(창의면접): 교과55+면접45 | 2. 수능최저학력기준 | (일반) 수학교육과: 수(확) 2 또는 수(미/기) 4 / 음악교육과: 국,수,영,탐(1) 중 1개 4 | (지역인재)/수학교육과: 수(확) 3 또는 수(미/기) 4 | 3. 학생부 반영방법 | 수학교육과 수 4과목 / 이외 국+수 4과목, 영 2과목, 사+과 2과목 총 8과목", "y2026": "1. 전형방법 | 학생부교과(창의면접): 교과60+면접40 | 2. 수능최저학력기준 | (일반) 수학교육과: 국,수,영,탐(1) 중 2개 합 8 / 음악교육과: 국,수,영,탐(1) 중 2개 합 9 | (지역인재)/수학교육과: 국,수,영,탐(1) 중 2개 합 9 | 3. 학생부 반영방법 | 전 모집단위 국 3과목, 수+영 4과목, 사+과 3과목 총 10과목", "isNew": false}, {"id": 72, "region": "충북", "univ": "서원대", "type": "수능", "y2027": "1. 수능반영방법 | 수능(일반): 국/수/영/탐(1) 중 우수 2개 영역 각 50 | 영어 등급별 100/90/80/70/60/50/40/30/20", "y2026": "1. 수능반영방법 | 수능(일반): 국/수/탐(1) 중 우수 2개 영역 각 40 + 영20 | 영어 등급별 100/98/96/94/92/90/80/70/60", "isNew": false}, {"id": 73, "region": "충북", "univ": "세명대", "type": "학생부교과", "y2027": "1. 전형명 신설 | 학생부교과(인문계고교): 교과100 | 2. 수능최저학력기준 | (인문계고교)/한의예과: 국,수,영,사/과(1) 중 3개 합 5(수 포함) | (지역인재(일반))/한의예과: 국,수,영,사/과(1) 중 3개 합 5(수 포함) | 3. 학생부 반영방법 | /간호학과: 국,수,영 각 4과목+사,과 3과목 총 15과목 | /한의예·간호 이외: 국,수,영,사,과,기술가정,제2외국어 교과 중 10과목", "y2026": "2. 수능최저학력기준 | (인문계고교)/한의예과: 미선발 | (지역인재(일반))/한의예과: 국,수,영,사/과(1) 중 3개 합 6(수 포함)(영역별 3) | 3. 학생부 반영방법 | /간호학과: 국,수,영 12과목+사,과 3과목 총 15과목 | /한의예·간호 이외: 국,수,영,사,과,제2외국어 교과 중 10과목", "isNew": false}, {"id": 73, "region": "충북", "univ": "세명대", "type": "학생부종합", "y2027": "1. 수능최저학력기준 | 학생부종합(SMU의료인재)/한의예과: 국,수(미/기),영 합 5", "y2026": "1. 수능최저학력기준 | 학생부종합(SMU의료인재)/한의예과: 국,수(미/기),영 합 6(영역별 3)", "isNew": false}, {"id": 73, "region": "충북", "univ": "세명대", "type": "수능", "y2027": "1. 수능반영방법 | 수능(일반)/간호학과,임상병리학과: 국/수/사/과(1) 중 2개 영역 각 40 + 영20", "y2026": "1. 수능반영방법 | 수능(일반)/간호학과,임상병리학과: 국/수/사/과(1) 중 2개 영역 각 40 + 영/한20", "isNew": false}, {"id": 74, "region": "충북", "univ": "유원대", "type": "학생부종합", "y2027": "1. 학생부 반영방법 | 학생부종합(학생부종합) | - 사회복지학부: 사 1과목+국,수,영,과 중 8과목 총 9과목 | - 이외: 과 1과목+국,수,영,사 중 8과목 총 9과목", "y2026": "1. 학생부 반영방법 | 학생부종합(학생부종합) | - 전 모집단위: 국,수,영,사,과 중 9과목", "isNew": false}, {"id": 75, "region": "충북", "univ": "중원대", "type": "학생부교과", "y2027": "1. 전형명 | 학생부교과(지역인재1) | 2. 전형방법 | 학생부교과(일반2) | - 운동레저학부,스포츠경영학부: 교과60+면접40", "y2026": "1. 전형명 | 학생부교과(지역인재) | 2. 전형방법 | 학생부교과(일반2) | - 운동레저학부,스포츠경영학부: 교과80+면접20", "isNew": false}, {"id": 75, "region": "충북", "univ": "중원대", "type": "수능", "y2027": "1. 수능반영방법 | 수능(일반1)/이공계열: 수(미) 10% 가산점", "y2026": "1. 수능반영방법 | 수능(일반1)/이공계열: 가산점 없음", "isNew": false}, {"id": 76, "region": "충북", "univ": "청주교대", "type": "학생부종합", "y2027": "1. 전형방법 | 학생부종합(배움나눔인재): 서류100", "y2026": "1. 전형방법 | 학생부종합(배움나눔인재): 1단계(4배수) 서류100 / 2단계 1단계60+면접40", "isNew": false}, {"id": 76, "region": "충북", "univ": "청주교대", "type": "수능", "y2027": "1. 전형방법 | 수능(일반): 수능100", "y2026": "1. 전형방법 | 수능(일반): 수능80+면접20", "isNew": false}, {"id": 77, "region": "충북", "univ": "청주대", "type": "학생부교과", "y2027": "1. 전형명 | 학생부교과(미래인재) | 학생부교과(교과면접) | 2. 전형방법 | (일반,교과인재,미래인재,지역인재) 국어교육·수학교육과: 교과100", "y2026": "1. 전형명 | 학생부교과(담임추천) | 학생부교과(창의면접) | 2. 전형방법 | (일반,교과인재,미래인재,지역인재) 국어교육·수학교육과: 교과80+면접20", "isNew": false}, {"id": 77, "region": "충북", "univ": "청주대", "type": "수능", "y2027": "1. 전형방법 | 수능(일반)/국어교육·수학교육과: 수능100 | 2. 수능최저학력기준 | 수능(군사학과)/군사학과 이월시: 미적용", "y2026": "1. 전형방법 | 수능(일반)/국어교육·수학교육과: 수능80+면접20 | 2. 수능최저학력기준 | 수능(군사학과)/군사학과: 국,수,영 중 1개 5", "isNew": false}, {"id": 78, "region": "충북", "univ": "충북대", "type": "학생부교과", "y2027": "1. 수능최저학력기준 | 학생부교과(학생부교과,지역인재)/사회과학대학: 국,수,영,사/과(1) 중 2개 합 8", "y2026": "1. 수능최저학력기준 | 학생부교과(학생부교과,지역인재)/사회과학대학: 국,수,영,사/과(1) 중 2개 합 7", "isNew": false}, {"id": 78, "region": "충북", "univ": "충북대", "type": "학생부종합", "y2027": "1. 수능최저학력기준 | 학생부종합(학생부종합Ⅱ)/사회과학대학: 국,수,영,사/과(1) 중 2개 합 8", "y2026": "1. 수능최저학력기준 | 학생부종합(학생부종합Ⅱ)/사회과학대학: 국,수,영,사/과(1) 중 2개 합 7", "isNew": false}, {"id": 79, "region": "대구", "univ": "경북대", "type": "학생부교과", "y2027": "1. 수능최저학력기준 | 학생부교과(교과우수자) | 의예: 국,수,영,사/과(2) 중 수 포함 3개 합 4 | 치의예: 국,수,영,사/과(절사) 중 수 포함 3개 합 4 | 수의예·약학: 국,수,영,사/과(절사) 중 수 포함 3개 합 5", "y2026": "1. 수능최저학력기준 | 학생부교과(교과우수자) | 의예: 국,수,영,사/과(2) 중 사/과 포함 3개 합 4 | 치의예: 국,수,영,사/과(절사) 중 사/과 포함 3개 합 4 | 수의예·약학: 국,수,영,사/과(절사) 중 사/과 포함 3개 합 5", "isNew": false}, {"id": 79, "region": "대구", "univ": "경북대", "type": "학생부종합", "y2027": "1. 수능최저학력기준 | 학생부종합(일반학생) | 의예: 국,수,영,사/과(2) 중 수 포함 3개 합 4 | 치의예: 국,수,영,사/과(절사) 중 수 포함 3개 합 4 | 수의예·약학: 국,수,영,사/과(절사) 중 수 포함 3개 합 5", "y2026": "1. 수능최저학력기준 | 학생부종합(일반학생) | 의예: 국,수,영,사/과(2) 중 사/과 포함 3개 합 4 | 치의예: 국,수,영,사/과(절사) 중 사/과 포함 3개 합 4 | 수의예·약학: 국,수,영,사/과(절사) 중 사/과 포함 3개 합 5", "isNew": false}, {"id": 79, "region": "대구", "univ": "경북대", "type": "논술", "y2027": "1. 수능최저학력기준 | 논술(논술) | 의예: 국,수,영,사/과(2) 중 수 포함 3개 합 4 | 치의예: 국,수,영,사/과(절사) 중 수 포함 3개 합 4 | 수의예·약학: 국,수,영,사/과(절사) 중 수 포함 3개 합 5", "y2026": "1. 수능최저학력기준 | 논술(논술) | 의예: 국,수,영,사/과(2) 중 사/과 포함 3개 합 4 | 치의예: 국,수,영,사/과(절사) 중 사/과 포함 3개 합 4 | 수의예·약학: 국,수,영,사/과(절사) 중 사/과 포함 3개 합 5", "isNew": false}, {"id": 79, "region": "대구", "univ": "경북대", "type": "수능", "y2027": "1. 수능반영방법 | 수능/과학기술대학,생태환경대학(관광학과 제외): 국250,수250,영100,사/과(2)200", "y2026": "1. 수능반영방법 | 수능/과학기술대학,생태환경대학(관광학과 제외): 수400,영200,사/과(2)200", "isNew": false}, {"id": 80, "region": "대구", "univ": "계명대", "type": "학생부교과", "y2027": "1. 전형방법 | 학생부교과(일반)/의예과 1단계 20배수 | 학생부교과(면접): 1단계(20배수) 학생부100 / 2단계 1단계70+면접30 | 2. 학생부 반영방법 | 의예·약학: 국,수,영,과,한 전과목+진로선택 3과목", "y2026": "1. 전형방법 | 학생부교과(일반)/의예과 1단계 12배수 | 학생부교과(면접): 1단계(10배수) 학생부100 / 2단계 1단계80+면접20 (약학 1단계 20배수) | 2. 학생부 반영방법 | 의예·약학: 국,수,영,과 전과목+진로선택 3과목", "isNew": false}, {"id": 80, "region": "대구", "univ": "계명대", "type": "학생부종합", "y2027": "1. 전형방법 | 학생부종합(일반)/의예과: 1단계(10배수) 서류100 / 2단계 1단계70+면접30", "y2026": "1. 전형방법 | 학생부종합(일반)/의예과: 1단계(7배수) 서류100 / 2단계 1단계80+면접20", "isNew": false}, {"id": 81, "region": "경북", "univ": "경운대", "type": "학생부교과", "y2027": "1. 전형명 | 학생부교과(교과일반) | 학생부교과(교과면접) | 2. 수능최저학력기준 신설 | (교과일반)/항공운항학과: 국,수,영,사/과(1) 중 3개 합 10", "y2026": "1. 전형명 | 학생부교과(교과1) | 학생부교과(교과2)", "isNew": false}, {"id": 81, "region": "경북", "univ": "경운대", "type": "학생부종합", "y2027": "1. 전형명 신설 | 학생부종합(미래인재): 서류100", "y2026": "(신설)", "isNew": true}, {"id": 82, "region": "경북", "univ": "경일대", "type": "수능", "y2027": "1. 전형방법 | 수능(일반): 수능90+교과10", "y2026": "1. 전형방법 | 수능(일반): 수능100", "isNew": false}, {"id": 83, "region": "경북", "univ": "국립경국대", "type": "학생부교과", "y2027": "1. 학생부 반영방법 | 공통·일반선택 국,수,영 7과목+사,과,한 2과목(9과목) | 진로선택 3과목", "y2026": "1. 학생부 반영방법 | 공통·일반선택 국,수,영 8과목+사,과,한 2과목(10과목) | 진로선택 2과목", "isNew": false}, {"id": 83, "region": "경북", "univ": "국립경국대", "type": "학생부종합", "y2027": "1. 전형명 | 학생부종합(바른인재)", "y2026": "1. 전형명 | 학생부종합(NUG인재)", "isNew": false}, {"id": 83, "region": "경북", "univ": "국립경국대", "type": "수능", "y2027": "1. 전형방법: 수능100", "y2026": "1. 전형방법: 수능70+교과30", "isNew": false}, {"id": 84, "region": "경북", "univ": "국립금오공대", "type": "학생부교과", "y2027": "1. 수능최저학력기준 | 학생부교과(학생부교과)/기계공학부 스마트모빌리티전공: 국,수,영,사/과(1) 중 수 포함 2개 합 9(수(미/기) 선택 1등급 상향)", "y2026": "1. 수능최저학력기준 | 학생부교과(학생부교과)/기계공학부 스마트모빌리티전공: 국,수,영,사/과(1) 중 수 포함 2개 합 8(수(미/기) 선택 1등급 상향)", "isNew": false}, {"id": 84, "region": "경북", "univ": "국립금오공대", "type": "학생부종합", "y2027": "1. 전형명 신설 | 학생부종합(자율인재): 서류100", "y2026": "(신설)", "isNew": true}, {"id": 85, "region": "경북", "univ": "대구가톨릭대", "type": "학생부교과", "y2027": "1. 전형방법 | 학생부교과(교과,가톨릭지도자추천)/의예과 1단계 7배수 | 2. 학생부 반영방법 | /의약학,예체능 제외: 공통·일반선택 국,수,영,사,과,한국사 8과목 / 진로선택 국,수,영,사,과,한 4과목", "y2026": "1. 전형방법 | 학생부교과(교과,가톨릭지도자추천)/의예과 1단계 5배수 | 2. 학생부 반영방법 | /의약학,예체능 제외: 국,수,영 9과목+사,과,한 3과목(진로선택 최대 3과목 반영)", "isNew": false}, {"id": 86, "region": "경북", "univ": "대구대", "type": "학생부교과", "y2027": "1. 학생부 반영방법 | 학생부교과 | 인문/자연: 국,수,영,사,과,한 12과목(진로선택 최대 3과목) | 예체능: 국,수,영,사,과,한 10과목(진로선택 최대 3과목)", "y2026": "1. 학생부 반영방법 | 학생부교과 | 인문/자연: 국,수,영,사,과,한 12과목(진로선택 최대 2과목) | 예체능: 국,수,영,사,과,한 10과목(진로선택 최대 2과목)", "isNew": false}, {"id": 87, "region": "경북", "univ": "대구한의대", "type": "수능", "y2027": "1. 수능최저학력기준 | 수능 정원외/한의예: 국,수(미/기),영,과(1) 중 3개 합 6(영 2)", "y2026": "1. 수능최저학력기준 | 수능 정원외/한의예: 국,수(미/기),영,과(1) 중 3개 합 6", "isNew": false}, {"id": 88, "region": "경북", "univ": "동국대(WISE)", "type": "학생부교과", "y2027": "1. 전형명 | 학생부교과(학업성적우수자): 교과100 | 학생부교과(학교생활우수자): 교과70+서류30 | 2. 수능최저학력기준 | 의예과 (학업성적우수자) 국,수,영,과(1) 중 3개 합 4 / (불교추천인재) 국,수,영,과(1) 중 3개 합 4 | 한의예과 (학업성적우수자) 국,수,영,과(1) 중 3개 합 5 / (불교추천인재) 국,수,영,과(1) 중 3개 합 5 | 간호학과 (학업성적우수자,불교추천인재) 국,수,영,사/과(1) 중 2개 합 7 | 3. 학생부 반영방법 | (학업성적우수자) 인문/자연: 국,수,영,사,과 전과목(진로 전과목) / 예체능: 국,영 6과목(진로 미반영) | (학교생활우수자) 국,수,영,사,과 10과목(진로 2과목 포함)", "y2026": "1. 전형명 | 학생부교과(교과): 교과100 | 2. 수능최저학력기준 | 의예과 (교과) 국,수(미/기),과(1) 합 4 / (불교추천인재) 국,수(미/기),영,과(1) 중 3개 합 4 | 한의예과 (교과) 국,수(미/기),과(1) 합 5 / (불교추천인재) 국,수(미/기),영,과(1) 중 3개 합 5 | 간호학과 (교과,불교추천인재) 국,수,영,사/과(1) 중 2개 합 6 | 3. 학생부 반영방법 | (교과) 인문/자연: 국,수,영,사,과 10과목(진로 2과목) / 의예·한의예: 전과목(진로 전과목) / 예체능: 국,영 6과목(진로 미반영) | (학교생활우수자) 10과목(진로 2과목 포함) | (면접) 10과목(진로 2과목 포함)", "isNew": false}, {"id": 88, "region": "경북", "univ": "동국대(WISE)", "type": "학생부종합", "y2027": "1. 수능최저학력기준 | 학생부종합(참사람)/의예과: 국,수,영,과(1) 중 3개 합 4 | 학생부종합(참사람)/한의예과: 국,수,영,과(1) 중 3개 합 5", "y2026": "1. 수능최저학력기준 | 학생부종합(참사람)/의예과: 국,수(미/기),영,과(1) 중 3개 합 4 | 학생부종합(참사람)/한의예과: 국,수(미/기),영,과(1) 중 3개 합 5", "isNew": false}, {"id": 88, "region": "경북", "univ": "동국대(WISE)", "type": "수능", "y2027": "1. 수능반영방법 | 수능/한의예과(유형Ⅰ),의예과: 국25,수35,영20,과20 | 영어 등급별 98/92.5/83/68.5/50/31.5/17/7.5/0", "y2026": "1. 수능반영방법 | 수능/한의예과(유형Ⅰ),의예과: 국25,수(미/기)35,영20,과20 | 영어 등급별 100/95/90/85/80/75/70/65/60", "isNew": false}, {"id": 89, "region": "경북", "univ": "영남대", "type": "학생부교과", "y2027": "1. 전형명 | 학생부교과(의학창의인재)", "y2026": "1. 전형명 | 학생부교과(창의인재)", "isNew": false}, {"id": 90, "region": "경북", "univ": "한동대", "type": "학생부교과", "y2027": "1. 전형명 | 학생부교과(일반)", "y2026": "1. 전형명 | 학생부교과(학생부교과)", "isNew": false}, {"id": 90, "region": "경북", "univ": "한동대", "type": "학생부종합", "y2027": "1. 전형방법 | 학생부종합(SW인재): 1단계(2.5배수) 서류100 / 2단계 서류50+면접50 | 서류평가요소 학업역량,성장역량,공동체역량", "y2026": "1. 전형방법 | 학생부종합(SW인재): 1단계(2.5배수) 서류100 / 2단계 서류70+면접30 | 서류평가요소 학업역량,진로역량,공동체역량", "isNew": false}, {"id": 91, "region": "부산", "univ": "경성대", "type": "학생부교과", "y2027": "1. 전형명 폐지 | 학생부교과(일반계고면접)", "y2026": "(폐지)", "isNew": false}, {"id": 92, "region": "부산", "univ": "고신대", "type": "학생부교과", "y2027": "1. 전형명 신설 | 학생부교과(드림인재): 교과100", "y2026": "(신설)", "isNew": true}, {"id": 92, "region": "부산", "univ": "고신대", "type": "학생부종합", "y2027": "1. 전형방법 | 학생부종합(자기추천): 1단계(10배수) 서류100 / 2단계 1단계80+면접20", "y2026": "1. 전형방법 | 학생부종합(자기추천): 서류80+면접20", "isNew": false}, {"id": 93, "region": "부산", "univ": "국립한국해양대", "type": "학생부교과", "y2027": "1. 수능최저학력기준 | 학생부교과(교과성적우수자)/해양스포츠과학과: 수,영,사/과(절사) 중 1개 5", "y2026": "1. 수능최저학력기준 | 학생부교과(교과성적우수자)/해양스포츠과학과: 미적용", "isNew": false}, {"id": 94, "region": "부산", "univ": "동아대", "type": "학생부교과", "y2027": "1. 전형명 신설 | 학생부교과(교과진로우수자): 교과80+서류20 | 2. 학생부 반영방법 | (교과진로우수자) 국,수,영,사/과 12과목(진로 최대 6과목) A=1등급,B=3등급,C=5등급 | 학생부교과 A=1등급,B=3등급,C=5등급", "y2026": "2. 학생부 반영방법 | 학생부교과 A=2등급,B=4등급,C=6등급", "isNew": false}, {"id": 94, "region": "부산", "univ": "동아대", "type": "학생부종합", "y2027": "1. 전형방법 | 1단계 5배수 선발(의예과 10배수) | 2. 수능최저학력기준 | 학생부종합(잠재능력우수자)/의예과: 국,수,영,사/과(2) 중 3개 합 4", "y2026": "1. 전형방법 | 1단계 4배수 선발(의예과 미선발) | 2. 수능최저학력기준 | 학생부종합(잠재능력우수자)/의예과: 국,수,영,사/과(1) 합 6", "isNew": false}, {"id": 95, "region": "부산", "univ": "동의대", "type": "학생부교과", "y2027": "1. 수능최저학력기준 | 학생부교과(일반고교과)/유아교육과: 미적용", "y2026": "1. 수능최저학력기준 | 학생부교과(일반고교과)/유아교육과: 국,수,영,사/과(1) 중 2개 합 8", "isNew": false}, {"id": 96, "region": "부산", "univ": "부산가톨릭대", "type": "학생부교과", "y2027": "1. 전형명 | 학생부교과(교과우수Ⅰ) | 학생부교과(교과우수Ⅱ): 교과80+서류20 | 2. 학생부 반영방법 | (교과우수Ⅱ) 총 12과목 반영: 국,수,영,사/과 각 2과목(진로 미반영) / 국,수,영,사/과 중 2과목(진로 반영 가능) / 기타 2과목(진로 반영 가능)", "y2026": "1. 전형명 | 학생부교과(교과성적우수자)", "isNew": false}, {"id": 97, "region": "부산", "univ": "부산교대", "type": "수능", "y2027": "1. 수능반영방법 | 정시 수능: 국,수,사/과 표준점수 반영 / 국25,수25,영25,사/과(2)25", "y2026": "1. 수능반영방법 | 정시 수능: 국,수,사/과 백분위 반영 / 국25,수25,영25,사/과(2)25", "isNew": false}, {"id": 98, "region": "부산", "univ": "부산대", "type": "학생부교과", "y2027": "1. 수능최저학력기준 | 학생부교과(학생부교과)/인문사회계열(경영학과 제외),스포츠과학과: 국,수,영,사/과(1) 중 2개 합 5", "y2026": "1. 수능최저학력기준 | 학생부교과(학생부교과)/인문사회계열(경영학과 제외),스포츠과학과: 국,수,영,사/과(1) 중 2개 합 4", "isNew": false}, {"id": 98, "region": "부산", "univ": "부산대", "type": "학생부종합", "y2027": "1. 수능최저학력기준 | 학생부종합(학생부종합)/치의예과: 국,수,영,사/과(2) 중 3개 합 5(수 포함), 한 4", "y2026": "1. 수능최저학력기준 | 학생부종합(학생부종합)/치의예과: 미선발", "isNew": false}, {"id": 98, "region": "부산", "univ": "부산대", "type": "논술", "y2027": "1. 전형방법 | 논술(논술)/의예,약학,한의학: 논술80+교과20 | 2. 수능최저학력기준 | /인문사회계열(경영학과 제외),스포츠과학과: 국,수,영,사/과(1) 중 2개 합 5", "y2026": "1. 전형방법 | 논술(논술)/의예,약학,한의학: 논술70+교과30 | 2. 수능최저학력기준 | /인문사회계열(경영학과 제외),스포츠과학과: 국,수,영,사/과(1) 중 2개 합 4", "isNew": false}, {"id": 98, "region": "부산", "univ": "부산대", "type": "수능", "y2027": "1. 수능반영방법 | 수능(수능) 자연 필수응시영역 단순화 | 자연1: 국,수,영,사/과(2),한 | 자연2: 국,수,영,사/과(2),한(과 1과목 이상 필수) | 자연계열(도시공학과 제외) 과탐 2과목 응시 시 과목별 변환표준점수 5% 가산 | 2. 수능최저학력기준 | /치의예과: 국,수,영,사/과(2) 중 3개 합 5(수 포함), 한 4", "y2026": "1. 수능반영방법 | 수능(수능) 자연 필수응시영역 | 자연1: 국,수(미/기),영,과(2),한 | 자연2: 국,수,영,과(2),한 | 자연3: 국,수,영,사/과(2),한 | 자연계열 일부 과탐 2과목 응시 시 변환표준점수 5% 가산 | 2. 수능최저학력기준 | /치의예과: 국,수,영,사/과(1) 중 3개 합 4(수 포함), 한 4", "isNew": false}, {"id": 99, "region": "부산", "univ": "신라대", "type": "학생부교과", "y2027": "1. 학생부 반영방법 | 학생부교과(일반고교과): 국,수,영,사,과,한 10과목(진로 최대 3과목) | (면접우수자): 전교과 중 진로선택 4과목(부족시 공통·일반으로 대체)", "y2026": "1. 학생부 반영방법 | 학생부교과 모든 전형: 국,수,영,사,과,한 10과목(진로 최대 2과목)", "isNew": false}, {"id": 99, "region": "부산", "univ": "신라대", "type": "학생부종합", "y2027": "1. 전형방법 | 학생부종합(학생부종합Ⅱ)/간호학과: 서류70+면접30", "y2026": "1. 전형방법 | 학생부종합(학생부종합Ⅱ)/간호학과: 미선발", "isNew": false}, {"id": 100, "region": "부산", "univ": "영산대", "type": "학생부종합", "y2027": "1. 전형명 폐지 | 학생부종합(와이즈유인재)", "y2026": "(폐지)", "isNew": false}, {"id": 101, "region": "울산", "univ": "울산대", "type": "학생부교과", "y2027": "1. 수능최저학력기준 | 학생부교과(일반교과)/디자인융합학부,예술학부: 미적용 | 2. 학생부 반영방법 | /자율전공학부,의예과 이외: 진로선택 3과목 반영", "y2026": "1. 수능최저학력기준 | 학생부교과(일반교과)/디자인융합학부,예술학부: 국,수,영,사/과(1) 중 1개 5 | 2. 학생부 반영방법 | /자율전공학부,의예과 이외: 진로선택 2과목 반영", "isNew": false}, {"id": 101, "region": "울산", "univ": "울산대", "type": "학생부종합", "y2027": "1. 전형방법 | 학생부종합(잠재역량)/자율전공학부,의예과,간호학과 이외: 서류100", "y2026": "1. 전형방법 | 학생부종합(잠재역량)/자율전공학부,의예과,간호학과 이외: 1단계(4배수) 서류100 / 2단계 1단계50+면접50", "isNew": false}, {"id": 102, "region": "경남", "univ": "가야대", "type": "학생부교과", "y2027": "1. 전형명 | 학생부교과(지역인재(기초생활수급자))", "y2026": "1. 전형명 | 학생부교과(기초생활수급자)", "isNew": false}, {"id": 103, "region": "경남", "univ": "경남대", "type": "수능", "y2027": "1. 수능반영방법 | 수능(일반): 국,수,영,사/과(1) 중 3개 영역 각 33", "y2026": "1. 수능반영방법 | 수능(일반): 국25,수25,영25,사/과(1)25", "isNew": false}, {"id": 104, "region": "경남", "univ": "경상국립대", "type": "학생부교과", "y2027": "1. 수능최저학력기준 | 항공우주공학부: 국,수,영,사/과(1) 중 2개 합 5 | 환경생명화학과: 국,수,영,사/과(1) 중 2개 합 10 | 미술교육과: 국,수,영,사/과(1) 중 2개 합 10 | 지리교육과: 국,수,영,사/과(1) 중 2개 합 8 | 인문사회·자연과학 자율전공: 미적용", "y2026": "1. 수능최저학력기준 | 항공우주공학부: 국,수,영,사/과(1) 중 2개 합 6 | 환경생명화학과: 미적용 | 미술교육과: 국,수,영,사/과(1) 중 2개 합 9 | 지리교육과: 국,수,영,사/과(1) 중 2개 합 7 | 자율전공학부: 국,수,영,사/과(1) 중 2개 합 10", "isNew": false}, {"id": 104, "region": "경남", "univ": "경상국립대", "type": "학생부종합", "y2027": "1. 전형방법 | 학생부종합(일반)/행정학과: 서류100", "y2026": "1. 전형방법 | 학생부종합(일반)/행정학과: 1단계(3배수) 서류100 / 2단계 1단계80+면접20", "isNew": false}, {"id": 105, "region": "경남", "univ": "국립창원대", "type": "학생부교과", "y2027": "1. 수능최저학력기준 | 학생부교과(글로컬인재)/공학융합학부: 국,수,영,사/과(1) 중 2개 합 8", "y2026": "1. 수능최저학력기준 | 학생부교과(글로컬인재)/공학융합학부: 국,수,영,사/과(1) 중 1개 4", "isNew": false}, {"id": 105, "region": "경남", "univ": "국립창원대", "type": "학생부종합", "y2027": "1. 전형방법 | 학생부종합(계열적합인재)/간호,컴퓨터공학과: 1단계(3배수) 서류100 / 2단계 1단계60+면접40", "y2026": "1. 전형방법 | 학생부종합(계열적합인재)/간호,컴퓨터공학과: 1단계(4배수) 서류100 / 2단계 1단계60+면접40", "isNew": false}, {"id": 106, "region": "경남", "univ": "인제대", "type": "학생부교과", "y2027": "1. 학생부 반영방법 | 학생부교과: 국,수,영 각 2과목+기타 4과목(진로선택 기타 교과로 최대 2과목, A=1등급,B=3등급,C=5등급)", "y2026": "1. 학생부 반영방법 | 학생부교과: 국,수,영 각 2과목+기타 4과목(진로선택 기타 교과로 최대 1과목, A=1등급,B=4등급,C=7등급)", "isNew": false}, {"id": 107, "region": "광주", "univ": "광주교대", "type": "학생부종합", "y2027": "1. 전형명 | 학생부종합(교직적성우수자)", "y2026": "1. 전형명 | 학생부종합(교직적성우수자Ⅱ) | 학생부종합(교직적성우수자Ⅰ)", "isNew": false}, {"id": 108, "region": "광주", "univ": "광주대", "type": "학생부교과", "y2027": "1. 전형명 신설 | 학생부교과(나눔인재): 교과60+출결10+봉사30 | 2. 학생부 반영방법 | 국·수·영 각 4과목, 사/과/한 4과목 총 16과목(교과별 4과목 미만 시 부족분 9등급 처리) | 출결 0일:100, 1~2일:80, 3~5일:50, 6일 이상:0 | 봉사 20시간 이상:300, 15시간 이상:225, 10시간 이상:150, 5시간 이상:75, 0시간:0", "y2026": "2. 학생부 반영방법 | 국·수·영 각 4과목, 사/과/한 4과목 총 16과목(교과별 4과목 미만 시 이수 과목만으로 평균 등급 산출)", "isNew": false}, {"id": 109, "region": "광주", "univ": "광주여대", "type": "학생부교과", "y2027": "1. 학생부 반영방법(이수단위 가산점): 국,수,영,사,과,한 이수단위 합 70 이상 5점", "y2026": "1. 학생부 반영방법(이수단위 가산점): 국,수,영,사,과,한 이수단위 합 80 이상 5점", "isNew": false}, {"id": 110, "region": "광주", "univ": "남부대", "type": "학생부교과", "y2027": "1. 전형방법 | 학생부교과(일반학생)/전기공학과: 교과100 | 2. 수능최저학력기준 | (일반학생)/간호학과: 국,수,영,사/과(1) 중 2개 합 12", "y2026": "1. 전형방법 | 학생부교과(일반학생)/전기공학과: 교과70+면접30 | 2. 수능최저학력기준 | (일반학생)/간호학과: 국,수,영,사/과(1) 중 2개 합 11", "isNew": false}, {"id": 111, "region": "광주", "univ": "송원대", "type": "학생부교과", "y2027": "1. 전형명 | 학생부교과(면접우수자): 교과70+면접30", "y2026": "1. 전형명 | 학생부교과(인성우수자): 교과70+면접30", "isNew": false}, {"id": 112, "region": "광주", "univ": "전남대", "type": "학생부교과", "y2027": "1. 전형방법 | 학생부교과(일반): 교과90+출결10 | 2. 수능최저학력기준 | (일반)/간호대학: 국,수,영,사/과(1) 중 3개 합 9 | (일반)/인공지능학부: 국,수,영,과(1) 중 2개 합 8(과 2과목 필수 응시)", "y2026": "1. 전형방법 | 학생부교과(일반): 교과100 | 2. 수능최저학력기준 | (일반)/간호대학: 국,수,영,사/과(1) 중 2개 합 6 | (일반)/인공지능학부: 국,수(미/기),영,과/직(1) 중 2개 합 8(과/직 2과목 필수 응시)", "isNew": false}, {"id": 112, "region": "광주", "univ": "전남대", "type": "수능", "y2027": "1. 수능반영방법 | 수능(일반)/인공지능학부: 수,과(2) 필수 응시", "y2026": "1. 수능반영방법 | 수능(일반)/인공지능학부: 수(미/기),과/직(2) 필수 응시", "isNew": false}, {"id": 113, "region": "광주", "univ": "조선대", "type": "학생부종합", "y2027": "1. 전형명 폐지 | 학생부종합(창업인재)", "y2026": "(폐지)", "isNew": false}, {"id": 114, "region": "전남", "univ": "국립목포대", "type": "학생부교과", "y2027": "1. 수능최저학력기준 | 학생부교과(교과일반)/약학과: 국,수(미/기),영,과(절사) 중 수·과 포함 3개 합 7", "y2026": "1. 수능최저학력기준 | 학생부교과(교과일반)/약학과: 국,수(미/기),영,과(화 또는 생 포함)(2) 중 수·과 포함 3개 합 6", "isNew": false}, {"id": 115, "region": "전남", "univ": "국립목포해양대", "type": "학생부교과", "y2027": "1. 수능최저학력기준 | 학생부교과(학생부성적우수자,누구나) | 항해학부: 국,수,영,사/과(1) 중 2개 합 9 | 해상운송학부,항해정보시스템학부,해군사관학부: 국,수,영,사/과(1) 중 2개 합 10", "y2026": "1. 수능최저학력기준 | 학생부교과(학생부성적우수자,누구나) | 항해학부,해상운송학부,항해정보시스템학부: 미적용 | 해군사관학부: 국,수,영,사/과(절사) 중 2개 합 11", "isNew": false}, {"id": 116, "region": "전남", "univ": "국립순천대", "type": "학생부교과", "y2027": "1. 수능최저학력기준 | 학생부교과(교과일반)/수학교육과: 수 4 | 2. 학생부 반영방법 | 국,수,영,사,과 전과목", "y2026": "1. 수능최저학력기준 | 학생부교과(교과일반)/수학교육과: 수(미/기) 4 또는 수(확) 3 | 2. 학생부 반영방법 | 인문: 국,수,영,사 / 자연: 국,수,영,과 / 공통: 국,수,영,사,과 / 예체능: 국,수,영,사 전과목", "isNew": false}, {"id": 116, "region": "전남", "univ": "국립순천대", "type": "학생부종합", "y2027": "1. 전형명 | 학생부종합(종합서류): 서류100 | 학생부종합(종합면접): 1단계(5배수) 서류100 / 2단계 1단계70+면접30", "y2026": "1. 전형명 | 학생부종합(일반학생)", "isNew": false}, {"id": 116, "region": "전남", "univ": "국립순천대", "type": "수능", "y2027": "1. 수능반영방법 | 수학교육과: 수(미/기) 응시자 5점 가산", "y2026": "1. 수능반영방법 | 수학교육과: 수(미/기) 지정", "isNew": false}, {"id": 117, "region": "전남", "univ": "목포가톨릭대", "type": "학생부교과", "y2027": "1. 전형명 | 학생부교과(가톨릭지도자추천)", "y2026": "1. 전형명 | 학생부교과(교역자/수도자)", "isNew": false}, {"id": 118, "region": "전남", "univ": "초당대", "type": "학생부교과", "y2027": "1. 수능최저학력기준 | 학생부교과(일반고)/간호학과: 미적용", "y2026": "1. 수능최저학력기준 | 학생부교과(일반고)/간호학과: 국,수,영,사,과,한 중 2개 평균 6", "isNew": false}, {"id": 119, "region": "전북", "univ": "예원예술대", "type": "학생부교과", "y2027": "1. 학생부 반영방법 | 수시/정시 일반: 1학년50, 2학년30, 3학년20", "y2026": "1. 학생부 반영방법 | 수시 일반 1학년30, 2학년50, 3학년20 | 정시 일반 1학년20, 2학년30, 3학년50", "isNew": false}, {"id": 120, "region": "전북", "univ": "우석대", "type": "학생부교과", "y2027": "1. 전형명 | 학생부교과(교과) | 학생부교과(교과면접) | 2. 수능최저학력기준 | 간호학과(교과면접 미적용): 국,수,영,사/과(1) 중 2개 합 12 | 약학과: 국,수(미/기),영,과(절사) 중 3개 합 7(수 포함) | 한약학과: 국,수,영,과(1) 중 3개 합 9 | 한의예과: 국,수,영,사/과(절사) 중 3개 합 7(수 포함)", "y2026": "1. 전형명 | 학생부교과(교과중심) | 학생부교과(면접중심) | 2. 수능최저학력기준 | ※간호·한약·한의예: 수(미/기) 반영 시 1등급 상향 | 간호학과(면접중심 미적용): 국,수,영,사/과(1) 중 2개 합 11 | 약학과: 국,수(미/기),영,과(절사) 중 3개 합 6(수 포함) | 한약학과: 국,수,영,과(절사) 중 2개 합 5 | 한의예과: 국,수,영,사/과(절사) 중 3개 합 6(수 포함)", "isNew": false}, {"id": 120, "region": "전북", "univ": "우석대", "type": "수능", "y2027": "1. 수능반영방법 | 수능(일반학생)/약학과: 수(미/기) 지정", "y2026": "1. 수능반영방법 | 수능(일반학생)/약학과: 수(미/기) 응시자 10% 가산점", "isNew": false}, {"id": 121, "region": "전북", "univ": "전주교대", "type": "수능", "y2027": "1. 전형방법 | 수능(일반학생): 1단계(2배수) 수능100 / 2단계 1단계90+면접10 | 2. 수능반영방법 | 영어 등급별 225/202.5/180/157.5/112.5/90/67.5/45/0", "y2026": "1. 전형방법 | 수능(일반학생): 1단계(2배수) 수능100 / 2단계 1단계80+면접20 | 2. 수능반영방법 | 영어 등급별 200/180/160/140/100/80/60/40/0", "isNew": false}, {"id": 122, "region": "전북", "univ": "전주대", "type": "학생부교과", "y2027": "1. 학생부 반영방법 | 학생부교과(일반학생)/전 모집단위: 국,수,영,사,과,한 교과별 이수단위 합 10단위 이상의 3개 교과 전과목", "y2026": "1. 학생부 반영방법 | 학생부교과(일반학생): 인문/예체능 국,수,영,사,한 전과목 / 자연 국,수,영,과 전과목", "isNew": false}, {"id": 123, "region": "제주", "univ": "제주대", "type": "학생부교과", "y2027": "1. 수능최저학력기준 | 학생부교과(일반학생)/자유전공: 국,수,영,탐(절사) 중 2개 합 11", "y2026": "1. 수능최저학력기준 | 학생부교과(일반학생)/자유전공: 미적용", "isNew": false}, {"id": 123, "region": "제주", "univ": "제주대", "type": "학생부종합", "y2027": "1. 전형명 | 학생부종합(일반학생)", "y2026": "1. 전형명 | 학생부종합(일반학생1(서류형)) | 학생부종합(일반학생2(면접형))", "isNew": false}];
+const REGIONS = ["서울","경기","인천","강원","대전","세종","충남","충북","대구","경북","부산","울산","경남","광주","전남","전북","제주"];
+const TYPES = ["학생부교과","학생부종합","수능","논술"];
+const TYPE_SHORT = {"학생부교과":"교과","학생부종합":"종합","수능":"수능","논술":"논술"};
+
+const state = { q:"", region:"전체", type:"전체", newOnly:false, sort:"orig" };
+
+/* ── token diff (LCS) ─────────────────── */
+const TOK = /[가-힣]+|[A-Za-z]+|[0-9]+|\s+|[^\s가-힣A-Za-z0-9]/g;
+function tokenize(s){ return s.match(TOK) || []; }
+function diff(aStr,bStr){
+  const a=tokenize(aStr), b=tokenize(bStr);
+  // safety guard for very long strings -> fall back to segment compare
+  if(a.length*b.length > 60000){
+    return segDiff(aStr,bStr);
+  }
+  const n=a.length,m=b.length;
+  const dp=Array.from({length:n+1},()=>new Uint16Array(m+1));
+  for(let i=n-1;i>=0;i--)for(let j=m-1;j>=0;j--)
+    dp[i][j]= a[i]===b[j] ? dp[i+1][j+1]+1 : Math.max(dp[i+1][j],dp[i][j+1]);
+  const ops=[]; let i=0,j=0;
+  while(i<n&&j<m){
+    if(a[i]===b[j]){ops.push(["eq",a[i]]);i++;j++;}
+    else if(dp[i+1][j]>=dp[i][j+1]){ops.push(["del",a[i]]);i++;}
+    else{ops.push(["ins",b[j]]);j++;}
+  }
+  while(i<n){ops.push(["del",a[i++]]);}
+  while(j<m){ops.push(["ins",b[j++]]);}
+  return ops;
+}
+function segDiff(aStr,bStr){
+  const as=aStr.split("|"), bs=bStr.split("|");
+  const bset=new Set(bs.map(s=>s.trim())), aset=new Set(as.map(s=>s.trim()));
+  const ops=[];
+  // crude: emit dels for a-only, ins for b-only, eq otherwise — reconstruct per column later
+  // represent as token-like with pipe separators preserved
+  bs.forEach((s,k)=>{ if(k)ops.push(["both","|"]); ops.push([aset.has(s.trim())?"eq":"ins",s]); });
+  // for old column we need dels; store separately
+  ops._old=[]; as.forEach((s,k)=>{ if(k)ops._old.push(["both","|"]); ops._old.push([bset.has(s.trim())?"eq":"del",s]); });
+  ops._seg=true;
+  return ops;
+}
+
+function esc(s){return s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+
+// render one column from diff ops. side = "old" -> keep eq+del ; "new" -> keep eq+ins
+function renderCol(ops, side){
+  if(ops._seg){
+    const src = side==="old" ? ops._old : ops;
+    let html="";
+    src.forEach(([t,v])=>{
+      if(v==="|"){ html+="<br>"; return; }
+      if(t==="eq"||t==="both") html+=esc(v);
+      else if(t==="del"&&side==="old") html+=`<mark class="del">${esc(v)}</mark>`;
+      else if(t==="ins"&&side==="new") html+=`<mark class="add">${esc(v)}</mark>`;
+      else html+=esc(v);
+    });
+    return html.replace(/^(<br>)+/,"");
+  }
+  let html="";
+  for(const [t,v] of ops){
+    const isPipe = v==="|";
+    if(isPipe){ html+="<br>"; continue; }
+    if(t==="eq"){ html+=esc(v); }
+    else if(t==="del"){ if(side==="old") html+=`<mark class="del">${esc(v)}</mark>`; }
+    else if(t==="ins"){ if(side==="new") html+=`<mark class="add">${esc(v)}</mark>`; }
+  }
+  // trim leading line breaks from " | " split spacing
+  return html.replace(/^(\s|<br>)+/,"");
+}
+
+/* ── filtering ────────────────────────── */
+function filtered(){
+  let r = DATA.filter(d=>{
+    if(state.region!=="전체" && d.region!==state.region) return false;
+    if(state.type!=="전체" && d.type!==state.type) return false;
+    if(state.newOnly && !d.isNew) return false;
+    if(state.q){
+      const q=state.q.toLowerCase();
+      const hay=(d.univ+" "+d.region+" "+d.type+" "+d.y2027+" "+d.y2026).toLowerCase();
+      if(!hay.includes(q)) return false;
+    }
+    return true;
+  });
+  const s=state.sort;
+  if(s==="univ") r=[...r].sort((a,b)=>a.univ.localeCompare(b.univ,"ko"));
+  else if(s==="type") r=[...r].sort((a,b)=>TYPES.indexOf(a.type)-TYPES.indexOf(b.type)||a.univ.localeCompare(b.univ,"ko"));
+  else if(s==="region") r=[...r].sort((a,b)=>REGIONS.indexOf(a.region)-REGIONS.indexOf(b.region)||a.univ.localeCompare(b.univ,"ko"));
+  return r;
+}
+
+/* ── render ───────────────────────────── */
+function render(){
+  const rows = filtered();
+  document.getElementById("cnt").textContent = rows.length;
+  renderDash(rows);
+
+  const list = document.getElementById("list");
+  if(rows.length===0){
+    list.innerHTML = `<div class="empty"><div class="big">조건에 맞는 변경사항이 없습니다.</div><div>지역·전형 필터를 넓히거나 검색어를 바꿔 보세요.</div></div>`;
+    document.getElementById("foot").textContent="";
+    return;
+  }
+  const frag=document.createDocumentFragment();
+  for(const d of rows){
+    const ops = diff(d.y2026, d.y2027);
+    const oldH = d.isNew ? `<span class="empty-old">— 2026 해당 전형 없음 —</span>` : renderCol(ops,"old");
+    const newH = renderCol(ops,"new");
+    const card=document.createElement("div");
+    card.className="card"+(d.isNew?" new-card":"");
+    card.innerHTML = `
+      <div class="chead">
+        <span class="uname">${esc(d.univ)}</span>
+        <span class="rtag">${esc(d.region)}</span>
+        <span class="ttag ${TYPE_SHORT[d.type]}">${esc(d.type)}</span>
+        ${d.isNew?'<span class="newtag">신설</span>':''}
+        <span class="cidx">#${d.id}</span>
+      </div>
+      <div class="cols">
+        <div class="col c-26"><div class="col-h"><span class="dot"></span><span class="yr">2026</span> 현행</div><div class="body">${oldH}</div></div>
+        <div class="col c-27"><div class="col-h"><span class="dot"></span><span class="yr">2027</span> 변경</div><div class="body">${newH}</div></div>
+      </div>`;
+    frag.appendChild(card);
+  }
+  list.innerHTML="";
+  list.appendChild(frag);
+  document.getElementById("foot").textContent = `※ 본 도구는 업로드된 비교표를 시각화한 것으로, 확정 사항은 각 대학 모집요강을 확인하십시오.`;
+}
+
+function renderDash(rows){
+  const byType={}; TYPES.forEach(t=>byType[t]=0);
+  const univs=new Set(); let nNew=0;
+  rows.forEach(d=>{ byType[d.type]++; univs.add(d.univ); if(d.isNew)nNew++; });
+  const dash=document.getElementById("dash");
+  const cells=[
+    {num:rows.length, lab:"변경 건수", key:null},
+    {num:univs.size, lab:"대학 수", key:null},
+    {num:byType["학생부교과"], lab:"학생부교과", key:"학생부교과"},
+    {num:byType["학생부종합"], lab:"학생부종합", key:"학생부종합"},
+    {num:byType["수능"], lab:"수능", key:"수능"},
+    {num:nNew, lab:"신설 전형", key:"NEW"},
+  ];
+  dash.innerHTML = cells.map(c=>{
+    const click = c.key?"click":"";
+    const on = (c.key && c.key!=="NEW" && state.type===c.key) || (c.key==="NEW" && state.newOnly) ? "on":"";
+    return `<div class="stat ${click} ${on}" data-key="${c.key||''}"><div class="num">${c.num}</div><div class="lab">${c.lab}</div></div>`;
+  }).join("");
+  dash.querySelectorAll(".stat.click").forEach(el=>{
+    el.onclick=()=>{
+      const k=el.dataset.key;
+      if(k==="NEW"){ state.newOnly=!state.newOnly; syncNewToggle(); }
+      else { state.type = state.type===k ? "전체" : k; syncTypeChips(); }
+      render();
+    };
+  });
+}
+
+/* ── build filter chips ───────────────── */
+function buildChips(){
+  const rr=document.getElementById("regionRow");
+  const counts={}; DATA.forEach(d=>counts[d.region]=(counts[d.region]||0)+1);
+  const mk=(label,val,grp,c)=>{
+    const b=document.createElement("button");
+    b.className="chip"+(val===(grp==="region"?state.region:state.type)?" on":"");
+    b.innerHTML = label + (c!=null?`<span class="c">${c}</span>`:"");
+    b.dataset.val=val; b.dataset.grp=grp;
+    b.onclick=()=>{
+      if(grp==="region") state.region = state.region===val?"전체":(val==="전체"?"전체":val);
+      else state.type = state.type===val?"전체":(val==="전체"?"전체":val);
+      if(val==="전체"){ if(grp==="region")state.region="전체"; else state.type="전체"; }
+      grp==="region"?syncRegionChips():syncTypeChips();
+      render();
+    };
+    return b;
+  };
+  rr.appendChild(mk("전체","전체","region",DATA.length));
+  REGIONS.forEach(r=>{ if(counts[r]) rr.appendChild(mk(r,r,"region",counts[r])); });
+
+  const tr=document.getElementById("typeRow");
+  const tc={}; DATA.forEach(d=>tc[d.type]=(tc[d.type]||0)+1);
+  tr.appendChild(mk("전체","전체","type",DATA.length));
+  TYPES.forEach(t=>tr.appendChild(mk(t,t,"type",tc[t]||0)));
+}
+function syncRegionChips(){ document.querySelectorAll('#regionRow .chip').forEach(c=>c.classList.toggle("on", c.dataset.val===state.region || (c.dataset.val==="전체"&&state.region==="전체"))); }
+function syncTypeChips(){ document.querySelectorAll('#typeRow .chip').forEach(c=>c.classList.toggle("on", c.dataset.val===state.type || (c.dataset.val==="전체"&&state.type==="전체"))); }
+function syncNewToggle(){ document.getElementById("newChk").checked=state.newOnly; document.getElementById("newToggle").classList.toggle("on",state.newOnly); }
+
+/* ── wire controls ────────────────────── */
+const qIn=document.getElementById("q"), clr=document.getElementById("clr");
+let qTimer;
+qIn.oninput=()=>{ clr.style.display=qIn.value?"block":"none"; clearTimeout(qTimer); qTimer=setTimeout(()=>{state.q=qIn.value.trim();render();},160); };
+clr.onclick=()=>{ qIn.value="";state.q="";clr.style.display="none";render();qIn.focus(); };
+document.getElementById("newChk").onchange=e=>{ state.newOnly=e.target.checked; syncNewToggle(); render(); };
+document.getElementById("sort").onchange=e=>{ state.sort=e.target.value; render(); };
+document.getElementById("reset").onclick=()=>{
+  Object.assign(state,{q:"",region:"전체",type:"전체",newOnly:false,sort:"orig"});
+  qIn.value="";clr.style.display="none";document.getElementById("sort").value="orig";
+  syncRegionChips();syncTypeChips();syncNewToggle();render();
+};
+
+buildChips();
+render();
+</script>
+<div class="hc-ov" id="hcGuide" onclick="if(event.target===this)HCUI.closeGuide()"><div class="hc-sheet" role="dialog" aria-modal="true"><div class="hc-ghead"><div class="wm">26→27</div><button class="hc-gclose" onclick="HCUI.closeGuide()" aria-label="닫기">&times;</button><div class="hc-eyebrow">대학입학전형 시행계획 비교</div><h2>2026 → 2027 대입전형 변경사항</h2><p>전국 123개 대학의 2026 대비 2027 전형 변경을 현행(2026)과 변경(2027)을 나란히 두고, 지역·전형·키워드로 다각도 탐색합니다.</p></div><div class="hc-gbody"><div class="hc-kick">이렇게 사용하세요</div><div class="hc-methods"><div class="hc-m"><div class="no">1</div><div><div class="ti">나란히 비교</div><div class="de">현행 2026과 변경 2027을 좌우로 비교합니다.</div><div class="out">2026 vs 2027 컬럼</div></div></div><div class="hc-m"><div class="no">2</div><div><div class="ti">필터·검색</div><div class="de">지역·전형유형·신설 여부·키워드로 좁힙니다.</div><div class="out">칩 필터 + 검색어</div></div></div><div class="hc-m"><div class="no">3</div><div><div class="ti">변경 핵심 보기</div><div class="de">무엇이 바뀌었는지 한 줄 요약으로 확인합니다.</div><div class="out">변경 하이라이트</div></div></div></div><div class="hc-read"><h3>색 읽는 법</h3><div class="r"><span><b>2026(현행)</b>은 주황, <b>2027(변경)</b>은 파랑, <b>신설</b>은 초록으로 구분됩니다.</span></div><div class="r"><span>수능최저 등 표기 용어가 헷갈리면 우측 상단 <b>수능최저 용어 정리</b>를 누르세요.</span></div></div><button class="hc-start" onclick="HCUI.closeGuide()"><span class="ar">▶</span><span class="t">탐색 시작하기</span></button></div><div class="hc-cap"><b>알아두기.</b> 대학별 시행계획 비교 자료이며, 세부 내용은 각 대학 모집요강으로 확인하세요.</div></div></div><div class="hc-ov" id="hcTerms" onclick="if(event.target===this)HCUI.closeTerms()"><div class="hc-sheet sm" role="dialog" aria-modal="true"><div class="hc-thead"><span class="ic">?</span><h2>수능최저 용어 정리</h2><button class="x" onclick="HCUI.closeTerms()" aria-label="닫기">&times;</button></div><div class="hc-tbody"><div class="hc-tsect">반영 영역 표기</div><div class="hc-trow"><div class="hc-tterm">국수영탐1</div><div class="hc-tdesc">국어·수학·영어 + 탐구(사회·과학 중 1과목)</div></div><div class="hc-trow"><div class="hc-tterm">국수영과</div><div class="hc-tdesc">국어·수학·영어·과학탐구</div></div><div class="hc-trow"><div class="hc-tterm">국수영탐(평균)</div><div class="hc-tdesc">국어·수학·영어 + 탐구(사회·과학 평균)</div></div><div class="hc-trow"><div class="hc-tterm">국수영사과</div><div class="hc-tdesc">국어·수학·영어·사회탐구·과학탐구 (5개 각각)</div></div><div class="hc-trow"><div class="hc-tterm">국수과</div><div class="hc-tdesc">국어·수학·과학탐구</div></div><div class="hc-tsect">합산 · 부가 조건</div><div class="hc-trow"><div class="hc-tterm">N개 합 M</div><div class="hc-tdesc">지정 영역 중 N개 등급의 합이 M 이내</div></div><div class="hc-trow"><div class="hc-tterm">수학 포함</div><div class="hc-tdesc">반영 영역에 수학을 반드시 포함</div></div><div class="hc-trow"><div class="hc-tterm">절사</div><div class="hc-tdesc">탐구 평균의 소수 0.5는 버림 (1.5등급 → 1등급)</div></div><div class="hc-trow"><div class="hc-tterm">한국사 N등급</div><div class="hc-tdesc">한국사 N등급 이내 충족 필요</div></div><div class="hc-trow"><div class="hc-tterm">미적용</div><div class="hc-tdesc">수능최저학력기준 없음 — 수능 성적과 무관</div></div></div></div></div><script>(function(){
+  var HCUI={};window.HCUI=HCUI;
+  HCUI.openGuide=function(){var g=document.getElementById('hcGuide');if(g){g.classList.add('open');document.body.style.overflow='hidden';}};
+  HCUI.closeGuide=function(){var g=document.getElementById('hcGuide');if(g){g.classList.remove('open');document.body.style.overflow='';}};
+  HCUI.openTerms=function(){ var t=document.getElementById('hcTerms');if(t){t.classList.add('open');document.body.style.overflow='hidden';} };
+  HCUI.closeTerms=function(){var t=document.getElementById('hcTerms');if(t){t.classList.remove('open');}};
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){HCUI.closeGuide();HCUI.closeTerms();}});
+  // build FAB
+  var fab=document.createElement('div');fab.className='hc-fab';
+  fab.innerHTML='<button class="hc-btn hc-home" onclick="HCUI.openGuide()" aria-label="사용설명서"><span class="ic">\uD83D\uDCD6</span><span class="lbl">\uC0AC\uC6A9\uC124\uBA85\uC11C</span></button>'+
+    '<button class="hc-btn hc-term" onclick="HCUI.openTerms()"><span class="ic">?</span><span class="lbl-full">수능최저 용어 정리</span><span class="lbl-short">용어</span></button>';
+  document.body.appendChild(fab);
+  // show guide as home on load
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',HCUI.openGuide);}else{HCUI.openGuide();}
+})();</script>
+
+</body>
+</html>

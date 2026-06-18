@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>치한약수 2028 수시 전형 검색기</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{
+  --bg:#FFFFFF; --surface:#FFFFFF; --surface-2:#F5F4F2;
+  --ink:#191919; --muted:#9A8D92; --faint:#9A8D92; --line:#F0EEE8;
+  --border:#F0EEE8;
+  --primary:#40916C; --primary-2:#2D6A4F; --teal:#40916C;
+  --pink:#FF5F9F; --pink2:#E03C7E;
+  --chi:#0D9488; --han:#D97706; --su:#16A34A; --yak:#2563EB; --je:#7C3AED;
+  --ok:#0C6E51; --no:#DC2626; --ok-bg:#E3F6EE; --no-bg:#FEE2E2;
+  --mono:'SF Mono',ui-monospace,'Cascadia Mono',Menlo,Consolas,monospace;
+  --radius:14px; --shadow:0 1px 2px rgba(0,0,0,.04),0 2px 8px rgba(0,0,0,.04);
+  --shadow-lg:0 8px 26px rgba(0,0,0,.10);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:'Pretendard',system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  font-feature-settings:'tnum';-webkit-font-smoothing:antialiased;letter-spacing:-.01em;line-height:1.6}
+button{font-family:inherit;cursor:pointer}
+b,strong{font-weight:700}
+mark{background:#FFE48A;color:inherit;border-radius:2px;padding:0 .12em}
+
+/* header */
+header{position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--line)}
+.bar-in{max-width:1240px;margin:0 auto;padding:0 2rem}
+.bar-top{display:flex;align-items:center;gap:18px;height:66px}
+.home-btn{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-family:inherit;font-size:13px;
+  font-weight:700;text-decoration:none;border:1px solid var(--line);background:#fff;padding:7px 13px;border-radius:9px;
+  cursor:pointer;transition:all .14s;white-space:nowrap;flex:none}
+.home-btn:hover{border-color:var(--pink);color:var(--pink);background:var(--surface-2)}
+.home-btn svg{flex:none}
+.brand{display:flex;align-items:baseline;gap:11px;cursor:pointer;flex:none}
+.brand .yr{font-family:var(--mono);font-weight:700;font-size:12px;letter-spacing:.01em;color:var(--pink);padding-left:15px;position:relative}
+.brand .yr::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:8px;height:8px;border-radius:50%;background:var(--pink)}
+.brand h1{font-size:18px;font-weight:800;margin:0;letter-spacing:-.03em;color:var(--ink)}
+
+/* hero */
+.hero{max-width:1240px;margin:0 auto;padding:26px 2rem 6px}
+.eyebrow{font-size:12px;font-weight:800;color:var(--pink);letter-spacing:.14em;text-transform:uppercase}
+.hero h2{font-size:25px;font-weight:800;margin:7px 0 6px;letter-spacing:-.03em;line-height:1.18}
+.hero .sub{color:var(--muted);font-size:14px;max-width:680px;font-weight:500;margin:0}
+
+/* topic cards (분야) */
+.topicpick{max-width:1240px;margin:18px auto 0;padding:0 2rem}
+.topic-head{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 11px}
+.topic-head b{color:var(--primary)}
+.topic-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.topic-card{display:flex;align-items:center;gap:10px;background:var(--surface);border:1.5px solid var(--line);
+  border-radius:13px;padding:12px 13px;text-align:left;cursor:pointer;transition:.14s;font-family:inherit}
+.topic-card:hover{border-color:var(--c,var(--primary));background:var(--surface-2)}
+.topic-card.on{border-color:var(--c,var(--primary));background:var(--surface-2)}
+.tc-dot{width:11px;height:11px;border-radius:50%;background:var(--c,var(--muted));flex:none}
+.topic-card.on .tc-dot{box-shadow:0 0 0 3px rgba(0,0,0,.06)}
+.tc-body{min-width:0}
+.tc-title{font-size:14px;font-weight:800;color:var(--ink);letter-spacing:-.02em;line-height:1.2}
+.tc-cnt{font-size:11px;color:var(--muted);font-weight:600;margin-top:2px}
+@media(max-width:680px){ .topic-grid{grid-template-columns:repeat(3,1fr)} }
+@media(max-width:430px){ .topic-grid{grid-template-columns:repeat(2,1fr)} }
+
+/* main */
+main{max-width:1240px;margin:0 auto;padding:22px 2rem 30px;min-height:50vh}
+
+/* toolbar / filters */
+.toolbar{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.search{position:relative;width:100%}
+.search svg{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:#fff;background:var(--ink);
+  width:30px;height:30px;padding:6px;border-radius:8px;box-sizing:border-box}
+.search input{width:100%;padding:13px 14px 13px 48px;border:1.5px solid var(--ink);border-radius:12px;
+  font-size:16px;background:var(--surface);color:var(--ink);transition:border-color .15s,box-shadow .15s}
+.search input::placeholder{color:var(--muted)}
+.search input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(64,145,108,.15)}
+.filterrow{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--muted);font-weight:700;font-size:12.5px;
+  padding:8px 13px;border-radius:20px;transition:.14s;font-family:inherit}
+.chip[aria-pressed="true"]{background:var(--primary);color:#fff;border-color:var(--primary)}
+.chip:not([aria-pressed="true"]):hover{border-color:var(--teal);color:var(--ink)}
+.fsel{font-family:inherit;font-size:13.5px;font-weight:700;color:var(--ink);background:var(--surface);
+  border:1px solid var(--line);border-radius:9px;padding:9px 30px 9px 12px;cursor:pointer;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%239A8D92' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 10px center}
+.fsel:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(64,145,108,.15)}
+.count{font-size:12.5px;color:var(--muted);font-weight:600;margin:2px 2px 13px}
+.count b{color:var(--ink);font-weight:800}
+
+/* program list cards */
+.plist{display:flex;flex-direction:column;gap:10px}
+.pcard{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--c,var(--line));
+  border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:14px;width:100%;text-align:left;
+  font-family:inherit;cursor:pointer;transition:.14s}
+.pcard:hover{border-color:var(--c,var(--teal));box-shadow:var(--shadow);transform:translateY(-1px)}
+.pcard:focus-visible{outline:2px solid var(--c,var(--teal));outline-offset:2px}
+.pmain{flex:1;min-width:0}
+.ptop{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.puniv{font-weight:800;font-size:16px;letter-spacing:-.02em}
+.field-chip{font-size:11px;font-weight:800;color:#fff;background:var(--c,var(--faint));padding:2px 8px;border-radius:6px}
+.pname{color:var(--muted);font-size:13px;font-weight:600;margin-top:3px}
+.badge{font-size:10.5px;font-weight:800;padding:3px 8px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--ink)}
+.badge.track{background:var(--surface-2);color:var(--muted)}
+.pmeta{display:flex;align-items:center;gap:14px;flex:none}
+.pmin{font-size:12px;color:var(--ink);font-weight:700;max-width:200px;text-align:right;line-height:1.35}
+.pmin.none{color:var(--su)}
+.pq{text-align:right;white-space:nowrap}
+.pq b{font-size:18px;font-weight:800;letter-spacing:-.03em}
+.pq span{font-size:11px;color:var(--faint);font-weight:600;margin-left:1px}
+.parrow{color:var(--faint);flex:none}
+
+.empty{text-align:center;padding:70px 20px;color:var(--muted)}
+.empty .ic{font-size:34px;margin-bottom:10px}
+.empty p{margin:0;font-size:15px}
+.empty .hint{font-size:13px;color:var(--faint);margin-top:6px}
+footer.foot{max-width:1240px;margin:24px auto 0;padding:20px 2rem 50px;border-top:1px solid var(--line);font-size:12px;color:var(--faint);line-height:1.6}
+
+/* detail page */
+.dpage{max-width:860px;margin:0 auto;animation:dpageIn .2s ease}
+@keyframes dpageIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.dback{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;color:var(--muted);
+  font-family:inherit;font-size:13px;font-weight:700;padding:8px 13px;border-radius:9px;cursor:pointer;transition:.14s;margin-bottom:14px}
+.dback:hover{border-color:var(--primary);color:var(--primary);background:var(--surface-2)}
+.dhead{display:flex;align-items:flex-start;gap:14px;border:1px solid var(--line);border-radius:14px 14px 0 0;padding:20px 22px}
+.dhead .dn{font-size:22px;font-weight:800;letter-spacing:-.02em;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.dhead .dchip{font-size:12px;font-weight:800;color:#fff;background:var(--c,var(--faint));padding:3px 10px;border-radius:7px}
+.dhead .dl{font-size:13px;color:var(--muted);margin-top:5px}
+.dbody{border:1px solid var(--line);border-top:none;border-radius:0 0 14px 14px;padding:16px 22px 22px}
+.dt-jname{font-size:16px;font-weight:800;color:var(--primary);margin:0 0 14px}
+.dt-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px}
+.dt-cell{background:var(--surface-2);border:1px solid var(--line);border-radius:11px;padding:11px 13px}
+.dt-cell.full{grid-column:1/-1}
+.dt-cell .dk{font-size:11.5px;font-weight:700;color:var(--muted);margin-bottom:3px}
+.dt-cell .dv{font-size:14.5px;font-weight:600;color:var(--ink);line-height:1.45}
+.dt-cell .dv.big{font-size:20px;font-weight:800}
+.dt-cell .dv.none{color:var(--su)}
+.rel-head{margin:20px 0 8px;font-size:14px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:8px}
+.rel-head .rc{font-size:12px;font-weight:600;color:var(--muted)}
+.rel-sub{font-size:12px;font-weight:700;color:var(--muted);margin:12px 0 6px}
+.rel{display:flex;align-items:center;gap:10px;width:100%;text-align:left;font-family:inherit;background:var(--surface);
+  border:1px solid var(--line);border-left:4px solid var(--c,var(--faint));border-radius:10px;padding:10px 12px;margin-bottom:7px;cursor:pointer;transition:.13s}
+.rel:hover{border-color:var(--c,var(--primary));background:var(--surface-2)}
+.rel-uni{font-weight:800;font-size:14px;color:var(--ink);flex:1;min-width:0}
+.rel-tag{font-size:11.5px;font-weight:600;color:var(--muted);background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:2px 8px;white-space:nowrap}
+.rel-min{font-size:12px;font-weight:700;color:var(--ink);white-space:nowrap}
+.rel-min.none{color:var(--su)}
+.rel-empty{font-size:13px;color:var(--faint);padding:10px 2px;line-height:1.5}
+
+/* glossary modal (의대 톤) */
+.modal-overlay{position:fixed;inset:0;z-index:80;background:rgba(20,30,30,.5);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:18px;max-width:600px;width:100%;max-height:88vh;overflow:auto;box-shadow:var(--shadow-lg);border:1px solid var(--line)}
+.modal-head{position:sticky;top:0;background:#fff;color:var(--ink);padding:18px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);z-index:2}
+.modal-head h2{margin:0;font-size:17px;font-weight:800;letter-spacing:-.02em}
+.modal-close{background:var(--surface-2);border:none;color:var(--muted);width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer;line-height:1;flex-shrink:0}
+.modal-close:hover{background:var(--no-bg);color:var(--no)}
+.modal-body{padding:10px 20px 22px}
+.glos-sect{font-size:11.5px;font-weight:800;color:var(--muted);letter-spacing:.05em;margin:16px 0 6px}
+.glos-row{display:grid;grid-template-columns:120px 1fr;gap:12px;padding:11px 0;border-bottom:1px dashed var(--line)}
+.glos-row:last-child{border-bottom:none}
+.glos-term{font-weight:800;color:var(--primary);font-size:13.5px}
+.glos-desc{font-size:13px;color:var(--ink);line-height:1.5}
+
+/* 좁은 폰: 헤더 제목과 우상단 FAB 버튼 겹침 방지 */
+@media (max-width:640px){
+  .bar-in{padding:0 1.1rem}
+  .home-btn{font-size:0;gap:0;padding:7px 9px}
+  .brand .yr{display:none}
+}
+@media (max-width:560px){
+  .pcard{flex-wrap:wrap}
+  .pmeta{width:100%;justify-content:space-between;border-top:1px dashed var(--line);padding-top:10px;margin-top:2px}
+  .pmin{max-width:none;text-align:left;flex:1}
+  .dt-grid{grid-template-columns:1fr}
+  .glos-row{grid-template-columns:1fr;gap:3px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+
+/* ===== HCUI shared layer (theme-consistent home / terms / FAB) ===== */
+:root{ --hc-brand:#40916C; --hc-brand2:#2D6A4F; --hc-accent:#40916C; --hc-accent2:#2D6A4F;
+  --hc-ink:#191919; --hc-muted:#9A8D92; --hc-line:#F0EEE8; --hc-paper:#fff; --hc-soft:#D8EDE2;
+  --hc-good:#0C6E51; --hc-good-bg:#E3F6EE; --hc-mid:#9A5A0C; --hc-mid-bg:#FDF0DC;
+  --hc-weak:#DC2626; --hc-weak-bg:#FEE2E2; --hc-none:#9aa6b4; }
+.hc-fab{position:fixed;top:14px;right:16px;z-index:2147483000;display:flex;gap:9px;align-items:center}
+/* guide tooltip (말풍선) */
+.hc-tooltip{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%);
+  background:#fff;border:1.5px solid var(--hc-brand);border-radius:10px;padding:8px 12px 8px 14px;
+  font-family:inherit;font-size:13px;font-weight:700;color:var(--hc-brand);white-space:nowrap;
+  opacity:0;transition:opacity .5s;pointer-events:none;box-shadow:0 4px 12px rgba(64,145,108,.18);
+  z-index:10;display:inline-flex;align-items:center;gap:8px}
+.hc-tooltip::before{content:'';position:absolute;bottom:100%;left:50%;transform:translateX(-50%);
+  border:7px solid transparent;border-bottom-color:var(--hc-brand)}
+.hc-tooltip.show{opacity:1;pointer-events:auto}
+.hc-tip-x{border:none;background:none;color:var(--hc-brand);cursor:pointer;font-size:15px;
+  line-height:1;padding:0 0 0 2px;font-weight:400;opacity:.7;transition:opacity .14s;flex:none}
+.hc-tip-x:hover{opacity:1}
+.hc-btn{display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer;font-family:inherit;
+  font-weight:800;border-radius:13px;transition:transform .14s,box-shadow .14s;line-height:1}
+.hc-btn:hover{transform:translateY(-2px)}
+.hc-term{background:var(--hc-brand);color:#fff;
+  font-size:15px;padding:13px 18px;box-shadow:0 8px 22px -6px rgba(64,145,108,.45)}
+.hc-term .ic{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;
+  background:rgba(255,255,255,.28);font-size:15px;font-weight:900}
+.hc-home{background:var(--hc-paper);color:var(--hc-brand);border:1.5px solid var(--hc-line);
+  font-size:14px;padding:12px 15px;box-shadow:0 6px 18px -8px rgba(0,0,0,.12)}
+.hc-home:hover{border-color:var(--hc-brand2)}
+.hc-home .ic{font-size:17px}
+@media(max-width:640px){
+  .hc-fab{top:10px;right:10px;gap:7px}
+  .hc-term{font-size:13px;padding:11px 13px}
+  .hc-term .lbl-full{display:none}.hc-term .lbl-short{display:inline}
+  .hc-home{padding:11px 12px}.hc-home .lbl{display:none}
+}
+@media(min-width:641px){ .hc-term .lbl-short{display:none} }
+
+/* overlay shell (guide + terms) */
+.hc-ov{position:fixed;inset:0;z-index:2147482000;background:rgba(12,40,40,.55);
+  backdrop-filter:blur(4px);display:none;align-items:flex-start;justify-content:center;
+  padding:26px 16px;overflow:auto}
+.hc-ov.open{display:flex}
+.hc-sheet{background:var(--hc-paper);width:100%;max-width:860px;border-radius:22px;overflow:hidden;
+  box-shadow:0 30px 80px -30px rgba(12,40,40,.6);animation:hcpop .26s cubic-bezier(.2,.9,.3,1)}
+@keyframes hcpop{from{transform:translateY(14px);opacity:.4}to{transform:none;opacity:1}}
+.hc-sheet.sm{max-width:600px}
+
+/* guide (poster-style) */
+.hc-ghead{background:var(--hc-brand);color:#fff;
+  padding:28px 30px 26px;position:relative;overflow:hidden}
+.hc-ghead .wm{position:absolute;right:-10px;bottom:-34px;font-size:130px;font-weight:900;
+  letter-spacing:-.04em;color:rgba(255,255,255,.08);line-height:1;pointer-events:none}
+.hc-eyebrow{font-size:12px;font-weight:800;letter-spacing:.2em;color:rgba(255,255,255,.7);text-transform:uppercase}
+.hc-ghead h2{font-size:30px;font-weight:900;letter-spacing:-.03em;line-height:1.12;margin:9px 0 0;position:relative}
+.hc-ghead p{font-size:15px;color:rgba(255,255,255,.85);margin:12px 0 0;max-width:90%;line-height:1.5;position:relative}
+.hc-gclose{position:absolute;top:18px;right:20px;z-index:3;width:36px;height:36px;border-radius:50%;
+  border:none;background:rgba(255,255,255,.2);color:#fff;font-size:20px;cursor:pointer;line-height:1}
+.hc-gclose:hover{background:rgba(255,255,255,.34)}
+.hc-gbody{padding:26px 30px 20px}
+.hc-kick{font-size:14px;font-weight:800;color:var(--hc-brand);letter-spacing:.02em;display:flex;
+  align-items:center;gap:10px;margin:0 0 14px}
+.hc-kick::after{content:"";flex:1;height:2px;background:var(--hc-line)}
+.hc-methods{display:flex;flex-direction:column;gap:11px;margin-bottom:20px}
+.hc-m{display:flex;gap:15px;align-items:flex-start;border:1.5px solid var(--hc-line);border-radius:15px;padding:15px 16px;background:#fff}
+.hc-m .no{flex:none;width:46px;height:46px;border-radius:13px;background:var(--hc-soft);color:var(--hc-brand);
+  display:grid;place-items:center;font-size:22px;font-weight:900}
+.hc-m .ti{font-size:18px;font-weight:800;letter-spacing:-.01em}
+.hc-m .de{font-size:14px;color:var(--hc-muted);margin-top:4px;line-height:1.5}
+.hc-m .out{font-size:12.5px;color:var(--hc-brand);font-weight:700;margin-top:7px}
+.hc-m .out::before{content:"→ "}
+.hc-read{border:1.5px solid var(--hc-line);border-radius:15px;padding:16px 18px;margin-bottom:18px}
+.hc-read h3{font-size:14px;font-weight:800;color:var(--hc-ink);margin:0 0 11px}
+.hc-read .r{font-size:13.5px;color:var(--hc-ink);line-height:1.5;display:flex;gap:8px;margin-bottom:8px}
+.hc-read .r:last-child{margin-bottom:0}
+.hc-read .r::before{content:"●";color:var(--hc-brand);font-size:8px;margin-top:6px}
+.hc-read .r b{color:var(--hc-brand2)}
+.hc-scale{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+.hc-gb{min-width:54px;text-align:center;font-weight:800;border-radius:9px;padding:7px 6px;font-size:14px}
+.hc-gb.g{background:var(--hc-good-bg);color:var(--hc-good)}
+.hc-gb.m{background:var(--hc-mid-bg);color:var(--hc-mid)}
+.hc-gb.w{background:var(--hc-weak-bg);color:var(--hc-weak)}
+.hc-gb.n{background:#eef1f4;color:#9aa6b4}
+.hc-start{width:100%;margin-top:4px;border:none;border-radius:16px;padding:18px;cursor:pointer;font-family:inherit;
+  background:var(--hc-brand);color:#fff;display:flex;align-items:center;
+  justify-content:center;gap:12px;box-shadow:0 14px 30px -12px rgba(64,145,108,.45);transition:transform .15s}
+.hc-start:hover{transform:translateY(-2px)}
+.hc-start .t{font-size:17px;font-weight:800}
+.hc-start .ar{font-size:20px}
+.hc-cap{background:var(--surface-2);border-top:1.5px solid var(--hc-line);padding:14px 30px;font-size:12px;
+  color:var(--hc-muted);line-height:1.6}
+.hc-cap b{color:var(--hc-ink)}
+
+/* terms modal */
+.hc-thead{background:linear-gradient(135deg,var(--hc-accent),var(--hc-accent2));color:#fff;
+  padding:18px 22px;display:flex;align-items:center;gap:12px;position:sticky;top:0}
+.hc-thead .ic{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.25);display:grid;place-items:center;font-size:18px;font-weight:900;flex:none}
+.hc-thead h2{font-size:18px;font-weight:800;margin:0;flex:1}
+.hc-thead .x{width:32px;height:32px;border-radius:8px;border:none;background:rgba(255,255,255,.22);color:#fff;font-size:19px;cursor:pointer;line-height:1}
+.hc-thead .x:hover{background:rgba(255,255,255,.38)}
+.hc-tbody{padding:8px 22px 22px;max-height:72vh;overflow:auto}
+.hc-tsect{font-size:11.5px;font-weight:800;color:var(--hc-muted);letter-spacing:.06em;margin:16px 0 4px}
+.hc-trow{display:grid;grid-template-columns:130px 1fr;gap:12px;padding:11px 0;border-bottom:1px dashed var(--hc-line)}
+.hc-trow:last-child{border-bottom:none}
+.hc-tterm{font-weight:800;color:var(--hc-brand);font-size:13.5px}
+.hc-tdesc{font-size:13px;color:var(--hc-ink);line-height:1.5}
+@media(max-width:560px){ .hc-trow{grid-template-columns:1fr;gap:3px} }
+.help-top{display:none!important}
+
+</style>
+</head>
+<body>
+<header>
+  <div class="bar-in"><div class="bar-top">
+    <a href="index.html" class="home-btn" title="홈으로"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>홈</a>
+    <div class="brand" role="button" tabindex="0" aria-label="처음으로" onclick="setField('전체')"><span class="yr">2028</span><h1>치한약수 수시</h1></div>
+  </div></div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">치 · 한 · 약 · 수 · 통합 검색</div>
+  <h2>치·한·약·수 수시모집 전형 검색</h2>
+  <p class="sub">치의예·한의예·수의예·약학·제약학과의 수시 전형을 분야·대학·전형유형·수능최저로 빠르게 찾아봅니다.</p>
+</section>
+
+<section class="topicpick" id="topicpick">
+  <p class="topic-head">분야를 <b>선택</b>해 보세요</p>
+  <div class="topic-grid" id="fieldCards"></div>
+</section>
+
+<main id="main"></main>
+
+<footer class="foot">데이터 기준: 2028학년도 치·한·약·수 수시모집. 본 검색기는 검색 편의를 위해 정리한 것으로, 최종 지원 시 각 대학 모집요강을 반드시 확인하시기 바랍니다.</footer>
+
+<!-- glossary modal -->
+<div class="modal-overlay" id="helpModal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+  <div class="modal">
+    <div class="modal-head"><h2 id="helpTitle">수능최저학력기준 용어 정리</h2><button class="modal-close" id="helpClose" aria-label="닫기">&times;</button></div>
+    <div class="modal-body">
+      <div class="glos-sect">반영 영역 조합</div>
+      <div class="glos-row"><div class="glos-term">국수영탐1</div><div class="glos-desc">국어, 수학, 영어 + 탐구(사회·과학 중 1과목)</div></div>
+      <div class="glos-row"><div class="glos-term">국수영과</div><div class="glos-desc">국어, 수학, 영어, 과학탐구</div></div>
+      <div class="glos-row"><div class="glos-term">국수영탐(평균)</div><div class="glos-desc">국어, 수학, 영어 + 탐구(사회·과학 평균)</div></div>
+      <div class="glos-row"><div class="glos-term">국수영사과</div><div class="glos-desc">국어, 수학, 영어, 사회탐구, 과학탐구 (5개 영역 각각 취급)</div></div>
+      <div class="glos-row"><div class="glos-term">수영탐(평균)</div><div class="glos-desc">수학, 영어 + 탐구(사회·과학 평균) — 국어 제외</div></div>
+      <div class="glos-row"><div class="glos-term">국수탐1</div><div class="glos-desc">국어, 수학 + 탐구(사회·과학 중 1과목)</div></div>
+      <div class="glos-row"><div class="glos-term">국수과</div><div class="glos-desc">국어, 수학, 과학탐구</div></div>
+      <div class="glos-sect">합산 · 부가 조건</div>
+      <div class="glos-row"><div class="glos-term">N개 합 M</div><div class="glos-desc">지정 영역 중 N개 등급의 합이 M 이내</div></div>
+      <div class="glos-row"><div class="glos-term">수학 포함</div><div class="glos-desc">반영 영역에 수학을 반드시 포함</div></div>
+      <div class="glos-row"><div class="glos-term">과학 포함</div><div class="glos-desc">반영 영역에 과학탐구를 반드시 포함</div></div>
+      <div class="glos-row"><div class="glos-term">절사</div><div class="glos-desc">탐구 평균 산출 시 소수점 0.5는 버림 (예: 1.5등급 → 1등급)</div></div>
+      <div class="glos-row"><div class="glos-term">한국사 N등급</div><div class="glos-desc">한국사 N등급 이내 충족 필요</div></div>
+      <div class="glos-row"><div class="glos-term">미적용</div><div class="glos-desc">수능최저학력기준 없음</div></div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+const DATA = [{"분야": "치대", "대학": "강원대학교 강릉캠퍼스", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "미래인재면접", "인원": "14", "전형방법": "단계별: 1단계 서류 100% (5배수) → 2단계 서류 60% + 면접 40%", "수능최저": "국수영과 수학 포함 3개 합 6", "인원_num": 14}, {"분야": "치대", "대학": "강원대학교 강릉캠퍼스", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "강원인재-정성평가", "인원": "9", "전형방법": "단계별: 1단계 교과 100% (7배수) → 2단계 서류 80% + 정성평가 20%", "수능최저": "국수영탐1 수학 포함 3개 합 6", "인원_num": 9}, {"분야": "치대", "대학": "경북대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "교과우수자", "인원": "4", "전형방법": "일괄: 교과 80% + 서류평가 20%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 4 절사", "인원_num": 4}, {"분야": "치대", "대학": "경북대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "일반학생", "인원": "9", "전형방법": "일괄: 서류 100%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 4 절사", "인원_num": 9}, {"분야": "치대", "대학": "경북대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재", "인원": "11", "전형방법": "일괄: 교과 80% + 서류평가 20%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 4 절사", "인원_num": 11}, {"분야": "치대", "대학": "경북대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부종합", "전형명": "지역인재", "인원": "16", "전형방법": "단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 4 절사", "인원_num": 16}, {"분야": "치대", "대학": "경북대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부종합", "전형명": "지역인재 추천", "인원": "3", "전형방법": "단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 4 절사", "인원_num": 3}, {"분야": "치대", "대학": "경희대학교", "시기": "수시", "카테고리": "일반", "전형분류": "논술", "전형명": "논술우수자", "인원": "13", "전형방법": "일괄: 논술 70% + 교과 30%", "수능최저": "국수영탐1 3개 합 4, 한국사 5등급", "인원_num": 13}, {"분야": "치대", "대학": "경희대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "지역균형", "인원": "8", "전형방법": "일괄: 교과·출결 70% + 서류 30%", "수능최저": "국수영탐1 3개 합 4, 한국사 5등급", "인원_num": 8}, {"분야": "치대", "대학": "경희대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "네오르네상스(면접형)", "인원": "10", "전형방법": "단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "미적용", "인원_num": 10}, {"분야": "치대", "대학": "경희대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "네오르네상스(서류형)", "인원": "9", "전형방법": "일괄: 서류 100%", "수능최저": "국수영탐1 3개 합 4, 한국사 5등급", "인원_num": 9}, {"분야": "치대", "대학": "단국대학교 천안캠퍼스", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "DKU인재(면접형)", "인원": "14", "전형방법": "단계별: 1단계 교과 100% (3배수) → 2단계: 1단계 60% + 면접 40%", "수능최저": "국수영과 수학 포함 3개 합 4", "인원_num": 14}, {"분야": "치대", "대학": "단국대학교 천안캠퍼스", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역메디바이오인재", "인원": "28", "전형방법": "일괄: 교과 95% + 출결 5%", "수능최저": "국수영과 수학 포함 3개 합 4", "인원_num": 28}, {"분야": "치대", "대학": "부산대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "교과우수", "인원": "16", "전형방법": "일괄: 교과 80% + 학업역량평가 20%", "수능최저": "국수영탐1 수학 포함 3개 합 4, 한국사 4등급", "인원_num": 16}, {"분야": "치대", "대학": "부산대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재(교과지역)", "인원": "10", "전형방법": "일괄: 교과 80% + 학업역량평가 20%", "수능최저": "국수영탐1 수학 포함 3개 합 4, 한국사 4등급", "인원_num": 10}, {"분야": "치대", "대학": "부산대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부종합", "전형명": "지역인재(면접지역)", "인원": "15", "전형방법": "단계별: 1단계 서류 100% (4배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 5, 한국사 4등급", "인원_num": 15}, {"분야": "치대", "대학": "서울대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "일반", "인원": "25", "전형방법": "단계별: 1단계 서류 100% (2배수) → 2단계 1단계 50% + 면접 50%", "수능최저": "미적용", "인원_num": 25}, {"분야": "치대", "대학": "서울대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "지역균형", "인원": "10", "전형방법": "단계별: 1단계 서류 100% (3배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "미적용", "인원_num": 10}, {"분야": "치대", "대학": "연세대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "추천형", "인원": "12", "전형방법": "단계별: 1단계 교과 100% (5배수) → 2단계 1단계 80% + 서류정성평가 20%", "수능최저": "국수탐1 수학 포함 2개 각 1등급, 영어 3등급, 한국사 4등급", "인원_num": 12}, {"분야": "치대", "대학": "연세대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "종합인재형", "인원": "16", "전형방법": "단계별: 1단계 서류 100% (4배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수탐1 수학 포함 2개 각 1등급, 영어 3등급, 한국사 4등급", "인원_num": 16}, {"분야": "치대", "대학": "연세대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "탐구인재형(일반)", "인원": "12", "전형방법": "단계별: 1단계 서류 100% (4배수) → 2단계 1단계 60% + 면접 40%", "수능최저": "미적용", "인원_num": 12}, {"분야": "치대", "대학": "원광대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "학생부종합", "인원": "6", "전형방법": "단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 6", "인원_num": 6}, {"분야": "치대", "대학": "원광대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재교과(전북)", "인원": "19", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 수학 포함 3개 합 5", "인원_num": 19}, {"분야": "치대", "대학": "원광대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재교과(호남)", "인원": "17", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 수학 포함 3개 합 5", "인원_num": 17}, {"분야": "치대", "대학": "원광대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부종합", "전형명": "지역인재종합(전북)", "인원": "18", "전형방법": "단계별: 1단계: 서류 100%(4배수) → 2단계 1단계 70% +면접 30%", "수능최저": "국수영과 수학 포함 3개 합 6", "인원_num": 18}, {"분야": "치대", "대학": "원광대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부종합", "전형명": "지역인재종합(호남)", "인원": "8", "전형방법": "단계별: 1단계: 서류 100%(4배수) → 2단계 1단계 70% +면접 30%", "수능최저": "국수영과 수학 포함 3개 합 6", "인원_num": 8}, {"분야": "치대", "대학": "전북대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "일반학생", "인원": "3", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 수학 포함 3개 합 5", "인원_num": 3}, {"분야": "치대", "대학": "전북대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "큰사람전형", "인원": "4", "전형방법": "단계별: 1단계 서류 100% (3배수) → 2단계 1단계 80% + 면접 20%", "수능최저": "국수영과 수학 포함 3개 합 6", "인원_num": 4}, {"분야": "치대", "대학": "전북대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재 1유형(호남)", "인원": "5", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 수학 포함 3개 합 6", "인원_num": 5}, {"분야": "치대", "대학": "전북대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재 2유형(전북)", "인원": "19", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 수학 포함 3개 합 6", "인원_num": 19}, {"분야": "치대", "대학": "조선대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "일반전형", "인원": "7", "전형방법": "일괄: 교과 90% + 출결 10%", "수능최저": "국수영과 수학 포함 3개 합 5", "인원_num": 7}, {"분야": "치대", "대학": "조선대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "면접전형", "인원": "6", "전형방법": "단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수영과 수학 포함 3개 합 5", "인원_num": 6}, {"분야": "치대", "대학": "조선대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "서류전형", "인원": "6", "전형방법": "일괄: 서류 100%", "수능최저": "국수영과 수학 포함 3개 합 5", "인원_num": 6}, {"분야": "치대", "대학": "조선대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재", "인원": "43", "전형방법": "일괄: 교과 90% + 출결 10%", "수능최저": "국수영과 수학 포함 3개 합 5", "인원_num": 43}, {"분야": "한의대", "대학": "가천대학교", "시기": "수시", "카테고리": "일반", "전형분류": "논술", "전형명": "논술", "인원": "8", "전형방법": "일괄: 논술 100%", "수능최저": "국수영과 2개 합 2", "인원_num": 8}, {"분야": "한의대", "대학": "가천대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "학생부우수자", "인원": "6", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 2개 합 2", "인원_num": 6}, {"분야": "한의대", "대학": "경희대학교", "시기": "수시", "카테고리": "일반", "전형분류": "논술", "전형명": "논술우수자(인문)", "인원": "6", "전형방법": "일괄: 논술 100%", "수능최저": "국수영탐1 3개 합 4, 한국사 5등급", "인원_num": 6}, {"분야": "한의대", "대학": "경희대학교", "시기": "수시", "카테고리": "일반", "전형분류": "논술", "전형명": "논술우수자(자연)", "인원": "14", "전형방법": "일괄: 논술 100%", "수능최저": "국수영탐1 3개 합 4, 한국사 5등급", "인원_num": 14}, {"분야": "한의대", "대학": "경희대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "지역균형(인문)", "인원": "4", "전형방법": "일괄: 교과·출결 70% + 서류 30%", "수능최저": "국수영탐1 3개 합 4, 한국사 5등급", "인원_num": 4}, {"분야": "한의대", "대학": "경희대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "지역균형(자연)", "인원": "4", "전형방법": "일괄: 교과·출결 70% + 서류 30%", "수능최저": "국수영탐1 3개 합 4, 한국사 5등급", "인원_num": 4}, {"분야": "한의대", "대학": "경희대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "네오르네상스(면접)(인문)", "인원": "6", "전형방법": "단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "미적용", "인원_num": 6}, {"분야": "한의대", "대학": "경희대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "네오르네상스(면접)(자연)", "인원": "8", "전형방법": "단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "미적용", "인원_num": 8}, {"분야": "한의대", "대학": "경희대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "네오르네상스(서류)(인문)", "인원": "6", "전형방법": "일괄: 서류 100%", "수능최저": "국수영탐1 3개 합 4, 한국사 5등급", "인원_num": 6}, {"분야": "한의대", "대학": "경희대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "네오르네상스(서류)(자연)", "인원": "8", "전형방법": "일괄: 서류 100%", "수능최저": "국수영탐1 3개 합 4, 한국사 5등급", "인원_num": 8}, {"분야": "한의대", "대학": "대구한의대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "일반(인문)", "인원": "8", "전형방법": "일괄: 교과 100%", "수능최저": "국수영사 3개 합 5", "인원_num": 8}, {"분야": "한의대", "대학": "대구한의대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "일반(자연)", "인원": "10", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 3개 합 5", "인원_num": 10}, {"분야": "한의대", "대학": "대구한의대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "일반(인문)", "인원": "7", "전형방법": "일괄: 서류 100%", "수능최저": "국수영사 3개 합 5", "인원_num": 7}, {"분야": "한의대", "대학": "대구한의대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "일반(자연)", "인원": "10", "전형방법": "일괄: 서류 100%", "수능최저": "국수영과 3개 합 5", "인원_num": 10}, {"분야": "한의대", "대학": "대구한의대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재(인문)", "인원": "6", "전형방법": "일괄: 교과 100%", "수능최저": "국수영사 3개 합 5", "인원_num": 6}, {"분야": "한의대", "대학": "대구한의대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재(자연)", "인원": "13", "전형방법": "일괄: 교과 80% + 출결 20%", "수능최저": "국수영과 3개 합 5", "인원_num": 13}, {"분야": "한의대", "대학": "대구한의대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부종합", "전형명": "지역인재(인문)", "인원": "7", "전형방법": "일괄: 서류 100%", "수능최저": "국수영사 3개 합 5", "인원_num": 7}, {"분야": "한의대", "대학": "대구한의대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부종합", "전형명": "지역인재(자연)", "인원": "15", "전형방법": "일괄: 서류 100%", "수능최저": "국수영과 3개 합 5", "인원_num": 15}, {"분야": "한의대", "대학": "대전대학교", "시기": "수시", "카테고리": "일반", "전형분류": "논술", "전형명": "한의논술", "인원": "7", "전형방법": "일괄: 논술 90% + 교과 10%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 5 절사, 한국사 5등급", "인원_num": 7}, {"분야": "한의대", "대학": "대전대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "교과중점", "인원": "7", "전형방법": "일괄: 교과 100%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 5 절사, 한국사 5등급", "인원_num": 7}, {"분야": "한의대", "대학": "대전대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "대전대종합(면접)", "인원": "20", "전형방법": "단계별: 1단계 서류 100% (5배수) → 2단계 1단계 60% + 면접 40%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 6 절사, 한국사 5등급", "인원_num": 20}, {"분야": "한의대", "대학": "대전대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재1(교과)", "인원": "23", "전형방법": "일괄: 교과 100%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 6 절사, 한국사 5등급", "인원_num": 23}, {"분야": "한의대", "대학": "동국대학교 WISE캠퍼스", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "학업성적우수자", "인원": "15", "전형방법": "일괄: 교과 100%", "수능최저": "국수영탐(평균) 3개 합 5 절사", "인원_num": 15}, {"분야": "한의대", "대학": "동국대학교 WISE캠퍼스", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "참사람", "인원": "8", "전형방법": "단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수영탐(평균) 3개 합 5 절사", "인원_num": 8}, {"분야": "한의대", "대학": "동국대학교 WISE캠퍼스", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재(교과)", "인원": "20", "전형방법": "일괄: 교과 100%", "수능최저": "국수영탐(평균) 3개 합 6 절사", "인원_num": 20}, {"분야": "한의대", "대학": "동국대학교 WISE캠퍼스", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부종합", "전형명": "지역인재(종합)", "인원": "13", "전형방법": "단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수영탐(평균) 3개 합 6 절사", "인원_num": 13}, {"분야": "한의대", "대학": "동신대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "일반학생", "인원": "8", "전형방법": "일괄: 교과 80% + 출결 20%", "수능최저": "국수영탐1 3개 합 5", "인원_num": 8}, {"분야": "한의대", "대학": "동신대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재1(광주, 전남)", "인원": "16", "전형방법": "일괄: 교과 80% + 출결 20%", "수능최저": "국수영탐1 3개 합 5", "인원_num": 16}, {"분야": "한의대", "대학": "동신대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재2(광주, 전남, 전북)", "인원": "6", "전형방법": "일괄: 교과 80% + 출결 20%", "수능최저": "국수영탐1 3개 합 5", "인원_num": 6}, {"분야": "한의대", "대학": "동의대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "일반고교과", "인원": "9", "전형방법": "일괄: 교과 90% + 출결 10%", "수능최저": "국수영탐(평균) 3개 합 5", "인원_num": 9}, {"분야": "한의대", "대학": "동의대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "학교생활우수자(면접)", "인원": "9", "전형방법": "단계별: 1단계 서류 100% (6배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "미적용", "인원_num": 9}, {"분야": "한의대", "대학": "동의대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재교과", "인원": "18", "전형방법": "일괄: 교과 90% + 출결 10%", "수능최저": "국수영탐(평균) 3개 합 5", "인원_num": 18}, {"분야": "한의대", "대학": "상지대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "교과일반", "인원": "7", "전형방법": "일괄: 교과 100%", "수능최저": "국수영탐(평균) 3개 합 5", "인원_num": 7}, {"분야": "한의대", "대학": "상지대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "종합일반", "인원": "15", "전형방법": "단계별: 1단계 교과 20% + 서류평가 60% (5배수) → 2단계 교과 20% + 서류평가 60% +면접 20%", "수능최저": "국수영탐(평균) 3개 합 5", "인원_num": 15}, {"분야": "한의대", "대학": "상지대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "교과강원인재", "인원": "6", "전형방법": "일괄: 교과 100%", "수능최저": "국수영탐(평균) 3개 합 6", "인원_num": 6}, {"분야": "한의대", "대학": "상지대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부종합", "전형명": "종합강원인재", "인원": "6", "전형방법": "단계별: 1단계 교과 20% + 서류평가 60% (5배수) → 2단계 교과 20% + 서류평가 60% +면접 20%", "수능최저": "국수영탐(평균) 3개 합 6", "인원_num": 6}, {"분야": "한의대", "대학": "세명대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "인문계고교", "인원": "5", "전형방법": "일괄: 교과 100%", "수능최저": "국수영 3개 합 5", "인원_num": 5}, {"분야": "한의대", "대학": "세명대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "SMU의료인재", "인원": "6", "전형방법": "일괄: 서류 100%", "수능최저": "국수영탐1 수학 포함 3개 합 5", "인원_num": 6}, {"분야": "한의대", "대학": "세명대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재(일반)", "인원": "16", "전형방법": "일괄: 교과 100%", "수능최저": "국수영 3개 합 5", "인원_num": 16}, {"분야": "한의대", "대학": "우석대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "교과면접", "인원": "10", "전형방법": "단계별: 1단계 교과 90% + 출결 10% (6배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 6 절사", "인원_num": 10}, {"분야": "한의대", "대학": "우석대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재 1", "인원": "7", "전형방법": "일괄: 교과 90% + 출결 10%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 6", "인원_num": 7}, {"분야": "한의대", "대학": "우석대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재 2", "인원": "8", "전형방법": "일괄: 교과 90% + 출결 10%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 6", "인원_num": 8}, {"분야": "한의대", "대학": "원광대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "학생부종합", "인원": "12", "전형방법": "단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 6", "인원_num": 12}, {"분야": "한의대", "대학": "원광대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재교과(전북)", "인원": "12", "전형방법": "일괄: 교과 98.3% + 출결 1.7% (실질 90+10)", "수능최저": "국수영과 수학 포함 3개 합 5", "인원_num": 12}, {"분야": "한의대", "대학": "원광대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재종합(호남)", "인원": "7", "전형방법": "일괄: 교과 98.3% + 출결 1.7% (실질 90+10)", "수능최저": "국수영과 수학 포함 3개 합 5", "인원_num": 7}, {"분야": "한의대", "대학": "원광대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부종합", "전형명": "지역인재종합(전북)", "인원": "30", "전형방법": "단계별: 1단계 서류 100% (4배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수영과 수학 포함 3개 합 6", "인원_num": 30}, {"분야": "한의대", "대학": "원광대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부종합", "전형명": "지역인재종합(호남)", "인원": "21", "전형방법": "단계별: 1단계 서류 100% (4배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수영과 수학 포함 3개 합 6", "인원_num": 21}, {"분야": "수의대", "대학": "강원대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "미래인재서류", "인원": "5", "전형방법": "일괄: 서류 100%", "수능최저": "국수영과 수학 포함 3개 합 8", "인원_num": 5}, {"분야": "수의대", "대학": "강원대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "강원인재-정성평가", "인원": "10", "전형방법": "단계별: 1단계 교과 100% (4배수) → 2단계 교과 80% + 정성 20%", "수능최저": "국수영과 수학 포함 3개 합 8", "인원_num": 10}, {"분야": "수의대", "대학": "강원대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "일반-정성평가", "인원": "15", "전형방법": "단계별: 1단계 교과 100% (7배수) → 2단계 교과 80% + 정성 20%", "수능최저": "국수영과 수학 포함 3개 합 8", "인원_num": 15}, {"분야": "수의대", "대학": "건국대학교", "시기": "수시", "카테고리": "일반", "전형분류": "논술", "전형명": "KU논술", "인원": "6", "전형방법": "일괄: 논술 100%", "수능최저": "국수영탐(평균) 3개 합 4, 한국사 포함", "인원_num": 6}, {"분야": "수의대", "대학": "건국대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "KU지역균형", "인원": "5", "전형방법": "일괄: 교과 70% + 서류 30%", "수능최저": "국수영탐(평균) 3개 합 4, 한국사 포함", "인원_num": 5}, {"분야": "수의대", "대학": "건국대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "KU자기추천", "인원": "24", "전형방법": "단계별: 1단계 서류 100% (3배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "미적용", "인원_num": 24}, {"분야": "수의대", "대학": "경북대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "교과우수자전형", "인원": "10", "전형방법": "일괄: 교과 80% + 서류평가 20%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 5 절사", "인원_num": 10}, {"분야": "수의대", "대학": "경북대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "일반학생", "인원": "10", "전형방법": "일괄: 서류 100%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 5 절사", "인원_num": 10}, {"분야": "수의대", "대학": "경북대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재전형", "인원": "14", "전형방법": "일괄: 교과 80% + 서류평가 20%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 5 절사", "인원_num": 14}, {"분야": "수의대", "대학": "경북대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부종합", "전형명": "지역인재전형", "인원": "10", "전형방법": "단계별: 1단계 서류 100% (3배수) → 2단계 1단계 80% + 면접 20%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 5 절사", "인원_num": 10}, {"분야": "수의대", "대학": "경상국립대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "일반전형", "인원": "10", "전형방법": "일괄: 교과 80% + 정성 20%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 6 절사", "인원_num": 10}, {"분야": "수의대", "대학": "경상국립대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "일반(면접전형)", "인원": "8", "전형방법": "단계별: 1단계 서류 100% (3배수) → 2단계 1단계 80% + 면접 20%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 7 절사", "인원_num": 8}, {"분야": "수의대", "대학": "경상국립대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재", "인원": "20", "전형방법": "일괄: 교과 80% + 정성 20%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 6 절사", "인원_num": 20}, {"분야": "수의대", "대학": "경상국립대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부종합", "전형명": "지역인재", "인원": "3", "전형방법": "단계별: 1단계 서류 100% (3배수) → 2단계 1단계 80% + 면접 20%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 7 절사", "인원_num": 3}, {"분야": "수의대", "대학": "서울대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "일반전형", "인원": "17", "전형방법": "단계별: 1단계 서류 100% (2배수) → 2단계 1단계 50% + 면접 50%", "수능최저": "미적용", "인원_num": 17}, {"분야": "수의대", "대학": "서울대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "지역균형전형", "인원": "6", "전형방법": "단계별: 1단계 서류 100% (3배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "미적용", "인원_num": 6}, {"분야": "수의대", "대학": "전남대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "학생부교과(일반)", "인원": "10", "전형방법": "일괄: 교과 90% + 출결 10%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 6", "인원_num": 10}, {"분야": "수의대", "대학": "전남대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "고교생활우수자Ⅰ", "인원": "8", "전형방법": "단계별: 1단계 서류 100% (6배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 7", "인원_num": 8}, {"분야": "수의대", "대학": "전남대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "학생부교과(지역인재)", "인원": "14", "전형방법": "일괄: 교과 90% + 출결 10%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 7", "인원_num": 14}, {"분야": "수의대", "대학": "전북대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "일반학생", "인원": "11", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 수학 포함 3개 합 7", "인원_num": 11}, {"분야": "수의대", "대학": "전북대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "큰사람전형", "인원": "3", "전형방법": "단계별: 1단계 서류 100% (3배수) → 2단계 1단계 80% + 면접 20%", "수능최저": "국수영과 수학 포함 3개 합 7", "인원_num": 3}, {"분야": "수의대", "대학": "전북대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 수학 포함 3개 합 7", "전형명": "지역인재(전북)", "인원": "7", "인원_num": 7}, {"분야": "수의대", "대학": "전북대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 수학 포함 3개 합 7", "전형명": "지역인재(호남)", "인원": "8", "인원_num": 8}, {"분야": "수의대", "대학": "제주대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "일반학생", "인원": "10", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 수학 포함 3개 합 7", "인원_num": 10}, {"분야": "수의대", "대학": "제주대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "일반학생", "인원": "2", "전형방법": "단계별: 1단계 서류 100% (3배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "미적용", "인원_num": 2}, {"분야": "수의대", "대학": "제주대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "지역인재", "인원": "3", "전형방법": "단계별: 1단계 서류 100% (3배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "미적용", "인원_num": 3}, {"분야": "수의대", "대학": "제주대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재", "인원": "14", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 수학 포함 3개 합 7", "인원_num": 14}, {"분야": "수의대", "대학": "충남대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "일반", "인원": "10", "전형방법": "일괄: 교과 80% + 정성평가 20%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 6", "인원_num": 10}, {"분야": "수의대", "대학": "충남대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "학생부종합 Ⅰ(면접)", "인원": "5", "전형방법": "단계별: 1단계 서류 100% (3배수) → 2단계 1단계 66.7% + 면접 33.3%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 7", "인원_num": 5}, {"분야": "수의대", "대학": "충남대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "학생부종합 Ⅰ(서류)", "인원": "5", "전형방법": "일괄: 서류 100%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 7", "인원_num": 5}, {"분야": "수의대", "대학": "충남대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재", "인원": "14", "전형방법": "일괄: 교과 80% + 정성평가 20%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 6", "인원_num": 14}, {"분야": "수의대", "대학": "충북대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "학생부교과", "인원": "5", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 3개 합 7", "인원_num": 5}, {"분야": "수의대", "대학": "충북대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "학생부종합Ⅰ", "인원": "8", "전형방법": "일괄: 서류 100%", "수능최저": "미적용", "인원_num": 8}, {"분야": "수의대", "대학": "충북대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "학생부종합Ⅱ", "인원": "7", "전형방법": "일괄: 서류 100%", "수능최저": "국수영과 3개 합 8", "인원_num": 7}, {"분야": "수의대", "대학": "충북대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재", "인원": "12", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 3개 합 8", "인원_num": 12}, {"분야": "약대", "대학": "가천대학교", "시기": "수시", "카테고리": "일반", "전형분류": "논술", "전형명": "논술", "인원": "6", "전형방법": "일괄: 논술 100%", "수능최저": "국수영과 3개 합 5", "인원_num": 6}, {"분야": "약대", "대학": "가천대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "학생부우수자", "인원": "3", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 3개 합 5", "인원_num": 3}, {"분야": "약대", "대학": "가천대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "가천의약학", "인원": "10", "전형방법": "단계별: 1단계 서류 100% (5배수) → 2단계 1단계 50% + 면접 50%", "수능최저": "국수영과 3개 합 5", "인원_num": 10}, {"분야": "약대", "대학": "가톨릭대학교", "시기": "수시", "카테고리": "일반", "전형분류": "논술", "전형명": "논술", "인원": "6", "전형방법": "일괄: 논술 100%", "수능최저": "국수영과 3개 합 5", "인원_num": 6}, {"분야": "약대", "대학": "가톨릭대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "학교장추천", "인원": "14", "전형방법": "단계별: 1단계 서류 100% (3~4배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수영과 3개 합 5", "인원_num": 14}, {"분야": "약대", "대학": "강원대학교 춘천캠퍼스", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "일반-정성평가", "인원": "13", "전형방법": "단계별: 1단계 교과 100% (7배수) → 2단계 교과 80% + 정성 20%", "수능최저": "국수영과 수학 포함 3개 합 7", "인원_num": 13}, {"분야": "약대", "대학": "강원대학교 춘천캠퍼스", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "강원인재-정성평가", "인원": "14", "전형방법": "단계별: 1단계 교과 100% (4배수) → 2단계 교과 80% + 정성 20%", "수능최저": "국수영과 수학 포함 3개 합 8", "인원_num": 14}, {"분야": "약대", "대학": "경북대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "교과우수자전형", "인원": "8", "전형방법": "일괄: 교과 80% + 서류평가 20%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 5 절사", "인원_num": 8}, {"분야": "약대", "대학": "경북대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부종합", "전형명": "지역인재전형", "인원": "18", "전형방법": "단계별: 1단계 서류 100% (3배수) → 2단계 1단계 80% + 면접 20%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 5 절사", "인원_num": 18}, {"분야": "약대", "대학": "경상국립대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "일반전형", "인원": "5", "전형방법": "일괄: 교과 80% + 정성 20%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 6 절사", "인원_num": 5}, {"분야": "약대", "대학": "경상국립대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "일반전형(면접)", "인원": "5", "전형방법": "단계별: 1단계 서류 100% (3배수) → 2단계 1단계 80% + 면접 20%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 7 절사", "인원_num": 5}, {"분야": "약대", "대학": "경상국립대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재", "인원": "5", "전형방법": "일괄: 교과 80% + 정성 20%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 6 절사", "인원_num": 5}, {"분야": "약대", "대학": "경상국립대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부종합", "전형명": "지역인재", "인원": "4", "전형방법": "단계별: 1단계 서류 100% (3배수) → 2단계 1단계 80% + 면접 20%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 7 절사", "인원_num": 4}, {"분야": "약대", "대학": "경성대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "일반계고교과", "인원": "8", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 3개 합 5", "인원_num": 8}, {"분야": "약대", "대학": "경성대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "학교생활우수자", "인원": "5", "전형방법": "일괄: 서류 100%", "수능최저": "국수영과 3개 합 5", "인원_num": 5}, {"분야": "약대", "대학": "경성대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재", "인원": "18", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 3개 합 5", "인원_num": 18}, {"분야": "약대", "대학": "계명대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "면접전형", "인원": "5", "전형방법": "단계별: 1단계 교과 100% (20배수) → 2단계 1단계 80% + 면접 20%", "수능최저": "국수영과 3개 합 6", "인원_num": 5}, {"분야": "약대", "대학": "계명대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "일반전형", "인원": "4", "전형방법": "일괄: 서류 100%", "수능최저": "국수영과 3개 합 6", "인원_num": 4}, {"분야": "약대", "대학": "계명대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역전형", "인원": "8", "전형방법": "단계별: 1단계 교과 100% (15배수) → 2단계 1단계 80% + 면접 20%", "수능최저": "국수영과 3개 합 5", "인원_num": 8}, {"분야": "약대", "대학": "계명대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부종합", "전형명": "지역전형", "인원": "8", "전형방법": "단계별: 1단계 서류 100% (10배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수영과 3개 합 6", "인원_num": 8}, {"분야": "약대", "대학": "고려대학교 세종캠퍼스", "시기": "수시", "카테고리": "일반", "전형분류": "논술", "전형명": "논술", "인원": "5", "전형방법": "일괄: 논술 100%", "수능최저": "국수영과 3개 합 5", "인원_num": 5}, {"분야": "약대", "대학": "고려대학교 세종캠퍼스", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "일반전형-면접형", "인원": "7", "전형방법": "단계별: 1단계 서류 100% (3배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수영과 3개 합 5", "인원_num": 7}, {"분야": "약대", "대학": "고려대학교 세종캠퍼스", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부종합", "전형명": "지역인재", "인원": "10", "전형방법": "단계별: 1단계 서류 100% (3배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수영과 3개 합 5", "인원_num": 10}, {"분야": "약대", "대학": "단국대학교 천안캠퍼스", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "DKU인재(면접형)", "인원": "8", "전형방법": "단계별: 1단계 서류 100% (3배수) → 2단계 1단계 60% + 면접 40%", "수능최저": "국수영과 수학 포함 3개 합 5", "인원_num": 8}, {"분야": "약대", "대학": "단국대학교 천안캠퍼스", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역메디바이오인재", "인원": "12", "전형방법": "일괄: 교과 95% + 출결5%", "수능최저": "국수영과 3개 합 5", "인원_num": 12}, {"분야": "약대", "대학": "대구가톨릭대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "교과", "인원": "12", "전형방법": "일괄: 교과 90% + 서류 10%", "수능최저": "국수영과 수학 포함 3개 합 5", "인원_num": 12}, {"분야": "약대", "대학": "대구가톨릭대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역교과", "인원": "14", "전형방법": "일괄: 교과 90% + 서류 10%", "수능최저": "국수영과 수학 포함 3개 합 5", "인원_num": 14}, {"분야": "약대", "대학": "대구가톨릭대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부종합", "전형명": "지역종합", "인원": "5", "전형방법": "단계별: 1단계 서류 100% (7배수) → 2단계 1단계 80% + 면접 20%", "수능최저": "국수영과 수학 포함 3개 합 6", "인원_num": 5}, {"분야": "약대", "대학": "덕성여자대학교", "시기": "수시", "카테고리": "일반", "전형분류": "논술", "전형명": "논술", "인원": "5", "전형방법": "일괄: 논술 100%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 5", "인원_num": 5}, {"분야": "약대", "대학": "덕성여자대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "고교추천", "인원": "20", "전형방법": "일괄: 교과 90% + 출결 10%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 5", "인원_num": 20}, {"분야": "약대", "대학": "덕성여자대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "덕성인재Ⅱ", "인원": "27", "전형방법": "단계별: 1단계 서류 100% (3배수) → 2단계 1단계 60% + 면접 40%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 6", "인원_num": 27}, {"분야": "약대", "대학": "동덕여자대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "학생부교과우수자", "인원": "8", "전형방법": "일괄: 교과 100%", "수능최저": "국수과 3개 합 5", "인원_num": 8}, {"분야": "약대", "대학": "동덕여자대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "동덕창의리더", "인원": "8", "전형방법": "단계별: 1단계 서류 100% (3배수) → 2단계 1단계 40% + 면접 60%", "수능최저": "국수과 3개 합 5", "인원_num": 8}, {"분야": "약대", "대학": "목포대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "교과일반", "인원": "3", "전형방법": "일괄: 교과 90% + 출결 10%", "수능최저": "국수영과 수학·과학 포함 3개 합 7", "인원_num": 3}, {"분야": "약대", "대학": "목포대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재", "인원": "11", "전형방법": "일괄: 교과 90% + 출결 10%", "수능최저": "국수영과 수학·과학 포함 3개 합 7", "인원_num": 11}, {"분야": "약대", "대학": "목포대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부종합", "전형명": "지연인재", "인원": "4", "전형방법": "단계별: 1단계 서류 100% (6배수) → 2단계 1단계 80% + 면접 20%", "수능최저": "국수영과 수학·과학 포함 3개 합 7", "인원_num": 4}, {"분야": "약대", "대학": "부산대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "서류전형", "인원": "10", "전형방법": "일괄: 서류 100%", "수능최저": "국수영탐1 수학 포함 3개 합 5, 한국사 4등급", "인원_num": 10}, {"분야": "약대", "대학": "부산대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재(교과지역)", "인원": "14", "전형방법": "일괄: 교과 80% + 학업역량평가 20%", "수능최저": "국수영탐1 수학 포함 3개 합 4, 한국사 4등급", "인원_num": 14}, {"분야": "약대", "대학": "부산대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부종합", "전형명": "지역인재(면접지역)", "인원": "15", "전형방법": "단계별: 1단계 서류 100% (4배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수영탐1 수학 포함 3개 합 5, 한국사 4등급", "인원_num": 15}, {"분야": "약대", "대학": "삼육대학교", "시기": "수시", "카테고리": "일반", "전형분류": "논술", "전형명": "논술우수자", "인원": "5", "전형방법": "일괄: 논술 100%", "수능최저": "국수영과 3개 합 5", "인원_num": 5}, {"분야": "약대", "대학": "삼육대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "학교장추천", "인원": "3", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 3개 합 5", "인원_num": 3}, {"분야": "약대", "대학": "삼육대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "세움인재", "인원": "7", "전형방법": "단계별: 1단계 서류 100% (4배수) → 2단계 1단계 60% + 면접 40%", "수능최저": "국수영과 3개 합 5", "인원_num": 7}, {"분야": "약대", "대학": "서울대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "일반", "인원": "29", "전형방법": "단계별: 1단계 서류 100% (2배수) → 2단계 1단계 50% + 면접 50%", "수능최저": "미적용", "인원_num": 29}, {"분야": "약대", "대학": "서울대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "지역균형", "인원": "21", "전형방법": "단계별: 1단계 서류 100% (3배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "미적용", "인원_num": 21}, {"분야": "약대", "대학": "성균관대학교", "시기": "수시", "카테고리": "일반", "전형분류": "논술", "전형명": "수리형", "인원": "5", "전형방법": "일괄: 논술 100%", "수능최저": "국수영사과 3개 합 5", "인원_num": 5}, {"분야": "약대", "대학": "성균관대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "서류형-융합인재", "인원": "10", "전형방법": "일괄: 서류 100%", "수능최저": "국수영사과 3개 합 6", "인원_num": 10}, {"분야": "약대", "대학": "성균관대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "서류형-탐구인재", "인원": "20", "전형방법": "일괄: 서류 100%", "수능최저": "미적용", "인원_num": 20}, {"분야": "약대", "대학": "숙명여자대학교", "시기": "수시", "카테고리": "일반", "전형분류": "논술", "전형명": "논술우수자", "인원": "4", "전형방법": "일괄: 논술 85% + 교과 15%", "수능최저": "국수영탐1 수학 포함 3개 합 4", "인원_num": 4}, {"분야": "약대", "대학": "숙명여자대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "지역균형선발", "인원": "5", "전형방법": "일괄: 교과 70% + 서류(교과위주) 30%", "수능최저": "국수영탐1 수학 포함 3개 합 5", "인원_num": 5}, {"분야": "약대", "대학": "숙명여자대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "숙명인재(면접형)", "인원": "15", "전형방법": "단계별: 1단계 서류 100% (4배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "미적용", "인원_num": 15}, {"분야": "약대", "대학": "순천대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "교과일반", "인원": "3", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 수학·과학 포함 3개 합 7", "인원_num": 3}, {"분야": "약대", "대학": "순천대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "종합면접", "인원": "2", "전형방법": "단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수영과 수학·과학 포함 3개 합 7", "인원_num": 2}, {"분야": "약대", "대학": "순천대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "교과지역인재", "인원": "14", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 수학·과학 포함 3개 합 7", "인원_num": 14}, {"분야": "약대", "대학": "아주대학교", "시기": "수시", "카테고리": "일반", "전형분류": "논술", "전형명": "논술우수자", "인원": "5", "전형방법": "일괄: 논술 90% + 교과 10%", "수능최저": "국수영탐(평균) 3개 합 5", "인원_num": 5}, {"분야": "약대", "대학": "아주대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "ACE전형(면접형)", "인원": "15", "전형방법": "단계별: 1단계 서류 100%(4배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수영탐(평균) 3개 합 5", "인원_num": 15}, {"분야": "약대", "대학": "연세대학교", "시기": "수시", "카테고리": "일반", "전형분류": "논술", "전형명": "논술전형", "인원": "5", "전형방법": "일괄 논술 100%", "수능최저": "국수영사과 국어·수학 포함 3개 합 5, 영어 3등급, 한국사 4등급", "인원_num": 5}, {"분야": "약대", "대학": "연세대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "추천형", "인원": "6", "전형방법": "단계별: 1단계 교과 100% (5배수) → 2단계 1단계 80% + 서류평가 20%", "수능최저": "국수탐1 수학 포함 2개 각 1등급, 영어 3등급, 한국사 4등급", "인원_num": 6}, {"분야": "약대", "대학": "연세대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "종합인재형", "인원": "5", "전형방법": "단계별: 1단계 서류 100% (4배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수탐1 수학 포함 2개 각 1등급, 영어 3등급, 한국사 4등급", "인원_num": 5}, {"분야": "약대", "대학": "연세대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "탐구인재형(일반)", "인원": "4", "전형방법": "단계별: 1단계 서류 100% (4배수) → 2단계 1단계 60% + 면접 40%", "수능최저": "국수탐1 수학 포함 2개 각 1등급, 영어 3등급, 한국사 4등급", "인원_num": 4}, {"분야": "약대", "대학": "영남대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "일반학생", "인원": "15", "전형방법": "일괄: 교과 90% + 서류 5% + 출결 5%", "수능최저": "국수영과 3개 합 5", "인원_num": 15}, {"분야": "약대", "대학": "영남대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재", "인원": "17", "전형방법": "일괄: 교과 90% + 서류 5% + 출결 5%", "수능최저": "국수영과 3개 합 5", "인원_num": 17}, {"분야": "약대", "대학": "영남대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부종합", "전형명": "지역인재", "인원": "10", "전형방법": "단계별: 1단계 서류 100%(10배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수영과 3개 합 5", "인원_num": 10}, {"분야": "약대", "대학": "우석대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재 1", "인원": "9", "전형방법": "일괄: 교과 90% + 출결 10%", "수능최저": "국수영과 수학 포함 3개 합 6", "인원_num": 9}, {"분야": "약대", "대학": "우석대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재 2", "인원": "12", "전형방법": "일괄: 교과 90% + 출결 10%", "수능최저": "국수영과 수학 포함 3개 합 6", "인원_num": 12}, {"분야": "약대", "대학": "원광대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "학생부종합", "인원": "5", "전형방법": "단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 7", "인원_num": 5}, {"분야": "약대", "대학": "원광대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부종합", "전형명": "지역인재종합(전북)", "인원": "21", "전형방법": "단계별: 1단계 서류 100% (4배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수영과 수학 포함 3개 합 7", "인원_num": 21}, {"분야": "약대", "대학": "원광대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부종합", "전형명": "지역인재종합(호남)", "인원": "12", "전형방법": "단계별: 1단계 서류 100% (4배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수영과 수학 포함 3개 합 7", "인원_num": 12}, {"분야": "약대", "대학": "이화여자대학교", "시기": "수시", "카테고리": "일반", "전형분류": "논술", "전형명": "논술", "인원": "5", "전형방법": "일괄 논술 100%", "수능최저": "국수영탐1 4개 합 6", "인원_num": 5}, {"분야": "약대", "대학": "이화여자대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "미래인재(면접)", "인원": "10", "전형방법": "단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "미적용", "인원_num": 10}, {"분야": "약대", "대학": "이화여자대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "미래인재(서류)", "인원": "9", "전형방법": "일괄: 서류 100%", "수능최저": "국수영탐1 4개 합 6", "인원_num": 9}, {"분야": "약대", "대학": "인제대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "의예약학", "인원": "6", "전형방법": "단계별: 1단계 교과 100% (5배수) → 2단계 1단계 80% + 면접 20%", "수능최저": "국수영과 4개 합 9", "인원_num": 6}, {"분야": "약대", "대학": "인제대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "학생부종합(일반)", "인원": "2", "전형방법": "단계별: 1단계 서류 100% (5배수) → 2단계 1단계 80% + 면접 20%", "수능최저": "국수영과 4개 합 9", "인원_num": 2}, {"분야": "약대", "대학": "인제대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재Ⅰ", "인원": "6", "전형방법": "단계별: 1단계 교과 100% (5배수) → 2단계 1단계 80% + 면접 20%", "수능최저": "국수영과 4개 합 9", "인원_num": 6}, {"분야": "약대", "대학": "인제대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재Ⅱ", "인원": "5", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 4개 합 9", "인원_num": 5}, {"분야": "약대", "대학": "전남대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "학생부교과(일반)", "인원": "9", "전형방법": "일괄: 교과 90% + 출결 10%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 6", "인원_num": 9}, {"분야": "약대", "대학": "전남대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "고교생활우수자Ⅰ", "인원": "6", "전형방법": "단계별: 1단계 서류 100% (6배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 7", "인원_num": 6}, {"분야": "약대", "대학": "전남대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "학생부교과(지역균형)", "인원": "2", "전형방법": "일괄: 교과 90% + 출결 10%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 7", "인원_num": 2}, {"분야": "약대", "대학": "전남대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "학생부교과(지역인재)", "인원": "25", "전형방법": "일괄: 교과 90% + 출결 10%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 7", "인원_num": 25}, {"분야": "약대", "대학": "전북대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "일반학생", "인원": "5", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 수학 포함 3개 합 7", "인원_num": 5}, {"분야": "약대", "대학": "전북대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "큰사람", "인원": "2", "전형방법": "단계별: 1단계 서류 100% (3배수) → 2단계 1단계 80% + 면접 20%", "수능최저": "국수영과 수학 포함 3개 합 7", "인원_num": 2}, {"분야": "약대", "대학": "전북대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재1유형(호남)", "인원": "8", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 수학 포함 3개 합 7", "인원_num": 8}, {"분야": "약대", "대학": "전북대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재2유형(전북)", "인원": "7", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 수학 포함 3개 합 7", "인원_num": 7}, {"분야": "약대", "대학": "전북대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부종합", "전형명": "지역인재1유형(호남)", "인원": "1", "전형방법": "단계별: 1단계 서류 100% (3배수) → 2단계 1단계 80% + 면접 20%", "수능최저": "국수영과 수학 포함 3개 합 7", "인원_num": 1}, {"분야": "약대", "대학": "제주대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "일반학생", "인원": "3", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 수학 포함 3개 합 7", "인원_num": 3}, {"분야": "약대", "대학": "제주대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "일반학생", "인원": "6", "전형방법": "단계별: 1단계 서류 100% (3배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "미적용", "인원_num": 6}, {"분야": "약대", "대학": "제주대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재", "인원": "5", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 수학 포함 3개 합 7", "인원_num": 5}, {"분야": "약대", "대학": "제주대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부종합", "전형명": "지역인재", "인원": "7", "전형방법": "단계별: 1단계 서류 100% (3배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "미적용", "인원_num": 7}, {"분야": "약대", "대학": "조선대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "일반전형", "인원": "12", "전형방법": "일괄: 교과 90% + 출결 10%", "수능최저": "국수영과 수학 포함 3개 합 6", "인원_num": 12}, {"분야": "약대", "대학": "조선대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "면접", "인원": "8", "전형방법": "단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%", "수능최저": "국수영과 수학 포함 3개 합 6", "인원_num": 8}, {"분야": "약대", "대학": "조선대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "서류", "인원": "4", "전형방법": "일괄: 서류 100%", "수능최저": "국수영과 수학 포함 3개 합 6", "인원_num": 4}, {"분야": "약대", "대학": "조선대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재", "인원": "34", "전형방법": "일괄: 교과 90% + 출결 10%", "수능최저": "국수영과 수학 포함 3개 합 6", "인원_num": 34}, {"분야": "약대", "대학": "중앙대학교", "시기": "수시", "카테고리": "일반", "전형분류": "논술", "전형명": "모두의논술", "인원": "16", "전형방법": "일괄: 논술 80% + 교과 10% + 출결 10%", "수능최저": "국수영사과 4개 합 5, 한국사 4등급", "인원_num": 16}, {"분야": "약대", "대학": "중앙대학교", "시기": "수시", "카테고리": "일반", "전형분류": "논술", "전형명": "재학생논술", "인원": "8", "전형방법": "일괄: 논술 80% + 교과 10% + 출결 10%", "수능최저": "미적용", "인원_num": 8}, {"분야": "약대", "대학": "중앙대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "지역균형", "인원": "10", "전형방법": "일괄: 교과 70% + 출결 10% + 비교과 20%", "수능최저": "국수영사과 4개 합 5, 한국사 4등급", "인원_num": 10}, {"분야": "약대", "대학": "중앙대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "모두의학종(All)", "인원": "15", "전형방법": "단계별: 1단계 서류 100% (5배수) → 2단계 1단계 60% + 면접 40%", "수능최저": "미적용", "인원_num": 15}, {"분야": "약대", "대학": "중앙대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "최저있는학종(Up)", "인원": "8", "전형방법": "일괄: 서류 100%", "수능최저": "국수영탐(평균) 4개 합 5, 한국사 4등급 (영어 2등급은 누적 20% 미만 시 1등급 간주)", "인원_num": 8}, {"분야": "약대", "대학": "중앙대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "탐구하는학종(Core)", "인원": "20", "전형방법": "단계별: 1단계 서류 100% (5배수) → 2단계 1단계 60% + 면접 40%", "수능최저": "미적용", "인원_num": 20}, {"분야": "약대", "대학": "차의과학대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "CHA학생부교과", "인원": "6", "전형방법": "단계별: 1단계 교과 100% (4배수) → 2단계 1단계 80% + 면접 20%", "수능최저": "국수영과 수학 포함 3개 합 6", "인원_num": 6}, {"분야": "약대", "대학": "차의과학대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "지역균형선발", "인원": "6", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 수학 포함 3개 합 6", "인원_num": 6}, {"분야": "약대", "대학": "차의과학대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "CHA세대인재면접", "인원": "6", "전형방법": "단계별: 1단계 서류 100% (3배수) → 2단계 1단계 60% + 면접 40%", "수능최저": "국수영과 수학 포함 3개 합 6", "인원_num": 6}, {"분야": "약대", "대학": "충남대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "일반전형", "인원": "6", "전형방법": "일괄: 교과 80% + 정성평가 20%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 5", "인원_num": 6}, {"분야": "약대", "대학": "충남대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "학생부종합Ⅰ(면접)", "인원": "6", "전형방법": "단계별: 1단계 서류 100% (3배수) → 2단계 1단계 66.7% + 면접 33.3%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 6", "인원_num": 6}, {"분야": "약대", "대학": "충남대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "학생부종합Ⅱ(서류)", "인원": "2", "전형방법": "일괄: 서류 100%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 6", "인원_num": 2}, {"분야": "약대", "대학": "충남대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재", "인원": "22", "전형방법": "일괄: 교과 80% + 정성평가 20%", "수능최저": "국수영탐(평균) 수학 포함 3개 합 5", "인원_num": 22}, {"분야": "약대", "대학": "충북대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "학생부교과", "인원": "3", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 수학 포함 3개 합 6", "인원_num": 3}, {"분야": "약대", "대학": "충북대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "학생부종합Ⅰ", "인원": "3", "전형방법": "일괄: 서류 100%", "수능최저": "미적용", "인원_num": 3}, {"분야": "약대", "대학": "충북대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "학생부종합Ⅱ", "인원": "3", "전형방법": "일괄: 서류 100%", "수능최저": "국수영과 수학 포함 3개 합 7", "인원_num": 3}, {"분야": "약대", "대학": "충북대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재", "인원": "11", "전형방법": "일괄: 교과 100%", "수능최저": "국수영과 수학 포함 3개 합 7", "인원_num": 11}, {"분야": "약대", "대학": "한양대학교 ERICA캠퍼스", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "지역균형", "인원": "5", "전형방법": "일괄: 교과 100%", "수능최저": "국수영탐1 3개 합 5", "인원_num": 5}, {"분야": "약대", "대학": "한양대학교 ERICA캠퍼스", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "서류형", "인원": "15", "전형방법": "일괄: 서류 100%", "수능최저": "국수영탐1 3개 합 6", "인원_num": 15}, {"분야": "제약", "대학": "충북대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부교과", "전형명": "학생부교과", "인원": "3", "전형방법": "교과 100", "수능최저": "국수영과 수학 포함 3개 합 6", "인원_num": 3}, {"분야": "제약", "대학": "충북대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "학생부종합Ⅰ", "인원": "3", "전형방법": "일괄: 서류 100%", "수능최저": "미적용", "인원_num": 3}, {"분야": "제약", "대학": "충북대학교", "시기": "수시", "카테고리": "일반", "전형분류": "학생부종합", "전형명": "학생부종합Ⅱ", "인원": "3", "전형방법": "일괄: 서류 100%", "수능최저": "국수영과 수학 포함 3개 합 7", "인원_num": 3}, {"분야": "제약", "대학": "충북대학교", "시기": "수시", "카테고리": "지역인재", "전형분류": "학생부교과", "전형명": "지역인재", "인원": "11", "전형방법": "교과 100", "수능최저": "국수영과 수학 포함 3개 합 7", "인원_num": 11}];
+DATA.forEach((r,i)=>r._id=i);
+const FIELDS=[{key:'전체',color:'var(--primary)'},{key:'치대',color:'var(--chi)'},{key:'한의대',color:'var(--han)'},{key:'수의대',color:'var(--su)'},{key:'약대',color:'var(--yak)'},{key:'제약',color:'var(--je)'}];
+const COLOR={치대:'var(--chi)',한의대:'var(--han)',수의대:'var(--su)',약대:'var(--yak)',제약:'var(--je)'};
+const LABEL={치대:'치대',한의대:'한의대',수의대:'수의대',약대:'약대',제약:'제약학과'};
+const FULLLABEL={'전체':'전체 분야',치대:'치의예과',한의대:'한의예과',수의대:'수의예과',약대:'약학과',제약:'제약학과'};
+const TYPE_SHORT={'학생부교과':'교과','학생부종합':'종합','논술':'논술'};
+let state={field:'전체',uni:'',cat:'',type:'',min:'',q:'',sort:'uni'};
+let inDetail=false;
+const $=s=>document.querySelector(s);
+const main=$('#main');
+function isMinNone(r){const m=(r.수능최저||'').trim();return m===''||m==='미적용';}
+function coreKey(r){if(isMinNone(r))return 'none';const m=(r.수능최저||'').match(/(\d)개 합 (\d)/);return m?('h'+m[1]+'-'+m[2]):('x:'+r.수능최저);}
+function esc(s){return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function hl(s){s=esc(s);if(!state.q)return s;const t=state.q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');return s.replace(new RegExp('('+t+')','gi'),'<mark>$1</mark>');}
+
+/* ---- 분야 주제 카드 ---- */
+function buildFieldCards(){
+  $('#fieldCards').innerHTML=FIELDS.map(f=>{
+    const cnt=f.key==='전체'?DATA.length:DATA.filter(r=>r.분야===f.key).length;
+    const title=f.key==='전체'?'전체':LABEL[f.key];
+    return `<button class="topic-card${state.field===f.key?' on':''}" data-field="${f.key}" style="--c:${f.color}" onclick="setField('${f.key}')">
+      <span class="tc-dot"></span><div class="tc-body"><div class="tc-title">${title}</div><div class="tc-cnt">${cnt}개 전형</div></div>
+    </button>`;
+  }).join('');
+}
+function setField(f){
+  state.field=f; state.uni='';
+  setDetailMode(false);
+  document.querySelectorAll('.topic-card').forEach(c=>c.classList.toggle('on',c.dataset.field===f));
+  renderList();
+  window.scrollTo({top:0,behavior:'instant'in window?'instant':'auto'});
+}
+
+/* ---- 목록(필터·정렬) ---- */
+function filtered(){
+  let rows=DATA.slice();
+  if(state.field!=='전체')rows=rows.filter(r=>r.분야===state.field);
+  if(state.uni)rows=rows.filter(r=>r.대학===state.uni);
+  if(state.cat)rows=rows.filter(r=>r.카테고리===state.cat);
+  if(state.type)rows=rows.filter(r=>r.전형분류===state.type);
+  if(state.min==='has')rows=rows.filter(r=>!isMinNone(r));
+  if(state.min==='none')rows=rows.filter(r=>isMinNone(r));
+  if(state.q){const q=state.q.toLowerCase();rows=rows.filter(r=>[r.대학,r.전형명,r.수능최저,r.전형방법,LABEL[r.분야]].join(' ').toLowerCase().includes(q));}
+  if(state.sort==='uni')rows.sort((a,b)=>a.대학.localeCompare(b.대학,'ko')||(b.인원_num||0)-(a.인원_num||0));
+  else if(state.sort==='people-desc')rows.sort((a,b)=>(b.인원_num||0)-(a.인원_num||0));
+  else rows.sort((a,b)=>(a.인원_num||0)-(b.인원_num||0));
+  return rows;
+}
+function unisForField(){
+  const pool=state.field==='전체'?DATA:DATA.filter(r=>r.분야===state.field);
+  return [...new Set(pool.map(r=>r.대학))].sort((a,b)=>a.localeCompare(b,'ko'));
+}
+function cardHTML(r){
+  const c=COLOR[r.분야]||'var(--faint)';const none=isMinNone(r);
+  return `<button class="pcard" style="--c:${c}" data-idx="${r._id}">
+    <div class="pmain">
+      <div class="ptop"><span class="puniv">${hl(r.대학)}</span><span class="field-chip">${LABEL[r.분야]}</span>
+        <span class="badge">${r.카테고리}</span><span class="badge track">${TYPE_SHORT[r.전형분류]||r.전형분류}</span></div>
+      <div class="pname">${hl(r.전형명)}</div>
+    </div>
+    <div class="pmeta">
+      ${none?'<div class="pmin none">수능최저 없음</div>':'<div class="pmin">'+hl(r.수능최저)+'</div>'}
+      <div class="pq"><b>${r.인원}</b><span>명</span></div>
+      <span class="parrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></span>
+    </div>
+  </button>`;
+}
+function listEmpty(){return '<div class="empty"><div class="ic">🔍</div><p>조건에 맞는 전형이 없습니다.</p><p class="hint">필터를 줄이거나 분야를 바꿔 보세요.</p></div>';}
+function countHTML(rows){const ppl=rows.reduce((s,r)=>s+(r.인원_num||0),0);return `<b>${rows.length}</b>개 전형 · 총 모집 <b>${ppl.toLocaleString()}</b>명`;}
+function toolbarHTML(){
+  const uniOpts='<option value="">전체 대학</option>'+unisForField().map(u=>`<option value="${esc(u)}"${state.uni===u?' selected':''}>${esc(u)}</option>`).join('');
+  const chips=(key,arr)=>arr.map(([v,l])=>`<button class="chip" aria-pressed="${state[key]===v}" onclick="setFilter('${key}','${v}')">${l}</button>`).join('');
+  return `<div class="toolbar">
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+      <input type="text" placeholder="대학·전형명·수능최저 검색 (예: 지역인재, 3개 합 5)" value="${esc(state.q)}" oninput="onSearch(this.value)">
+    </div>
+    <div class="filterrow">${chips('cat',[['','전체'],['일반','일반'],['지역인재','지역인재']])}</div>
+    <div class="filterrow">${chips('type',[['','전체'],['학생부교과','교과'],['학생부종합','종합'],['논술','논술']])}</div>
+    <div class="filterrow">${chips('min',[['','수능최저 전체'],['has','적용'],['none','미적용']])}
+      <select class="fsel" style="margin-left:auto" onchange="setFilter('uni',this.value)">${uniOpts}</select>
+      <select class="fsel" onchange="setFilter('sort',this.value)">
+        <option value="uni"${state.sort==='uni'?' selected':''}>대학명 순</option>
+        <option value="people-desc"${state.sort==='people-desc'?' selected':''}>모집 많은 순</option>
+        <option value="people-asc"${state.sort==='people-asc'?' selected':''}>모집 적은 순</option>
+      </select>
+    </div>
+  </div>`;
+}
+function renderList(){
+  inDetail=false;
+  const rows=filtered();
+  main.innerHTML=toolbarHTML()+`<div class="count">${countHTML(rows)}</div>`+
+    `<div id="listBody">${rows.length?'<div class="plist">'+rows.map(cardHTML).join('')+'</div>':listEmpty()}</div>`;
+}
+function updateCards(){
+  const rows=filtered();
+  const cnt=main.querySelector('.count'); if(cnt) cnt.innerHTML=countHTML(rows);
+  const lb=$('#listBody'); if(lb) lb.innerHTML=rows.length?'<div class="plist">'+rows.map(cardHTML).join('')+'</div>':listEmpty();
+}
+let qt;
+function onSearch(v){clearTimeout(qt);qt=setTimeout(()=>{state.q=(v||'').trim();updateCards();},120);}
+function setFilter(key,val){state[key]=val;if(key==='uni'||key==='sort')updateCards();else renderList();}
+main.addEventListener('click',e=>{const card=e.target.closest('.pcard');if(card){openDetail(+card.dataset.idx);return;}const rel=e.target.closest('.rel');if(rel)openDetail(+rel.dataset.idx);});
+
+/* ---- 상세 페이지 ---- */
+function setDetailMode(on){inDetail=on;
+  const h=document.querySelector('.hero');if(h)h.style.display=on?'none':'';
+  const t=document.getElementById('topicpick');if(t)t.style.display=on?'none':'';}
+function exitDetail(){setDetailMode(false);renderList();window.scrollTo({top:0,behavior:'instant'in window?'instant':'auto'});}
+function mval(o){if(isMinNone(o))return 0;const m=(o.수능최저||'').match(/합 (\d)/);return m?+m[1]:null;}
+function simScore(a,b){const ma=mval(a),mb=mval(b);if(ma===null||mb===null)return -999;let sc=100-Math.abs(ma-mb)*10;const na=(a.수능최저||'').match(/(\d)개/),nb=(b.수능최저||'').match(/(\d)개/);if(na&&nb&&na[1]===nb[1])sc+=3;return sc;}
+function relRow(i){const o=DATA[i];const none=isMinNone(o);const c=COLOR[o.분야]||'var(--faint)';
+  return `<button class="rel" style="--c:${c}" data-idx="${i}"><span class="rel-uni">${esc(o.대학)}</span><span class="rel-tag">${o.카테고리} · ${TYPE_SHORT[o.전형분류]||o.전형분류}</span><span class="rel-min ${none?'none':''}">${none?'미적용':esc(o.수능최저)}</span></button>`;}
+function openDetail(idx){
+  const r=DATA[idx];const c=COLOR[r.분야]||'var(--faint)';const none=isMinNone(r);const ck=coreKey(r);
+  const others=DATA.map((o,i)=>({i,o})).filter(x=>x.i!==idx&&x.o.분야===r.분야);
+  const same=others.filter(x=>(x.o.수능최저||'')===(r.수능최저||'')).map(x=>x.i);
+  let pool=others.filter(x=>same.indexOf(x.i)<0);
+  pool.forEach(x=>x.sc=simScore(r,x.o));
+  pool.sort((a,b)=>b.sc-a.sc);
+  const sameCore=pool.filter(x=>coreKey(x.o)===ck&&ck[0]==='h').length;
+  const want=Math.min(pool.length, Math.min(8, Math.max(3, sameCore)));
+  const sim=pool.slice(0,want).map(x=>x.i);
+  let rel='';
+  if(none){
+    rel+=`<div class="rel-head">비슷한 조건의 ${LABEL[r.분야]} 전형 <span class="rc">${same.length+sim.length}곳</span></div>`;
+    if(same.length){rel+='<div class="rel-sub">수능최저가 없는 전형</div>'+same.map(relRow).join('');}
+    if(sim.length){rel+='<div class="rel-sub">수능최저가 비교적 낮은 전형</div>'+sim.map(relRow).join('');}
+    if(!same.length&&!sim.length)rel+='<div class="rel-empty">같은 분야에 비교할 다른 전형이 없습니다.</div>';
+  }else{
+    rel+=`<div class="rel-head">같은·비슷한 수능최저를 적용하는 ${LABEL[r.분야]} <span class="rc">동일 ${same.length} · 유사 ${sim.length}</span></div>`;
+    if(same.length){rel+='<div class="rel-sub">동일한 수능최저</div>'+same.map(relRow).join('');}
+    if(sim.length){rel+='<div class="rel-sub">비슷한 수능최저</div>'+sim.map(relRow).join('');}
+    if(!same.length&&!sim.length)rel+='<div class="rel-empty">같은 분야에 비교할 다른 전형이 없습니다.</div>';
+  }
+  setDetailMode(true);
+  main.innerHTML=`<div class="dpage">
+    <button class="dback" onclick="exitDetail()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>목록으로</button>
+    <div class="dhead" style="--c:${c}"><div><div class="dn">${esc(r.대학)} <span class="dchip">${LABEL[r.분야]}</span></div><div class="dl">${FULLLABEL[r.분야]||''}</div></div></div>
+    <div class="dbody">
+      <div class="dt-jname">${esc(r.전형명)}</div>
+      <div class="dt-grid">
+        <div class="dt-cell"><div class="dk">카테고리</div><div class="dv">${r.카테고리}</div></div>
+        <div class="dt-cell"><div class="dk">전형 유형</div><div class="dv">${r.전형분류}</div></div>
+        <div class="dt-cell"><div class="dk">모집 시기</div><div class="dv">${r.시기||'수시'}</div></div>
+        <div class="dt-cell"><div class="dk">모집인원</div><div class="dv big">${r.인원}<span style="font-size:14px;font-weight:600;color:var(--muted)">명</span></div></div>
+        <div class="dt-cell full"><div class="dk">전형방법</div><div class="dv">${esc(r.전형방법)}</div></div>
+        <div class="dt-cell full"><div class="dk">수능최저학력기준</div><div class="dv ${none?'none':''}">${none?'미적용':esc(r.수능최저)}</div></div>
+      </div>
+      ${rel}
+    </div>
+  </div>`;
+  window.scrollTo({top:0,behavior:'instant'in window?'instant':'auto'});
+}
+
+/* ---- 용어 모달 ---- */
+const hm=$('#helpModal'),hc=$('#helpClose');
+function openHelp(){hm.classList.add('open');}
+function closeHelp(){hm.classList.remove('open');}
+if(hc)hc.onclick=closeHelp;
+if(hm)hm.addEventListener('click',e=>{if(e.target===hm)closeHelp();});
+window.openHelp=openHelp;
+document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(hm&&hm.classList.contains('open')){closeHelp();return;}if(inDetail)exitDetail();});
+
+/* init */
+buildFieldCards();
+renderList();
+</script>
+<div class="hc-ov" id="hcGuide" onclick="if(event.target===this)HCUI.closeGuide()"><div class="hc-sheet" role="dialog" aria-modal="true"><div class="hc-ghead"><div class="wm">齒韓藥獸</div><button class="hc-gclose" onclick="HCUI.closeGuide()" aria-label="닫기">&times;</button><div class="hc-eyebrow">치 · 한 · 약 · 수 통합 검색</div><h2>치한약수 2028 수시 전형 검색기</h2><p>치의예·한의예·수의예·약학·제약학과의 수시 전형을 대학·카테고리·전형유형·수능최저로 찾아보고, 카드를 누르면 비슷한 대학을 함께 봅니다.</p></div><div class="hc-gbody"><div class="hc-kick">이렇게 사용하세요</div><div class="hc-methods"><div class="hc-m"><div class="no">1</div><div><div class="ti">분야 선택</div><div class="de">치대·한의대·수의대·약대·제약 탭으로 분야를 좁힙니다.</div><div class="out">상단 분야 탭</div></div></div><div class="hc-m"><div class="no">2</div><div><div class="ti">필터로 좁히기</div><div class="de">대학·카테고리·전형유형·수능최저 적용 여부로 거릅니다.</div><div class="out">드롭다운 필터 + 검색어</div></div></div><div class="hc-m"><div class="no">3</div><div><div class="ti">카드 눌러 비교</div><div class="de">전형 카드를 누르면 상세와 함께 같은·비슷한 수능최저 대학이 뜹니다.</div><div class="out">카드 → 상세 → 유사 대학 → 계속 비교</div></div></div></div><div class="hc-read"><h3>이것만 알면 됩니다</h3><div class="r"><span>전형 카드를 누르면 <b>같은·비슷한 수능최저</b>를 쓰는 다른 대학이 떠, 누르며 계속 탐색할 수 있습니다(팝업마다 뒤로가기).</span></div><div class="r"><span>수능최저 표기가 헷갈리면 우측 상단 <b>수능최저 용어 정리</b>를 누르세요. 팝업 위에서도 열립니다.</span></div><div class="r"><span><b>최저 없음</b> 배지는 수능최저 미적용 전형입니다.</span></div></div><button class="hc-start" onclick="HCUI.closeGuide()"><span class="ar">▶</span><span class="t">검색기 시작하기</span></button></div><div class="hc-cap"><b>알아두기.</b> 2028학년도 치·한·약·수 수시모집 정리본 기준입니다. 최종 지원 시 각 대학 모집요강을 반드시 확인하세요.</div></div></div><script>(function(){
+  var HCUI={};window.HCUI=HCUI;
+  HCUI.openGuide=function(){var g=document.getElementById('hcGuide');if(g){g.classList.add('open');document.body.style.overflow='hidden';}};
+  HCUI.closeGuide=function(){var g=document.getElementById('hcGuide');if(g){g.classList.remove('open');document.body.style.overflow='';}};
+  HCUI.openTerms=function(){ if(window.openHelp)window.openHelp(); };
+  HCUI.closeTerms=function(){var t=document.getElementById('hcTerms');if(t){t.classList.remove('open');}};
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){HCUI.closeGuide();HCUI.closeTerms();}});
+  // build FAB
+  var fab=document.createElement('div');fab.className='hc-fab';
+  fab.innerHTML='<button class="hc-btn hc-home" onclick="HCUI.openGuide()" aria-label="사용설명서"><span class="ic">\uD83D\uDCD6</span><span class="lbl">\uC0AC\uC6A9\uC124\uBA85\uC11C</span></button>'+
+    '<button class="hc-btn hc-term" onclick="HCUI.openTerms()"><span class="ic">?</span><span class="lbl-full">수능최저 용어 정리</span><span class="lbl-short">용어</span></button>';
+  document.body.appendChild(fab);
+  // tooltip on guide button (자동 팝업 대신 말풍선)
+  var homeBtn=fab.querySelector('.hc-home');
+  if(homeBtn){
+    homeBtn.style.position='relative';
+    var tip=document.createElement('div');tip.className='hc-tooltip';
+    var tipText=document.createElement('span');tipText.textContent='자세한 사용법을 확인해보세요!';
+    var tipX=document.createElement('button');tipX.className='hc-tip-x';tipX.innerHTML='&times;';tipX.setAttribute('aria-label','닫기');
+    tipX.onclick=function(e){e.stopPropagation();tip.classList.remove('show');clearTimeout(tip._t1);clearTimeout(tip._t2);};
+    tip.appendChild(tipText);tip.appendChild(tipX);homeBtn.appendChild(tip);
+    tip._t1=setTimeout(function(){tip.classList.add('show');},800);
+    tip._t2=setTimeout(function(){tip.style.transition='opacity .8s';tip.classList.remove('show');},4500);
+  }
+})();</script>
+
+</body>
+</html>

@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2028 의대 수시모집 검색기 · 클럽하와이</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<style>
+@font-face{
+  font-family:'Pretendard';font-weight:45 920;font-style:normal;font-display:swap;
+  src:url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/woff2/PretendardVariable.woff2') format('woff2-variations');
+}
+:root{
+  --bg:#FFFFFF; --surface:#FFFFFF; --surface-2:#F5F4F2;
+  --ink:#191919; --muted:#333333; --faint:#333333; --line:#F0EEE8;
+  --primary:#40916C; --primary-2:#2D6A4F; --teal:#40916C;
+  --pink:#FF5F9F; --pink2:#E03C7E;
+  --gen:#2A4F9A; --jiyeok:#0A6675; --uisa:#9A5A0C;
+  --coral:#40916C; --coral-ink:#2D6A4F;
+  --ok:#0C6E51; --no:#DC2626; --ok-bg:#E3F6EE; --no-bg:#FEE2E2;
+  --gen-bg:#EAF0FD; --jiyeok-bg:#E6F4FB; --uisa-bg:#FDF0DC;
+  --bg-purple:#F3EAFB; --tx-purple:#5A23A0;
+  --bg-blue:#EAF0FD; --tx-blue:#2A4F9A;
+  --bg-green:#E3F6EE; --tx-green:#0C6E51;
+  --bg-amber:#FDF0DC; --tx-amber:#9A5A0C;
+  --bg-teal:#E6F4FB; --tx-teal:#0A6675;
+  --bg-pink:#FFE2EE; --tx-pink:#C0356B;
+  --bg-neutral:#EEEFF1; --tx-neutral:#333333;
+  --r:14px; --shadow:0 1px 2px rgba(0,0,0,.04),0 2px 8px rgba(0,0,0,.04);
+  --shadow-lg:0 4px 20px rgba(0,0,0,.08);
+  --mono:'SF Mono',ui-monospace,'Cascadia Mono',Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic','맑은 고딕',sans-serif;
+  font-feature-settings:'tnum','ss01';line-height:1.6;-webkit-font-smoothing:antialiased;
+  letter-spacing:-.01em;
+}
+button{font-family:inherit;cursor:pointer}
+.tnum{font-variant-numeric:tabular-nums;font-feature-settings:'tnum'}
+
+/* ---------- header ---------- */
+header{
+  position:sticky;top:0;z-index:40;background:#fff;
+  border-bottom:1px solid var(--line);
+}
+.bar-in{max-width:1240px;margin:0 auto;padding:0 2rem}
+.bar-top{display:flex;align-items:center;gap:18px;height:66px}
+.home-btn{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-family:inherit;
+  font-size:13px;font-weight:700;text-decoration:none;border:1px solid var(--line);background:#fff;
+  padding:7px 13px;border-radius:9px;cursor:pointer;transition:all .14s;white-space:nowrap;flex:none}
+.home-btn:hover{border-color:var(--pink);color:var(--pink);background:var(--surface-2)}
+.brand{display:flex;align-items:baseline;gap:11px;cursor:pointer;flex:none}
+.brand .yr{font-family:var(--mono);font-weight:700;font-size:12px;letter-spacing:.01em;
+  color:var(--pink);padding-left:15px;position:relative}
+.brand .yr::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:8px;height:8px;border-radius:50%;background:var(--pink)}
+.brand h1{font-size:18px;font-weight:800;margin:0;letter-spacing:-.03em;color:var(--ink)}
+.term-btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--surface);
+  color:var(--primary);font-weight:700;font-size:13px;padding:9px 13px;border-radius:10px;transition:.15s}
+.term-btn:hover{border-color:var(--teal);background:var(--surface-2);transform:translateY(-1px)}
+.term-btn svg{width:16px;height:16px}
+
+/* ---------- hero / tabs ---------- */
+.hero{max-width:1240px;margin:0 auto;padding:26px 2rem 6px}
+.eyebrow{font-size:12px;font-weight:800;color:var(--pink);letter-spacing:.14em;text-transform:uppercase}
+.hero h2{font-size:25px;font-weight:800;margin:7px 0 6px;letter-spacing:-.03em;line-height:1.18}
+.hero .sub{color:var(--muted);font-size:14px;max-width:640px;font-weight:500}
+/* 주제 선택 — 컴팩트 카드 한 줄 (대학별 기본 활성) */
+.topicpick{max-width:1240px;margin:18px auto 0;padding:0 2rem}
+.topic-head{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 11px}
+.topic-head b{color:var(--primary)}
+.topic-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-items:stretch}
+.topic-card{display:flex;align-items:center;gap:11px;background:var(--surface);
+  border:1.5px solid var(--line);border-radius:13px;padding:13px 14px;text-align:left;
+  cursor:pointer;transition:.14s;font-family:inherit}
+.topic-card:hover{border-color:var(--primary);background:var(--surface-2)}
+.topic-card:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+.topic-card.on{border-color:var(--primary);background:#F1F8F4}
+.tc-ico{flex:none;width:30px;height:30px;color:var(--muted)}
+.tc-ico svg{width:100%;height:100%}
+.topic-card.on .tc-ico{color:var(--primary)}
+.tc-body{min-width:0}
+.tc-title{font-size:14px;font-weight:800;letter-spacing:-.02em;color:var(--ink);line-height:1.25;word-break:keep-all}
+.tc-desc{font-size:11.5px;color:var(--muted);font-weight:600;line-height:1.35;margin-top:2px}
+
+main{max-width:1240px;margin:0 auto;padding:22px 2rem 40px;min-height:50vh}
+
+/* ---------- toolbar ---------- */
+.toolbar{display:flex;flex-direction:column;align-items:stretch;gap:9px;margin-bottom:14px}
+.search{position:relative;width:100%}
+.search svg{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:#fff;
+  background:var(--ink);width:30px;height:30px;padding:6px;border-radius:8px;box-sizing:border-box}
+.search input{
+  width:100%;padding:13px 14px 13px 48px;border:1.5px solid var(--ink);border-radius:12px;
+  font-size:16px;background:var(--surface);color:var(--ink);transition:background .15s,box-shadow .15s,border-color .15s;
+}
+.search input::placeholder{color:var(--muted)}
+.search input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(64,145,108,.15)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{
+  border:1px solid var(--line);background:var(--surface);color:var(--muted);font-weight:700;font-size:12.5px;
+  padding:8px 13px;border-radius:20px;transition:.14s;
+}
+.chip[aria-pressed="true"]{background:var(--primary);color:#fff;border-color:var(--primary)}
+.chip:not([aria-pressed="true"]):hover{border-color:var(--teal);color:var(--ink)}
+.count{font-size:12.5px;color:var(--muted);font-weight:600;margin-left:0;white-space:nowrap}
+
+/* sub tabs (전형별) */
+.subtabs{display:flex;gap:7px;margin-bottom:16px;flex-wrap:wrap}
+.subtab{
+  border:1.5px solid var(--line);background:var(--surface);border-radius:11px;padding:9px 15px;
+  font-weight:700;font-size:13.5px;color:var(--muted);display:inline-flex;align-items:center;gap:8px;transition:.15s;
+}
+.subtab .dot{width:9px;height:9px;border-radius:50%}
+.subtab[aria-selected="true"]{color:var(--ink);border-color:var(--ink);background:var(--surface-2)}
+.subtab .n{font-size:12px;color:var(--faint);font-weight:600}
+
+/* ---------- university grid ---------- */
+.ugrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:11px}
+.ucard{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:15px 16px;
+  text-align:left;transition:.16s;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;
+}
+.ucard:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--teal)}
+.ucard:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.umono{
+  width:44px;height:44px;border-radius:12px;display:grid;place-items:center;flex:none;
+  font-weight:800;font-size:16px;color:var(--ink);letter-spacing:-.04em;
+  background:#fff;border:1px solid var(--line);position:relative;overflow:hidden;
+}
+.umono img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:5px;background:#fff;border-radius:inherit}
+.ucard .uname{font-weight:800;font-size:18px;line-height:1.25;letter-spacing:-.02em}
+.ucard .uregion{font-size:11.5px;color:var(--muted);font-weight:600}
+.ucard .ucount{display:flex;gap:5px;flex-wrap:wrap;margin-top:2px}
+.mini{font-size:10.5px;font-weight:700;padding:3px 7px;border-radius:6px;line-height:1;background:#fff;color:var(--ink);border:1px solid var(--line)}
+.mini.g,.mini.j,.mini.u,.mini.s{background:#fff;color:var(--ink);border-color:var(--line)}
+
+/* ---------- program list ---------- */
+.plist{display:flex;flex-direction:column;gap:10px}
+.pcard{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:15px 16px;
+  text-align:left;transition:.15s;display:flex;align-items:center;gap:14px;width:100%;
+}
+.pcard:hover{border-color:var(--teal);box-shadow:var(--shadow);transform:translateY(-1px)}
+.pcard:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.pstripe{width:4px;align-self:stretch;border-radius:4px;flex:none}
+.pmain{flex:1;min-width:0}
+.pcard .ptop{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:3px}
+.pcard .puniv{font-weight:800;font-size:15px;letter-spacing:-.02em}
+.pcard .pname{color:var(--muted);font-size:13px;font-weight:600}
+.badge{font-size:10.5px;font-weight:800;padding:3px 8px;border-radius:6px;letter-spacing:0;white-space:nowrap;border:1px solid var(--line)}
+.badge.g,.badge.j,.badge.u,.badge.s{background:#fff;color:var(--ink);border-color:var(--line)}
+.badge.track{background:var(--surface-2);color:var(--muted);border:1px solid var(--line)}
+.pmeta{display:flex;align-items:center;gap:14px;flex:none}
+.pmeta .pq{text-align:right;white-space:nowrap}
+.pmeta .pq b{font-size:18px;font-weight:800;letter-spacing:-.03em}
+.pmeta .pq span{font-size:11px;color:var(--faint);display:inline;font-weight:600;margin-left:1px}
+.pmin{font-size:12px;color:var(--primary);font-weight:700;max-width:200px;text-align:right;line-height:1.35}
+.pmin.none{color:var(--coral-ink)}
+/* 대학 모달 내 전형 행 — 전형명 주연 */
+.pcard-in .pname-lead{font-weight:800;font-size:15.5px;color:var(--ink);letter-spacing:-.02em}
+.pcard-in .pmin-row{display:flex;align-items:baseline;gap:7px;margin-top:6px;flex-wrap:wrap}
+.pcard-in .pmin-lbl{font-size:10.5px;font-weight:800;color:var(--muted);background:var(--surface-2);
+  border:1px solid var(--line);border-radius:5px;padding:1px 6px;flex:none}
+.pcard-in .pmin-row .pmin{max-width:none;text-align:left}
+.parrow{color:var(--faint);flex:none}
+
+/* ---------- 지역의사제 자격 검색 ---------- */
+.uisa-wrap{display:grid;grid-template-columns:1fr;gap:18px}
+.uhelp-btn{position:fixed;right:20px;bottom:20px;z-index:50;width:48px;height:48px;border-radius:50%;
+  border:none;background:var(--primary);color:#fff;font-size:23px;font-weight:800;cursor:pointer;
+  box-shadow:0 8px 22px -6px rgba(64,145,108,.5);transition:transform .14s}
+.uhelp-btn:hover{transform:translateY(-2px)}
+.uhelp{position:fixed;right:20px;bottom:78px;z-index:51;width:300px;max-width:calc(100vw - 40px);
+  background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow-lg);
+  padding:15px 16px;display:none}
+.uhelp.open{display:block;animation:uhelpUp .18s ease}
+@keyframes uhelpUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.uhelp-h{display:flex;align-items:center;justify-content:space-between;font-size:13.5px;font-weight:800;color:var(--ink);margin-bottom:10px}
+.uhelp-x{border:none;background:none;color:var(--muted);font-size:18px;line-height:1;cursor:pointer;padding:0 2px}
+.uhelp-i{padding:9px 0;border-top:1px solid var(--line)}
+.uhelp-i:first-of-type{border-top:none;padding-top:0}
+.uhelp-t{font-size:13px;font-weight:800;color:var(--primary);margin-bottom:3px}
+.uhelp-d{font-size:12.5px;color:var(--ink);font-weight:500;line-height:1.55}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:var(--shadow)}
+.panel.accent{border-top:4px solid var(--coral)}
+.panel h3{margin:0 0 4px;font-size:17px;font-weight:800;letter-spacing:-.02em;display:flex;align-items:center;gap:9px}
+.panel .hint{color:var(--muted);font-size:13px;margin:0 0 18px;font-weight:500}
+.selrow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field label{display:flex;align-items:center;gap:7px;font-weight:800;font-size:13.5px;margin-bottom:9px}
+.field label .step{width:22px;height:22px;border-radius:7px;background:var(--primary);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:800;flex:none}
+.field label .step.b{background:var(--coral)}
+.field .desc{font-size:11.5px;color:var(--muted);font-weight:600;margin-left:auto}
+select{
+  width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:11px;font-size:14px;background:var(--surface);
+  color:var(--ink);font-family:inherit;font-weight:600;margin-bottom:9px;transition:.15s;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235C7178' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;padding-right:34px;
+}
+select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(64,145,108,.15)}
+select:disabled{background-color:var(--surface-2);color:var(--faint)}
+.resolve{font-size:12px;font-weight:700;color:var(--teal);min-height:18px}
+.resolve.empty{color:var(--faint);font-weight:600}
+.judge-btn{
+  width:100%;margin-top:10px;border:none;border-radius:11px;padding:12px;font-size:14.5px;font-weight:800;
+  color:#fff;background:var(--ink);letter-spacing:-.01em;transition:.16s;
+}
+.judge-btn:hover{transform:translateY(-2px);background:#333}
+.judge-btn:disabled{background:var(--line);color:var(--faint);box-shadow:none;transform:none;cursor:not-allowed}
+
+#result{margin-top:4px}
+.verdict{border-radius:16px;padding:18px 20px;margin-bottom:16px;border:1px solid}
+.verdict.ok{background:var(--ok-bg);border-color:#BEE3D2}
+.verdict.partial{background:#FCF3E2;border-color:#EAD4A8}
+.verdict.no{background:var(--no-bg);border-color:#EDC7C7}
+.verdict .vhead{display:flex;align-items:center;gap:10px;font-weight:800;font-size:16px;margin-bottom:6px}
+.vicon{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;color:#fff;flex:none}
+.verdict.ok .vicon{background:var(--ok)} .verdict.partial .vicon{background:#C7901F} .verdict.no .vicon{background:var(--no)}
+.verdict .vbody{font-size:13.5px;color:var(--ink);font-weight:500;line-height:1.55}
+.path-vis{display:flex;align-items:center;gap:10px;margin:12px 0 2px;flex-wrap:wrap}
+.path-node{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700}
+.path-node small{display:block;color:var(--muted);font-weight:600;font-size:10.5px}
+.path-arrow{color:var(--muted)}
+.rgroup{margin-bottom:18px}
+.rgroup h4{font-size:14px;font-weight:800;margin:0 0 4px;display:flex;align-items:center;gap:8px}
+.rgroup .rdesc{font-size:12px;color:var(--muted);margin:0 0 11px;font-weight:600}
+.duty{background:var(--surface-2);border:1px dashed var(--line);border-radius:11px;padding:11px 13px;font-size:12px;color:var(--muted);font-weight:600;line-height:1.5;margin-top:4px}
+.duty b{color:var(--primary)}
+.placeholder{text-align:center;padding:30px 16px;color:var(--faint)}
+.placeholder svg{width:40px;height:40px;margin-bottom:10px;opacity:.5}
+.placeholder p{font-weight:600;font-size:13.5px;margin:0}
+.empty-state{text-align:center;padding:48px 20px;color:var(--muted)}
+.unote-badge{display:inline-flex;align-items:center;gap:5px;align-self:flex-start;white-space:nowrap;font-size:10px;font-weight:800;color:var(--coral-ink);background:#E6F2EC;border:1px solid #C5E4D5;padding:3px 9px;border-radius:20px;margin-top:auto}
+.unote-badge::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--coral);flex:none}
+.mback{display:flex;align-items:center;gap:7px;width:100%;border:none;border-bottom:1px solid var(--line);background:var(--surface-2);color:var(--primary);font-weight:700;font-size:13px;padding:13px 20px;text-align:left}
+.mback:hover{background:var(--surface-2);color:var(--primary-2)}
+.mback svg{width:15px;height:15px;flex:none}
+.unotes{margin:14px 0 6px;background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:14px 15px}
+.unotes-h{font-size:13px;font-weight:800;color:var(--ink);margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.unotes-h span{background:var(--coral);color:#fff;font-size:11px;padding:1px 7px;border-radius:20px}
+.unote{display:flex;gap:9px;align-items:flex-start;padding:6px 0;border-top:1px dashed var(--line)}
+.unote:first-of-type{border-top:none}
+.ntag{font-size:10.5px;font-weight:800;padding:3px 8px;border-radius:6px;flex:none;margin-top:1px;min-width:34px;text-align:center}
+.ntxt{font-size:13px;color:var(--ink);font-weight:500;line-height:1.5}
+.unotes-f{margin-top:9px;font-size:11px;color:var(--faint);font-weight:600}
+.minwrap{display:grid;grid-template-columns:1fr;gap:18px}
+.grow{display:grid;grid-template-columns:repeat(6,1fr);gap:9px;margin-bottom:6px}
+.gfield{display:flex;flex-direction:column;gap:5px}
+.glab{font-size:14px;font-weight:800;color:var(--ink);text-align:center;letter-spacing:.08em}
+.gfield select{margin-bottom:0;text-align:center;padding:10px 6px;font-weight:700}
+.gfield input{width:100%;border:1.5px solid var(--line);border-radius:12px;background:var(--surface);
+  color:var(--ink);font-family:inherit;font-weight:800;font-size:24px;text-align:center;padding:13px 6px;
+  transition:.15s;-moz-appearance:textfield;appearance:textfield}
+.gfield input::placeholder{color:var(--faint);font-weight:600}
+.gfield input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(64,145,108,.15)}
+.gfield input::-webkit-outer-spin-button,.gfield input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.gfield input.err{border-color:var(--no);box-shadow:0 0 0 3px rgba(220,38,38,.15)}
+.gerr{margin-top:10px;font-size:12.5px;font-weight:700;color:var(--no);background:var(--no-bg);
+  border:1px solid #EDC7C7;border-radius:9px;padding:8px 11px;display:none}
+.gerr.show{display:block}
+.minnote{margin-top:11px;font-size:13px;color:var(--ink);font-weight:600;line-height:1.6;background:var(--surface-2);border-radius:9px;padding:11px 13px}
+/* 수능최저 화면: 회색 텍스트 → 잉크 (이 화면만 스코프) */
+.ginst{font-size:14px;font-weight:800;color:var(--ink);margin:2px 0 12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.gnote{font-size:11px;font-weight:800;color:var(--ink);background:var(--surface-2);border:1px solid var(--line);padding:2px 9px;border-radius:20px;letter-spacing:0}
+.gunit{font-size:11.5px;font-weight:700;color:var(--ink);text-align:center}
+.minwrap .hint,.minwrap .placeholder,.minwrap .placeholder p,.minwrap .mr-sub,.minwrap .rg-c{color:var(--ink)}
+.mres-head{font-size:15px;font-weight:800;margin-bottom:14px;padding-bottom:11px;border-bottom:2px solid var(--ink)}
+.mres-head b{color:var(--coral-ink);font-size:19px}
+.mr-sub{font-size:12px;color:var(--muted);font-weight:600}
+.rg-dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex:none}
+.rgroup h4{display:flex;align-items:center;gap:8px}
+.rg-c{font-size:12px;color:var(--faint);font-weight:600;margin-left:auto}
+.mreq{color:var(--primary);font-weight:700}
+.mok{color:var(--coral-ink);font-weight:700}
+.okmark{font-size:16px;font-weight:800;width:24px;text-align:center;flex:none}
+.okmark.y{color:var(--ok)} .okmark.n{color:var(--no)}
+.failtog{width:100%;margin-top:8px;border:1.5px solid var(--line);background:var(--surface);color:var(--muted);font-weight:700;font-size:13px;padding:11px;border-radius:11px}
+.failtog:hover{border-color:var(--teal);color:var(--ink)}
+.faillist{margin-top:14px;opacity:.78}
+.failh{font-size:13px;color:var(--no);font-weight:800;margin:0 0 10px}
+@media(max-width:620px){.grow{grid-template-columns:repeat(3,1fr)}}
+.empty-state b{display:block;font-size:15px;color:var(--ink);margin-bottom:4px}
+
+/* ---------- modal ---------- */
+.overlay{
+  position:fixed;inset:0;background:rgba(14,42,48,.5);backdrop-filter:blur(3px);z-index:60;
+  display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:.2s;
+}
+.overlay.show{opacity:1;pointer-events:auto}
+.modal{
+  background:var(--surface);width:100%;max-width:620px;max-height:90vh;border-radius:22px 22px 0 0;
+  overflow:hidden;display:flex;flex-direction:column;transform:translateY(20px);transition:.24s cubic-bezier(.2,.9,.3,1);
+  box-shadow:var(--shadow-lg);
+}
+.overlay.show .modal{transform:translateY(0)}
+.mhead{padding:20px 22px 16px;border-bottom:1px solid var(--line);display:flex;align-items:flex-start;gap:14px;position:relative}
+.mhead .umono{width:48px;height:48px;font-size:17px;border-radius:13px}
+.mhead .mtitle{flex:1;min-width:0}
+.mhead h3{margin:0;font-size:19px;font-weight:800;letter-spacing:-.02em}
+.mhead .msub{color:var(--muted);font-size:13px;font-weight:600;margin-top:3px}
+.mclose{
+  position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:50%;border:none;
+  background:var(--surface-2);color:var(--muted);display:grid;place-items:center;transition:.15s;
+}
+.mclose:hover{background:var(--no-bg);color:var(--no)}
+.mbody{overflow-y:auto;padding:6px 22px 24px}
+.mgroup{margin-top:18px}
+.mgroup-h{font-size:12.5px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.mgroup-h::after{content:"";flex:1;height:1px;background:var(--line)}
+.detail-grid{display:flex;flex-direction:column;gap:11px}
+.drow{display:flex;gap:14px;padding:13px 15px;background:var(--surface-2);border-radius:12px;align-items:flex-start}
+.drow.k{flex:none;width:74px;font-weight:800;font-size:12.5px;color:var(--muted);padding-top:1px}
+.drow .dk{flex:none;width:74px;font-weight:800;font-size:12.5px;color:var(--muted);padding-top:1px}
+.drow .dv{flex:1;font-size:13.5px;font-weight:600;line-height:1.5}
+.drow .dv.big{font-size:15px;font-weight:800;color:var(--primary)}
+.drow .dv.min{color:var(--ink);font-weight:700}
+/* 대학/전형 상세 — 페이지 형태 */
+.dpage{max-width:860px;margin:0 auto;animation:dpageIn .2s ease}
+@keyframes dpageIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.dback{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;
+  color:var(--muted);font-family:inherit;font-size:13px;font-weight:700;padding:8px 13px;border-radius:9px;
+  cursor:pointer;transition:.14s;margin-bottom:14px}
+.dback:hover{border-color:var(--primary);color:var(--primary);background:var(--surface-2)}
+.dback svg{flex:none}
+.dpage .mhead{border:1px solid var(--line);border-radius:14px 14px 0 0}
+.dpage .mbody{overflow:visible;border:1px solid var(--line);border-top:none;border-radius:0 0 14px 14px;padding:16px 22px 22px}
+.region-box{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:13px 15px;font-size:12.5px;font-weight:600;line-height:1.55}
+.region-box b{color:var(--ink)}
+.term-tag{
+  border-bottom:2px dotted var(--teal);cursor:help;font-weight:800;color:var(--primary-2);position:relative;
+}
+.term-tag:hover{background:var(--surface-2);border-radius:3px}
+.pop{
+  position:fixed;z-index:80;background:var(--ink);color:#fff;padding:10px 13px;border-radius:11px;font-size:12px;
+  font-weight:600;max-width:260px;line-height:1.5;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:.13s;
+  transform:translateY(4px);
+}
+.pop.show{opacity:1;transform:translateY(0)}
+.pop b{color:#95D5B2}
+
+/* glossary modal */
+.gloss-intro{font-size:13px;color:var(--muted);font-weight:500;margin:14px 0 4px}
+.gloss-list{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.gitem{border:1px solid var(--line);border-radius:13px;overflow:hidden}
+.gitem .gh{display:flex;align-items:center;gap:10px;padding:13px 15px;background:var(--surface-2)}
+.gterm{font-weight:800;font-size:14.5px;color:var(--primary);font-family:inherit;letter-spacing:-.02em}
+.gitem .gd{padding:12px 15px;font-size:13px;font-weight:600;color:var(--ink);line-height:1.55}
+.gitem .gex{padding:0 15px 13px;font-size:12px;color:var(--muted);font-weight:600;line-height:1.5}
+.gitem .gex b{color:var(--teal)}
+.gitem .gex .ex-tag{display:inline-block;background:var(--surface-2);color:var(--primary);font-weight:800;font-size:10.5px;padding:2px 7px;border-radius:6px;margin-right:6px}
+.addon{margin-top:16px;background:var(--surface-2);border:1px solid var(--line);border-radius:13px;padding:14px 16px;font-size:12.5px;font-weight:600;line-height:1.6}
+.addon b{color:var(--ink)}
+.addon code{font-family:inherit;background:#fff;padding:1px 6px;border-radius:5px;font-weight:700;color:var(--primary)}
+
+/* footer */
+footer{border-top:1px solid var(--line);background:var(--surface);margin-top:20px}
+.foot{max-width:1240px;margin:0 auto;padding:24px 2rem 34px;display:flex;flex-wrap:wrap;gap:20px 40px;align-items:flex-start}
+.foot .fbrand{font-weight:800;font-size:14px;color:var(--ink);display:flex;align-items:center;gap:8px}
+.foot .fbrand .dotm{width:8px;height:8px;border-radius:2px;background:var(--teal)}
+.foot .fmeta{font-size:12px;color:var(--muted);font-weight:600;line-height:1.7}
+.foot .fmeta b{color:var(--ink)}
+.foot .fright{margin-left:auto;max-width:380px;font-size:11px;color:var(--faint);font-weight:600;line-height:1.6}
+.foot .fright b{color:var(--muted)}
+
+@media (max-width:680px){
+  .brand h1{font-size:15px}.bar-top{height:58px;gap:12px}
+  .hero h2{font-size:21px}
+  .topic-grid{grid-template-columns:repeat(2,1fr)}
+  .selrow{grid-template-columns:1fr}
+  .ugrid{grid-template-columns:1fr 1fr;gap:10px}
+  .pcard{flex-wrap:wrap}.pmeta{width:100%;justify-content:space-between;border-top:1px dashed var(--line);padding-top:10px;margin-top:2px}
+  .pmin{max-width:none;text-align:left;flex:1}
+  .overlay{align-items:flex-end}.modal{max-height:92vh}
+  .foot .fright{margin-left:0}
+  .count{width:100%;margin-left:0;order:5}
+}
+@media (max-width:400px){ .ugrid{grid-template-columns:1fr} }
+@media (min-width:681px){
+  .overlay{align-items:center;padding:24px}
+  .modal{border-radius:22px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+
+/* ===== HCUI shared layer (theme-consistent home / terms / FAB) ===== */
+:root{ --hc-brand:#40916C; --hc-brand2:#2D6A4F; --hc-accent:#40916C; --hc-accent2:#2D6A4F;
+  --hc-ink:#191919; --hc-muted:#9A8D92; --hc-line:#F0EEE8; --hc-paper:#fff; --hc-soft:#D8EDE2;
+  --hc-good:#0C6E51; --hc-good-bg:#E3F6EE; --hc-mid:#9A5A0C; --hc-mid-bg:#FDF0DC;
+  --hc-weak:#DC2626; --hc-weak-bg:#FEE2E2; --hc-none:#9aa6b4; }
+.hc-fab{position:fixed;top:14px;right:16px;z-index:2147483000;display:flex;gap:9px;align-items:center}
+/* guide tooltip (말풍선) */
+.hc-tooltip{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%);
+  background:#fff;border:1.5px solid var(--hc-brand);border-radius:10px;padding:8px 12px 8px 14px;
+  font-family:inherit;font-size:13px;font-weight:700;color:var(--hc-brand);white-space:nowrap;
+  opacity:0;transition:opacity .5s;pointer-events:none;box-shadow:0 4px 12px rgba(64,145,108,.18);
+  z-index:10;display:inline-flex;align-items:center;gap:8px}
+.hc-tooltip::before{content:'';position:absolute;bottom:100%;left:50%;transform:translateX(-50%);
+  border:7px solid transparent;border-bottom-color:var(--hc-brand)}
+.hc-tooltip.show{opacity:1;pointer-events:auto}
+.hc-tip-x{border:none;background:none;color:var(--hc-brand);cursor:pointer;font-size:15px;
+  line-height:1;padding:0 0 0 2px;font-weight:400;opacity:.7;transition:opacity .14s;flex:none}
+.hc-tip-x:hover{opacity:1}
+.hc-btn{display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer;font-family:inherit;
+  font-weight:800;border-radius:13px;transition:transform .14s,box-shadow .14s;line-height:1}
+.hc-btn:hover{transform:translateY(-2px)}
+.hc-term{background:var(--hc-brand);color:#fff;
+  font-size:15px;padding:13px 18px;box-shadow:0 8px 22px -6px rgba(64,145,108,.45)}
+.hc-term .ic{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;
+  background:rgba(255,255,255,.28);font-size:15px;font-weight:900}
+.hc-home{background:var(--hc-paper);color:var(--hc-brand);border:1.5px solid var(--hc-line);
+  font-size:14px;padding:12px 15px;box-shadow:0 6px 18px -8px rgba(0,0,0,.12)}
+.hc-home:hover{border-color:var(--hc-brand2)}
+.hc-home .ic{font-size:17px}
+@media(max-width:640px){
+  .hc-fab{top:10px;right:10px;gap:7px}
+  .hc-term{font-size:13px;padding:11px 13px}
+  .hc-term .lbl-full{display:none}.hc-term .lbl-short{display:inline}
+  .hc-home{padding:11px 12px}.hc-home .lbl{display:none}
+}
+@media(min-width:641px){ .hc-term .lbl-short{display:none} }
+/* 초소형 화면: FAB가 헤더 제목을 덮지 않도록 용어 버튼을 아이콘만 남겨 축소 */
+@media(max-width:400px){
+  .hc-fab{gap:6px}
+  .hc-term .lbl-short{display:none}
+  .hc-term{padding:10px 12px}
+  .hc-term .ic{width:20px;height:20px;font-size:14px}
+}
+
+/* overlay shell (guide + terms) */
+.hc-ov{position:fixed;inset:0;z-index:2147482000;background:rgba(12,40,40,.55);
+  backdrop-filter:blur(4px);display:none;align-items:flex-start;justify-content:center;
+  padding:26px 16px;overflow:auto}
+.hc-ov.open{display:flex}
+.hc-sheet{background:var(--hc-paper);width:100%;max-width:860px;border-radius:22px;overflow:hidden;
+  box-shadow:0 30px 80px -30px rgba(12,40,40,.6);animation:hcpop .26s cubic-bezier(.2,.9,.3,1)}
+@keyframes hcpop{from{transform:translateY(14px);opacity:.4}to{transform:none;opacity:1}}
+.hc-sheet.sm{max-width:600px}
+
+/* guide (poster-style) */
+.hc-ghead{background:var(--hc-brand);color:#fff;
+  padding:28px 30px 26px;position:relative;overflow:hidden}
+.hc-ghead .wm{position:absolute;right:-10px;bottom:-34px;font-size:130px;font-weight:900;
+  letter-spacing:-.04em;color:rgba(255,255,255,.08);line-height:1;pointer-events:none}
+.hc-eyebrow{font-size:12px;font-weight:800;letter-spacing:.2em;color:rgba(255,255,255,.7);text-transform:uppercase}
+.hc-ghead h2{font-size:30px;font-weight:900;letter-spacing:-.03em;line-height:1.12;margin:9px 0 0;position:relative}
+.hc-ghead p{font-size:15px;color:rgba(255,255,255,.85);margin:12px 0 0;max-width:90%;line-height:1.5;position:relative}
+.hc-gclose{position:absolute;top:18px;right:20px;z-index:3;width:36px;height:36px;border-radius:50%;
+  border:none;background:rgba(255,255,255,.2);color:#fff;font-size:20px;cursor:pointer;line-height:1}
+.hc-gclose:hover{background:rgba(255,255,255,.34)}
+.hc-gbody{padding:26px 30px 20px}
+.hc-kick{font-size:14px;font-weight:800;color:var(--hc-brand);letter-spacing:.02em;display:flex;
+  align-items:center;gap:10px;margin:0 0 14px}
+.hc-kick::after{content:"";flex:1;height:2px;background:var(--hc-line)}
+.hc-methods{display:flex;flex-direction:column;gap:11px;margin-bottom:20px}
+.hc-m{display:flex;gap:15px;align-items:flex-start;border:1.5px solid var(--hc-line);border-radius:15px;padding:15px 16px;background:#fff}
+.hc-m .no{flex:none;width:46px;height:46px;border-radius:13px;background:var(--hc-soft);color:var(--hc-brand);
+  display:grid;place-items:center;font-size:22px;font-weight:900}
+.hc-m .ti{font-size:18px;font-weight:800;letter-spacing:-.01em}
+.hc-m .de{font-size:14px;color:var(--hc-muted);margin-top:4px;line-height:1.5}
+.hc-m .out{font-size:12.5px;color:var(--hc-brand);font-weight:700;margin-top:7px}
+.hc-m .out::before{content:"→ "}
+.hc-read{border:1.5px solid var(--hc-line);border-radius:15px;padding:16px 18px;margin-bottom:18px}
+.hc-read h3{font-size:14px;font-weight:800;color:var(--hc-ink);margin:0 0 11px}
+.hc-read .r{font-size:13.5px;color:var(--hc-ink);line-height:1.5;display:flex;gap:8px;margin-bottom:8px}
+.hc-read .r:last-child{margin-bottom:0}
+.hc-read .r::before{content:"●";color:var(--hc-brand);font-size:8px;margin-top:6px}
+.hc-read .r b{color:var(--hc-brand2)}
+.hc-scale{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+.hc-gb{min-width:54px;text-align:center;font-weight:800;border-radius:9px;padding:7px 6px;font-size:14px}
+.hc-gb.g{background:var(--hc-good-bg);color:var(--hc-good)}
+.hc-gb.m{background:var(--hc-mid-bg);color:var(--hc-mid)}
+.hc-gb.w{background:var(--hc-weak-bg);color:var(--hc-weak)}
+.hc-gb.n{background:#eef1f4;color:#9aa6b4}
+.hc-start{width:100%;margin-top:4px;border:none;border-radius:16px;padding:18px;cursor:pointer;font-family:inherit;
+  background:var(--hc-brand);color:#fff;display:flex;align-items:center;
+  justify-content:center;gap:12px;box-shadow:0 14px 30px -12px rgba(64,145,108,.45);transition:transform .15s}
+.hc-start:hover{transform:translateY(-2px)}
+.hc-start .t{font-size:17px;font-weight:800}
+.hc-start .ar{font-size:20px}
+.hc-cap{background:#FFF5F8;border-top:1.5px solid var(--hc-line);padding:14px 30px;font-size:12px;
+  color:var(--hc-muted);line-height:1.6}
+.hc-cap b{color:var(--hc-ink)}
+
+/* terms modal */
+.hc-thead{background:linear-gradient(135deg,var(--hc-accent),var(--hc-accent2));color:#fff;
+  padding:18px 22px;display:flex;align-items:center;gap:12px;position:sticky;top:0}
+.hc-thead .ic{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.25);display:grid;place-items:center;font-size:18px;font-weight:900;flex:none}
+.hc-thead h2{font-size:18px;font-weight:800;margin:0;flex:1}
+.hc-thead .x{width:32px;height:32px;border-radius:8px;border:none;background:rgba(255,255,255,.22);color:#fff;font-size:19px;cursor:pointer;line-height:1}
+.hc-thead .x:hover{background:rgba(255,255,255,.38)}
+.hc-tbody{padding:8px 22px 22px;max-height:72vh;overflow:auto}
+.hc-tsect{font-size:11.5px;font-weight:800;color:var(--hc-muted);letter-spacing:.06em;margin:16px 0 4px}
+.hc-trow{display:grid;grid-template-columns:130px 1fr;gap:12px;padding:11px 0;border-bottom:1px dashed var(--hc-line)}
+.hc-trow:last-child{border-bottom:none}
+.hc-tterm{font-weight:800;color:var(--hc-brand);font-size:13.5px}
+.hc-tdesc{font-size:13px;color:var(--hc-ink);line-height:1.5}
+@media(max-width:560px){ .hc-trow{grid-template-columns:1fr;gap:3px} }
+
+.hc-relbox{margin-top:18px}
+.hc-rel-h{font-size:14px;font-weight:800;color:var(--hc-ink);display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.hc-rel-h span{font-size:12px;font-weight:600;color:var(--hc-muted)}
+.hc-rel-s{font-size:12px;font-weight:700;color:var(--hc-muted);margin:12px 0 6px}
+.hc-rel{display:flex;align-items:center;gap:10px;width:100%;text-align:left;font-family:inherit;background:#fff;
+  border:1px solid var(--hc-line);border-left:4px solid var(--rc,var(--hc-brand));border-radius:10px;padding:10px 12px;margin-bottom:7px;cursor:pointer;transition:.13s}
+.hc-rel:hover{border-color:var(--hc-brand2);background:#F2F8F8}
+.hc-rel-u{font-weight:800;font-size:14px;color:var(--hc-ink);flex:none}
+.hc-rel-t{font-size:12px;color:var(--hc-muted);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hc-rel-m{font-size:12px;font-weight:700;color:#DC2626;white-space:nowrap}
+.hc-rel-m.none{color:#16A34A}
+.hc-rel-e{font-size:13px;color:var(--hc-muted);padding:8px 2px}
+
+</style>
+</head>
+<body>
+<header>
+  <div class="bar-in">
+    <div class="bar-top">
+      <a href="index.html" class="home-btn" title="홈으로">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>홈
+      </a>
+      <div class="brand" role="button" tabindex="0" aria-label="처음으로" onclick="switchView('univ')">
+        <span class="yr">2028</span><h1>의대 수시모집</h1>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">2028학년도 · 수시모집</div>
+  <h2>의과대학 수시모집 전형 검색</h2>
+  <p class="sub">대학별 전형 정보와 지역의사 지원 가능 여부를 빠르게 확인할 수 있습니다.</p>
+</section>
+
+<section class="topicpick" id="topicpick">
+  <p class="topic-head">보고 싶은 <b>주제를 선택</b>해 보세요</p>
+  <div class="topic-grid">
+    <button class="topic-card on" data-view="univ" onclick="switchView('univ')">
+      <span class="tc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+      <div class="tc-body"><div class="tc-title">전체 대학 보기</div></div>
+    </button>
+    <button class="topic-card" data-view="track" onclick="switchView('track')">
+      <span class="tc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg></span>
+      <div class="tc-body"><div class="tc-title">전형별로 보기</div></div>
+    </button>
+    <button class="topic-card" data-view="uisa" onclick="switchView('uisa')">
+      <span class="tc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.6-7-11a7 7 0 1 1 14 0c0 5.4-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg></span>
+      <div class="tc-body"><div class="tc-title">지역전형 자격 판정</div></div>
+    </button>
+    <button class="topic-card" data-view="min" onclick="switchView('min')">
+      <span class="tc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18V8M9 18V5M14 18v-7M19 18v-3"/></svg></span>
+      <div class="tc-body"><div class="tc-title">등급으로 알아보는 지원 가능 대학</div></div>
+    </button>
+  </div>
+</section>
+
+<main id="main"></main>
+
+<footer>
+  <div class="foot">
+    <div>
+      <div class="fbrand"><span class="dotm"></span>(주)이즈유 · 클럽하와이</div>
+      <div class="fmeta" style="margin-top:8px">
+        본 검색기의 소유권은 <b>(주)이즈유</b>에 있습니다.<br>
+        <b>클럽하와이</b> 회원을 위해 제작되었습니다.<br>
+        제작 · 작성: <b>박정환, 김세형</b>
+      </div>
+    </div>
+    <div class="fright">
+      <b>데이터 안내.</b> 인원·전형·수능최저는 2028학년도 정리본 기준입니다. 지역의사 자격 판정은 교육부 「지역의사선발전형 안내」의 중·고교 이수 경로 규칙을 따릅니다. 거주 요건·기숙사 인정 등 세부 사항과 개별 인원·수능최저 값은 반드시 각 대학 최종 모집요강으로 확인하시기 바랍니다.
+    </div>
+  </div>
+</footer>
+
+<!-- detail / glossary modal -->
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" role="dialog" aria-modal="true" id="modal"></div>
+</div>
+<div class="pop" id="pop"></div>
+
+<script>
+const DATA = {"programs":[{"id":0,"univ":"가천대학교","cat":"일반","track":"학생부 교과","name":"학생부우수자","quota":4,"method":"일괄: 교과 100%","minreq":"국수영과 3개 1등급","unit":"","region":"","jin":"","sigun":""},{"id":1,"univ":"가천대학교","cat":"일반","track":"학생부 종합","name":"가천의약학","quota":16,"method":"단계별: 1단계 서류 100% (4배수) → 2단계 1단계 50% + 면접 50%","minreq":"국수영과 3개 1등급","unit":"","region":"","jin":"","sigun":""},{"id":2,"univ":"가천대학교","cat":"일반","track":"논술","name":"논술","quota":6,"method":"일괄: 논술 100%","minreq":"국수영과 3개 1등급","unit":"","region":"","jin":"","sigun":""},{"id":3,"univ":"가천대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(의정부권)","quota":1,"method":"일괄: 교과 100%","minreq":"국수영사과 5개 중 3개 1등급","unit":"진료권","region":"경기·인천","jin":"의정부권","sigun":"의정부시, 동두천시, 양주시, 연천군"},{"id":4,"univ":"가천대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(남양주권)","quota":2,"method":"일괄: 교과 100%","minreq":"국수영사과 5개 중 3개 1등급","unit":"진료권","region":"경기·인천","jin":"남양주권","sigun":"구리시, 남양주시, 가평군, 양평군"},{"id":5,"univ":"가천대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(이천권)","quota":1,"method":"일괄: 교과 100%","minreq":"국수영사과 5개 중 3개 1등급","unit":"진료권","region":"경기·인천","jin":"이천권","sigun":"이천시, 여주시"},{"id":6,"univ":"가천대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(포천권)","quota":1,"method":"일괄: 교과 100%","minreq":"국수영사과 5개 중 3개 1등급","unit":"진료권","region":"경기·인천","jin":"포천권","sigun":"포천시"},{"id":7,"univ":"가천대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(인천서북권)","quota":2,"method":"일괄: 교과 100%","minreq":"국수영사과 5개 중 3개 1등급","unit":"진료권","region":"경기·인천","jin":"인천서북권","sigun":"서구, 강화군"},{"id":8,"univ":"가천대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(인천중부권)","quota":2,"method":"일괄: 교과 100%","minreq":"국수영사과 5개 중 3개 1등급","unit":"진료권","region":"경기·인천","jin":"인천중부권","sigun":"중구, 동구, 미추홀구, 옹진군"},{"id":9,"univ":"가톨릭관동대학교","cat":"일반","track":"학생부 교과","name":"일반","quota":12,"method":"일괄: 교과 90% + 출결 10%","minreq":"국수영과 3개 합 4","unit":"","region":"","jin":"","sigun":""},{"id":10,"univ":"가톨릭관동대학교","cat":"일반","track":"학생부 종합","name":"일반","quota":5,"method":"일괄: 서류100%","minreq":"국수영과 3개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":11,"univ":"가톨릭관동대학교","cat":"지역인재","track":"학생부 교과","name":"지역인재","quota":6,"method":"일괄: 교과 90% + 출결 10%","minreq":"국수영과 3개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":12,"univ":"가톨릭관동대학교","cat":"지역인재","track":"학생부 종합","name":"지역인재","quota":2,"method":"일괄: 서류 100%","minreq":"국수영과 3개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":13,"univ":"가톨릭관동대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(강원 광역권)","quota":8,"method":"일괄: 서류 100%","minreq":"국수영과 3개 합 7","unit":"광역권","region":"강원","jin":"","sigun":""},{"id":14,"univ":"가톨릭관동대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(춘천권)","quota":8,"method":"일괄: 서류 100%","minreq":"국수영과 3개 합 7","unit":"진료권","region":"강원","jin":"춘천권","sigun":"춘천시, 홍천군, 철원군, 양구군, 화천군"},{"id":15,"univ":"가톨릭관동대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(원주권)","quota":8,"method":"일괄: 서류 100%","minreq":"국수영과 3개 합 7","unit":"진료권","region":"강원","jin":"원주권","sigun":"원주시, 횡성군"},{"id":16,"univ":"가톨릭관동대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(영월권)","quota":8,"method":"일괄: 서류 100%","minreq":"국수영과 3개 합 7","unit":"진료권","region":"강원","jin":"영월권","sigun":"영월군, 평창군, 정선군"},{"id":17,"univ":"가톨릭관동대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(강릉권)","quota":8,"method":"일괄: 서류 100%","minreq":"국수영과 3개 합 7","unit":"진료권","region":"강원","jin":"강릉권","sigun":"강릉시"},{"id":18,"univ":"가톨릭관동대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(동해권)","quota":8,"method":"일괄: 서류 100%","minreq":"국수영과 3개 합 7","unit":"진료권","region":"강원","jin":"동해권","sigun":"동해시, 태백시, 삼척시"},{"id":19,"univ":"가톨릭관동대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(속초권)","quota":8,"method":"일괄: 서류 100%","minreq":"국수영과 3개 합 7","unit":"진료권","region":"강원","jin":"속초권","sigun":"속초시, 인제군, 고성군, 양양군"},{"id":20,"univ":"가톨릭대학교","cat":"일반","track":"학생부 종합","name":"학교장추천전형","quota":35,"method":"단계별: 1단계 서류 100% (3배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영과 3개 합 4 + 한국사 4","unit":"","region":"","jin":"","sigun":""},{"id":21,"univ":"가톨릭대학교","cat":"일반","track":"논술","name":"논술전형","quota":21,"method":"일괄: 논술 80 + 교과 10 + 출결 10","minreq":"국수영과 3개 합 4 + 한국사 4","unit":"","region":"","jin":"","sigun":""},{"id":22,"univ":"가톨릭대학교","cat":"특별전형","track":"학생부 종합","name":"가톨릭지도자추천","quota":2,"method":"단계별: 1단계 서류 100% (3배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영과 3개 합 4 + 한국사 4","unit":"","region":"","jin":"","sigun":""},{"id":23,"univ":"강원대학교","cat":"일반","track":"학생부 종합","name":"미래인재면접전형","quota":22,"method":"단계별: 1단계 서류 100% (3배수) → 2단계 1단계 서류 60% + 면접 40%","minreq":"미적용","unit":"","region":"","jin":"","sigun":""},{"id":24,"univ":"강원대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(강원 광역권)-정성평가전형","quota":49,"method":"단계별: 1단계 교과 100% (4배수) → 2단계 교과 80% + 정성 20%","minreq":"국수영과 수학 포함 3개 합 6","unit":"광역권","region":"강원","jin":"","sigun":""},{"id":25,"univ":"강원대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(춘천권)-정성평가전형","quota":10,"method":"단계별: 1단계 교과 100% (4배수) → 2단계 교과 80% + 정성 20%","minreq":"국수영과 수학 포함 3개 합 6","unit":"진료권","region":"강원","jin":"춘천권","sigun":"춘천시, 홍천군, 철원군, 양구군, 화천군"},{"id":26,"univ":"강원대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(원주권)-정성평가전형","quota":9,"method":"단계별: 1단계 교과 100% (4배수) → 2단계 교과 80% + 정성 20%","minreq":"국수영과 수학 포함 3개 합 6","unit":"진료권","region":"강원","jin":"원주권","sigun":"원주시, 횡성군"},{"id":27,"univ":"강원대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(영월권)-정성평가전형","quota":2,"method":"단계별: 1단계 교과 100% (4배수) → 2단계 교과 80% + 정성 20%","minreq":"국수영과 수학 포함 3개 합 6","unit":"진료권","region":"강원","jin":"영월권","sigun":"영월군, 평창군, 정선군"},{"id":28,"univ":"강원대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(강릉권)-정성평가전형","quota":5,"method":"단계별: 1단계 교과 100% (4배수) → 2단계 교과 80% + 정성 20%","minreq":"국수영과 수학 포함 3개 합 6","unit":"진료권","region":"강원","jin":"강릉권","sigun":"강릉시"},{"id":29,"univ":"강원대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(동해권)-정성평가전형","quota":4,"method":"단계별: 1단계 교과 100% (4배수) → 2단계 교과 80% + 정성 20%","minreq":"국수영과 수학 포함 3개 합 6","unit":"진료권","region":"강원","jin":"동해권","sigun":"동해시, 태백시, 삼척시"},{"id":30,"univ":"강원대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(속초권)-정성평가전형","quota":4,"method":"단계별: 1단계 교과 100% (4배수) → 2단계 교과 80% + 정성 20%","minreq":"국수영과 수학 포함 3개 합 6","unit":"진료권","region":"강원","jin":"속초권","sigun":"속초시, 인제군, 고성군, 양양군"},{"id":31,"univ":"건국대학교 글로컬캠퍼스","cat":"일반","track":"학생부 종합","name":"Cogito 자기추천(면접형)전형","quota":4,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 서류 70% + 면접 30%","minreq":"국수영사과 5개 중 4개 합 5 + 한국사 4","unit":"","region":"","jin":"","sigun":""},{"id":32,"univ":"건국대학교 글로컬캠퍼스","cat":"지역인재","track":"학생부 종합","name":"학생부종합 지역인재","quota":8,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 서류 70% + 면접 30%","minreq":"국수영사과 5개 중 4개 합 6 + 한국사 4","unit":"","region":"","jin":"","sigun":""},{"id":33,"univ":"건국대학교 글로컬캠퍼스","cat":"지역의사","track":"학생부 교과","name":"지역의사제(대전 세종 충남 충북 광역권)","quota":3,"method":"단계별: 1단계 교과 100% (10배수) → 2단계 1단계 성적 70% +면접 30%","minreq":"국수영사과 5개 중 4개 합 7 + 한국사 4","unit":"광역권","region":"대전·세종·충남·충북","jin":"","sigun":""},{"id":34,"univ":"건국대학교 글로컬캠퍼스","cat":"지역의사","track":"학생부 교과","name":"지역의사제(청주권)","quota":4,"method":"단계별: 1단계 교과 100% (10배수) → 2단계 1단계 성적 70% +면접 30%","minreq":"국수영사과 5개 중 4개 합 7 + 한국사 4","unit":"진료권","region":"대전·세종·충남·충북","jin":"청주권","sigun":"청주시, 보은군, 옥천군, 영동군, 증평군, 진천군"},{"id":35,"univ":"건국대학교 글로컬캠퍼스","cat":"지역의사","track":"학생부 교과","name":"지역의사제(충주권)","quota":1,"method":"단계별: 1단계 교과 100% (10배수) → 2단계 1단계 성적 70% +면접 30%","minreq":"국수영사과 5개 중 4개 합 7 + 한국사 4","unit":"진료권","region":"대전·세종·충남·충북","jin":"충주권","sigun":"충주시, 괴산군, 음성군"},{"id":36,"univ":"건국대학교 글로컬캠퍼스","cat":"지역의사","track":"학생부 교과","name":"지역의사제(제천권)","quota":1,"method":"단계별: 1단계 교과 100% (10배수) → 2단계 1단계 성적 70% +면접 30%","minreq":"국수영사과 5개 중 4개 합 7 + 한국사 4","unit":"진료권","region":"대전·세종·충남·충북","jin":"제천권","sigun":"제천시, 단양군"},{"id":37,"univ":"건양대학교","cat":"일반","track":"학생부 교과","name":"일반교과[면접]","quota":11,"method":"단계별: 1단계 학생부교과 50.91% + 서류 49.09% (3배수) → 2단계 1단계 74.58% + 면접 25.42%","minreq":"국수영과 3개 합 4","unit":"","region":"","jin":"","sigun":""},{"id":38,"univ":"건양대학교","cat":"지역인재","track":"학생부 교과","name":"지역교과[면접]","quota":20,"method":"단계별: 1단계 학생부교과 50.91% + 서류 49.09% (3배수) → 2단계 1단계 74.58% + 면접 25.42%","minreq":"국수영과 3개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":39,"univ":"건양대학교","cat":"지역인재","track":"학생부 종합","name":"지역종합[면접]","quota":10,"method":"단계별: 1단계 서류 100% (3배수) → 2단계 1단계 82.71% + 면접 17.29% (충청권 지역인재)","minreq":"미적용","unit":"","region":"","jin":"","sigun":""},{"id":40,"univ":"건양대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(대전 세종 충남 충북 광역권)","quota":2,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30% (대전·세종·충남·충북)","minreq":"미적용","unit":"광역권","region":"대전·세종·충남·충북","jin":"","sigun":""},{"id":41,"univ":"건양대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(공주권)","quota":1,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%","minreq":"미적용","unit":"진료권","region":"대전·세종·충남·충북","jin":"공주권","sigun":"공주시, 계룡시"},{"id":42,"univ":"건양대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(논산권)","quota":1,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%","minreq":"미적용","unit":"진료권","region":"대전·세종·충남·충북","jin":"논산권","sigun":"논산시, 금산군, 부여군, 서천군"},{"id":43,"univ":"건양대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(서산권)","quota":1,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%","minreq":"미적용","unit":"진료권","region":"대전·세종·충남·충북","jin":"서산권","sigun":"서산시, 당진시, 태안군"},{"id":44,"univ":"건양대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(천안권)","quota":2,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%","minreq":"미적용","unit":"진료권","region":"대전·세종·충남·충북","jin":"천안권","sigun":"천안시, 아산시"},{"id":45,"univ":"건양대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(홍성권)","quota":1,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%","minreq":"미적용","unit":"진료권","region":"대전·세종·충남·충북","jin":"홍성권","sigun":"보령시, 청양군, 홍성군, 예산군"},{"id":46,"univ":"경북대학교","cat":"일반","track":"학생부 종합","name":"일반학생전형","quota":25,"method":"일괄: 서류평가 100%. 서류평가 결과 평가기준에 40% 미만 불합격","minreq":"국수영탐(평균) 수학 포함 3개 합 4","unit":"","region":"","jin":"","sigun":""},{"id":47,"univ":"경북대학교","cat":"지역인재","track":"학생부 교과","name":"지역인재전형","quota":17,"method":"일괄: 학생부 교과 80% + 교과이수 충실도(서류평가) 20%","minreq":"국수영탐(평균) 수학 포함 3개 합 4","unit":"","region":"","jin":"","sigun":""},{"id":48,"univ":"경북대학교","cat":"지역인재","track":"학생부 종합","name":"지역인재전형","quota":34,"method":"단계별: 1단계 서류평가 100% (5배수) → 2단계: 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 수학 포함 3개 합 4","unit":"","region":"","jin":"","sigun":""},{"id":49,"univ":"경북대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제 (대구 경북 광역권)","quota":10,"method":"단계별: 1단계 서류평가 100% (5배수) → 2단계 1단계 70% + 면접30%.","minreq":"국수영탐(평균) 수학 포함 3개 합 5","unit":"광역권","region":"대구·경북","jin":"","sigun":""},{"id":50,"univ":"경북대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(포항권)","quota":5,"method":"단계별: 1단계 서류평가 100% (5배수) → 2단계 1단계 70% + 면접30%.","minreq":"수영탐(평균) 수학 포함 3개 합 5","unit":"진료권","region":"대구·경북","jin":"포항권","sigun":"포항시, 영덕군, 울진군, 울릉군"},{"id":51,"univ":"경북대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(경주권)","quota":6,"method":"단계별: 1단계 서류평가 100% (5배수) → 2단계 1단계 70% + 면접30%.","minreq":"수영탐(평균) 수학 포함 3개 합 5","unit":"진료권","region":"대구·경북","jin":"경주권","sigun":"경주시, 영천시, 경산시, 청도군"},{"id":52,"univ":"경북대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(안동권)","quota":2,"method":"단계별: 1단계 서류평가 100% (5배수) → 2단계 1단계 70% + 면접30%.","minreq":"수영탐(평균) 수학 포함 3개 합 5","unit":"진료권","region":"대구·경북","jin":"안동권","sigun":"안동시, 의성군, 청송군, 영양군"},{"id":53,"univ":"경북대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(구미권)","quota":7,"method":"단계별: 1단계 서류평가 100% (5배수) → 2단계 1단계 70% + 면접30%.","minreq":"수영탐(평균) 수학 포함 3개 합 5","unit":"진료권","region":"대구·경북","jin":"구미권","sigun":"김천시, 구미시, 고령군, 성주군, 칠곡군"},{"id":54,"univ":"경북대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(영주권)","quota":2,"method":"단계별: 1단계 서류평가 100% (5배수) → 2단계 1단계 70% + 면접30%.","minreq":"수영탐(평균) 수학 포함 3개 합 5","unit":"진료권","region":"대구·경북","jin":"영주권","sigun":"영주시, 예천군, 봉화군"},{"id":55,"univ":"경북대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(상주권)","quota":1,"method":"단계별: 1단계 서류평가 100% (5배수) → 2단계 1단계 70% + 면접30%.","minreq":"수영탐(평균) 수학 포함 3개 합 5","unit":"진료권","region":"대구·경북","jin":"상주권","sigun":"상주시, 문경시"},{"id":56,"univ":"경상국립대학교","cat":"일반","track":"학생부 교과","name":"일반전형","quota":10,"method":"일괄: 교과 100%","minreq":"국수영탐(평균) 수학 포함 3개 합 4 절사","unit":"","region":"","jin":"","sigun":""},{"id":57,"univ":"경상국립대학교","cat":"일반","track":"학생부 종합","name":"일반전형(면접)","quota":6,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 80% + 면접 20%","minreq":"국수영탐(평균) 수학 포함 3개 합 6 절사","unit":"","region":"","jin":"","sigun":""},{"id":58,"univ":"경상국립대학교","cat":"지역인재","track":"학생부 교과","name":"지역인재전형","quota":24,"method":"일괄: 교과 100%","minreq":"국수영탐(평균) 수학 포함 3개 합 6 절사","unit":"","region":"","jin":"","sigun":""},{"id":59,"univ":"경상국립대학교","cat":"지역인재","track":"학생부 종합","name":"지역인재(서류)","quota":8,"method":"일괄: 서류 100%","minreq":"국수영탐(평균) 수학 포함 3개 합 6 절사","unit":"","region":"","jin":"","sigun":""},{"id":60,"univ":"경상국립대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(부산 울산 경남 광역권)","quota":8,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 80% + 면접 20%","minreq":"국수영탐(평균) 수학 포함 3개 합 6 절사","unit":"광역권","region":"부산·울산·경남","jin":"","sigun":""},{"id":61,"univ":"경상국립대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(창원권)","quota":7,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 80% + 면접 20%","minreq":"국수영탐(평균) 수학 포함 3개 합 6 절사","unit":"진료권","region":"부산·울산·경남","jin":"창원권","sigun":"창원시, 의령군, 함안군, 창녕군"},{"id":62,"univ":"경상국립대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(김해권)","quota":6,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 80% + 면접 20%","minreq":"국수영탐(평균) 수학 포함 3개 합 6 절사","unit":"진료권","region":"부산·울산·경남","jin":"김해권","sigun":"김해시, 밀양시, 양산시"},{"id":63,"univ":"경상국립대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(진주권)","quota":4,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 80% + 면접 20%","minreq":"국수영탐(평균) 수학 포함 3개 합 6 절사","unit":"진료권","region":"부산·울산·경남","jin":"진주권","sigun":"진주시, 사천시, 남해군, 하동군, 산청군"},{"id":64,"univ":"경상국립대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(통영권)","quota":2,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 80% + 면접 20%","minreq":"국수영탐(평균) 수학 포함 3개 합 6 절사","unit":"진료권","region":"부산·울산·경남","jin":"통영권","sigun":"통영시, 거제시, 고성군"},{"id":65,"univ":"경상국립대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(거창권)","quota":1,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 80% + 면접 20%","minreq":"국수영탐(평균) 수학 포함 3개 합 6 절사","unit":"진료권","region":"부산·울산·경남","jin":"거창권","sigun":"함양군, 거창군, 합천군"},{"id":66,"univ":"경희대학교","cat":"일반","track":"학생부 교과","name":"지역균형전형","quota":11,"method":"일괄: 교과 정량70% + 정성평가30%","minreq":"국수영탐(평균) 수학 포함 3개 합 6 절사","unit":"","region":"","jin":"","sigun":""},{"id":67,"univ":"경희대학교","cat":"일반","track":"학생부 종합","name":"네오르네상스(면접형)","quota":13,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%","minreq":"미적용","unit":"","region":"","jin":"","sigun":""},{"id":68,"univ":"경희대학교","cat":"일반","track":"학생부 종합","name":"네오르네상스(서류형)","quota":12,"method":"일괄: 서류 100% (일괄)","minreq":"국수영탐1 3개 합 4 + 한국사 5등급","unit":"","region":"","jin":"","sigun":""},{"id":69,"univ":"경희대학교","cat":"일반","track":"논술","name":"논술우수자전형","quota":19,"method":"일괄: 교과 30% + 논술 70%","minreq":"국수영탐1 3개 합 4 + 한국사 5등급","unit":"","region":"","jin":"","sigun":""},{"id":70,"univ":"계명대학교","cat":"일반","track":"학생부 교과","name":"일반전형","quota":7,"method":"단계별: 1단계 교과 100% (20배수) → 2단계 1단계 80% + 면접 20%","minreq":"국수영과 3개 합 3","unit":"","region":"","jin":"","sigun":""},{"id":71,"univ":"계명대학교","cat":"일반","track":"학생부 종합","name":"일반전형","quota":10,"method":"단계별: 1단계: 서류 100% (10배수) → 2단계: 1단계 70% + 면접 30%","minreq":"국수영과 수학 포함 3개 합 4","unit":"","region":"","jin":"","sigun":""},{"id":72,"univ":"계명대학교","cat":"일반","track":"학생부 교과","name":"면접전형","quota":7,"method":"단계별: 1단계 교과 100% (20배수) → 2단계 1단계 80% + 면접 20%","minreq":"국수영과 수학 포함 3개 합 4","unit":"","region":"","jin":"","sigun":""},{"id":73,"univ":"계명대학교","cat":"지역인재","track":"학생부 교과","name":"지역전형","quota":21,"method":"단계별: 1단계: 학생부 100% (15배수) → 2단계: 1단계 80% + 면접 20%","minreq":"국수영과 수학 포함 3개 합 4","unit":"","region":"","jin":"","sigun":""},{"id":74,"univ":"계명대학교","cat":"지역인재","track":"학생부 종합","name":"지역전형","quota":20,"method":"단계별: 1단계: 서류 100% (10배수) → 2단계: 1단계 70% + 면접 30%","minreq":"국수영과 수학 포함 3개 합 4","unit":"","region":"","jin":"","sigun":""},{"id":75,"univ":"계명대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(대구 경북 광역)","quota":6,"method":"단계별: 1단계: 학생부 100% (20배수) → 2단계: 1단계 80% + 면접 20%","minreq":"국수영과 수학 포함 3개 합 4","unit":"광역권","region":"대구·경북","jin":"","sigun":""},{"id":76,"univ":"계명대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(포항권)","quota":3,"method":"단계별: 1단계: 서류 100% (10배수) → 2단계: 1단계 70% + 면접 30%","minreq":"국수영과 수학 포함 3개 합 5","unit":"진료권","region":"대구·경북","jin":"포항권","sigun":"포항시, 영덕군, 울진군, 울릉군"},{"id":77,"univ":"계명대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(경주권)","quota":3,"method":"단계별: 1단계: 서류 100% (10배수) → 2단계: 1단계 70% + 면접 30%","minreq":"국수영과 수학 포함 3개 합 5","unit":"진료권","region":"대구·경북","jin":"경주권","sigun":"경주시, 영천시, 경산시, 청도군"},{"id":78,"univ":"계명대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(안동권)","quota":1,"method":"단계별: 1단계: 서류 100% (10배수) → 2단계: 1단계 70% + 면접 30%","minreq":"국수영과 수학 포함 3개 합 5","unit":"진료권","region":"대구·경북","jin":"안동권","sigun":"안동시, 의성군, 청송군, 영양군"},{"id":79,"univ":"계명대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(구미권)","quota":3,"method":"단계별: 1단계: 서류 100% (10배수) → 2단계: 1단계 70% + 면접 30%","minreq":"국수영과 수학 포함 3개 합 5","unit":"진료권","region":"대구·경북","jin":"구미권","sigun":"김천시, 구미시, 고령군, 성주군, 칠곡군"},{"id":80,"univ":"계명대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(영주권)","quota":1,"method":"단계별: 1단계: 서류 100% (10배수) → 2단계: 1단계 70% + 면접 30%","minreq":"국수영과 수학 포함 3개 합 5","unit":"진료권","region":"대구·경북","jin":"영주권","sigun":"영주시, 예천군, 봉화군"},{"id":81,"univ":"계명대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(상주권)","quota":1,"method":"단계별: 1단계: 서류 100% (10배수) → 2단계: 1단계 70% + 면접 30%","minreq":"국수영과 수학 포함 3개 합 5","unit":"진료권","region":"대구·경북","jin":"상주권","sigun":"상주시, 문경시"},{"id":82,"univ":"고려대학교","cat":"일반","track":"학생부 교과","name":"학교추천","quota":20,"method":"일괄: 교과 80% + 서류 20%","minreq":"국수영탐1 4개 합 5, 한국사 4","unit":"","region":"","jin":"","sigun":""},{"id":83,"univ":"고려대학교","cat":"일반","track":"학생부 종합","name":"계열적합","quota":16,"method":"일괄: 서류 100%","minreq":"미적용","unit":"","region":"","jin":"","sigun":""},{"id":84,"univ":"고려대학교","cat":"일반","track":"학생부 종합","name":"학업우수","quota":25,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영탐1 4개 합 5, 한국사 4","unit":"","region":"","jin":"","sigun":""},{"id":85,"univ":"고신대학교","cat":"일반","track":"학생부 교과","name":"일반고 서류면접","quota":12,"method":"단계별: 1단계 교과 100% (10배수) → 2단계 1단계 80% + 서류 10% + 면접 10%","minreq":"국수영과 수학 포함 3개 합 4","unit":"","region":"","jin":"","sigun":""},{"id":86,"univ":"고신대학교","cat":"일반","track":"학생부 교과","name":"일반고 성장인재","quota":10,"method":"단계별: 1단계 교과 100% (10배수) → 2단계 1단계 80% + 서류 10% + 면접 10%","minreq":"국수영과 수학 포함 3개 합 4","unit":"","region":"","jin":"","sigun":""},{"id":87,"univ":"고신대학교","cat":"지역인재","track":"학생부 교과","name":"지역인재 서류면접","quota":24,"method":"단계별: 1단계 교과 100% (10배수) → 2단계 1단계 80% + 서류 10% + 면접 10%","minreq":"국수영과 수학 포함 3개 합 4","unit":"","region":"","jin":"","sigun":""},{"id":88,"univ":"고신대학교","cat":"일반","track":"학생부 종합","name":"자기추천","quota":5,"method":"단계별: 1단계 서류 100% (10배수) → 2단계 1단계 80% + 면접 20%","minreq":"국수영과 수학 포함 3개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":89,"univ":"고신대학교","cat":"지역인재","track":"학생부 종합","name":"지역인재종합","quota":5,"method":"단계별: 1단계 서류 100% (10배수) → 2단계 1단계 80% + 면접 20%","minreq":"국수영과 수학 포함 3개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":90,"univ":"고신대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(부산 울산 경남 광역권)","quota":2,"method":"단계별: 1단계 교과 100% (10배수) → 2단계 1단계 80% + 서류 10% + 면접 10%","minreq":"국수영탐1 수학 포함 3개 합 5","unit":"광역권","region":"부산·울산·경남","jin":"","sigun":""},{"id":91,"univ":"고신대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(창원권)","quota":2,"method":"단계별: 1단계 교과 100% (10배수) → 2단계 1단계 80% + 서류 10% + 면접 10%","minreq":"국수영탐1 수학 포함 3개 합 5","unit":"진료권","region":"부산·울산·경남","jin":"창원권","sigun":"창원시, 의령군, 함안군, 창녕군"},{"id":92,"univ":"고신대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(진주권)","quota":1,"method":"단계별: 1단계 교과 100% (10배수) → 2단계 1단계 80% + 서류 10% + 면접 10%","minreq":"국수영탐1 수학 포함 3개 합 5","unit":"진료권","region":"부산·울산·경남","jin":"진주권","sigun":"진주시, 사천시, 남해군, 하동군, 산청군"},{"id":93,"univ":"고신대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(통영권)","quota":1,"method":"단계별: 1단계 교과 100% (10배수) → 2단계 1단계 80% + 서류 10% + 면접 10%","minreq":"국수영탐1 수학 포함 3개 합 5","unit":"진료권","region":"부산·울산·경남","jin":"통영권","sigun":"통영시, 거제시, 고성군"},{"id":94,"univ":"고신대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(김해권)","quota":2,"method":"단계별: 1단계 교과 100% (10배수) → 2단계 1단계 80% + 서류 10% + 면접 10%","minreq":"국수영탐1 수학 포함 3개 합 5","unit":"진료권","region":"부산·울산·경남","jin":"김해권","sigun":"김해시, 밀양시, 양산시"},{"id":95,"univ":"고신대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(거창권)","quota":1,"method":"단계별: 1단계 교과 100% (10배수) → 2단계 1단계 80% + 서류 10% + 면접 10%","minreq":"국수영탐1 수학 포함 3개 합 5","unit":"진료권","region":"부산·울산·경남","jin":"거창권","sigun":"함양군, 거창군, 합천군"},{"id":96,"univ":"단국대학교 천안캠퍼스","cat":"일반","track":"학생부 종합","name":"DKU인재(면접형)","quota":12,"method":"단계별: 1단계(3배수): 학교생활기록부 100% → 2단계: 1단계 60% + 면접 40%","minreq":"국수영과 수학 포함 3개 합 4","unit":"","region":"","jin":"","sigun":""},{"id":97,"univ":"단국대학교 천안캠퍼스","cat":"지역인재","track":"학생부 교과","name":"지역메디바이오인재","quota":12,"method":"일괄: 교과 95% + 출결 5%","minreq":"국수영과 수학 포함 3개 합 4","unit":"","region":"","jin":"","sigun":""},{"id":98,"univ":"단국대학교 천안캠퍼스","cat":"지역의사","track":"학생부 종합","name":"지역의사제(천안권)","quota":4,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 60% + 면접 40%.","minreq":"국수영과 수학 포함 3개 합 6","unit":"진료권","region":"대전·세종·충남·충북","jin":"천안권","sigun":"천안시, 아산시"},{"id":99,"univ":"단국대학교 천안캠퍼스","cat":"지역의사","track":"학생부 종합","name":"지역의사제(공주권)","quota":1,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 60% + 면접 40%.","minreq":"국수영과 수학 포함 3개 합 6","unit":"진료권","region":"대전·세종·충남·충북","jin":"공주권","sigun":"공주시, 계룡시"},{"id":100,"univ":"단국대학교 천안캠퍼스","cat":"지역의사","track":"학생부 종합","name":"지역의사제(서산권)","quota":3,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 60% + 면접 40%.","minreq":"국수영과 수학 포함 3개 합 6","unit":"진료권","region":"대전·세종·충남·충북","jin":"서산권","sigun":"서산시, 당진시, 태안군"},{"id":101,"univ":"단국대학교 천안캠퍼스","cat":"지역의사","track":"학생부 종합","name":"지역의사제(논산권)","quota":2,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 60% + 면접 40%.","minreq":"국수영과 수학 포함 3개 합 6","unit":"진료권","region":"대전·세종·충남·충북","jin":"논산권","sigun":"논산시, 금산군, 부여군, 서천군"},{"id":102,"univ":"단국대학교 천안캠퍼스","cat":"지역의사","track":"학생부 종합","name":"지역의사제(홍성권)","quota":2,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 60% + 면접 40%.","minreq":"국수영과 수학 포함 3개 합 6","unit":"진료권","region":"대전·세종·충남·충북","jin":"홍성권","sigun":"보령시, 청양군, 홍성군, 예산군"},{"id":103,"univ":"단국대학교 천안캠퍼스","cat":"지역의사","track":"학생부 종합","name":"지역의사제(세종 대전 충남 충북 광역권)","quota":6,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 60% + 면접 40%.","minreq":"국수영과 수학 포함 3개 합 5","unit":"광역권","region":"대전·세종·충남·충북","jin":"","sigun":""},{"id":104,"univ":"대구가톨릭대학교","cat":"일반","track":"학생부 교과","name":"교과","quota":8,"method":"단계별: 1단계 교과 100% (10배수) → 2단계 1단계 80% + 면접 20%","minreq":"국수영과 수학 포함 3개 합 4","unit":"","region":"","jin":"","sigun":""},{"id":105,"univ":"대구가톨릭대학교","cat":"지역인재","track":"학생부 교과","name":"지역교과","quota":15,"method":"단계별: 1단계 교과 100% (7배수) → 2단계 1단계 80% + 면접 20%","minreq":"국수영과 수학 포함 3개 합 4","unit":"","region":"","jin":"","sigun":""},{"id":106,"univ":"대구가톨릭대학교","cat":"지역인재","track":"학생부 종합","name":"지역종합","quota":5,"method":"단계별: 1단계 서류 100% (7배수) → 2단계 1단계 80% + 면접 20%","minreq":"국수영과 수학 포함 3개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":107,"univ":"대구가톨릭대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(대구 경북 광역권)","quota":5,"method":"단계별: 1단계 교과 100% (7배수) → 2단계 1단계 80% + 면접 20%","minreq":"국수영탐(평균) 3개 합 4 절사","unit":"광역권","region":"대구·경북","jin":"","sigun":""},{"id":108,"univ":"대구가톨릭대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(포항권)","quota":11,"method":"단계별: 1단계 서류 100% (7배수) → 2단계 1단계 80% + 면접 20%","minreq":"국수영탐(평균) 3개 합 5 절사","unit":"진료권","region":"대구·경북","jin":"포항권","sigun":"포항시, 영덕군, 울진군, 울릉군"},{"id":109,"univ":"대구가톨릭대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(경주권)","quota":11,"method":"단계별: 1단계 서류 100% (7배수) → 2단계 1단계 80% + 면접 20%","minreq":"국수영탐(평균) 3개 합 5 절사","unit":"진료권","region":"대구·경북","jin":"경주권","sigun":"경주시, 영천시, 경산시, 청도군"},{"id":110,"univ":"대구가톨릭대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(안동권)","quota":11,"method":"단계별: 1단계 서류 100% (7배수) → 2단계 1단계 80% + 면접 20%","minreq":"국수영탐(평균) 3개 합 5 절사","unit":"진료권","region":"대구·경북","jin":"안동권","sigun":"안동시, 의성군, 청송군, 영양군"},{"id":111,"univ":"대구가톨릭대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(구미권)","quota":11,"method":"단계별: 1단계 서류 100% (7배수) → 2단계 1단계 80% + 면접 20%","minreq":"국수영탐(평균) 3개 합 5 절사","unit":"진료권","region":"대구·경북","jin":"구미권","sigun":"김천시, 구미시, 고령군, 성주군, 칠곡군"},{"id":112,"univ":"대구가톨릭대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(영주권)","quota":11,"method":"단계별: 1단계 서류 100% (7배수) → 2단계 1단계 80% + 면접 20%","minreq":"국수영탐(평균) 3개 합 5 절사","unit":"진료권","region":"대구·경북","jin":"영주권","sigun":"영주시, 예천군, 봉화군"},{"id":113,"univ":"대구가톨릭대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(상주권)","quota":11,"method":"단계별: 1단계 서류 100% (7배수) → 2단계 1단계 80% + 면접 20%","minreq":"국수영탐(평균) 3개 합 5 절사","unit":"진료권","region":"대구·경북","jin":"상주권","sigun":"상주시, 문경시"},{"id":114,"univ":"동국대학교 WISE캠퍼스","cat":"일반","track":"학생부 교과","name":"학업성적우수자전형","quota":10,"method":"일괄: 학생부 성적 100%","minreq":"국수영탐(평균) 3개 합 4 절사","unit":"","region":"","jin":"","sigun":""},{"id":115,"univ":"동국대학교 WISE캠퍼스","cat":"지역인재","track":"학생부 교과","name":"지역인재교과전형","quota":14,"method":"일괄: 학생부 성적 100%","minreq":"국수영탐(평균) 3개 합 4 절사","unit":"","region":"","jin":"","sigun":""},{"id":116,"univ":"동국대학교 WISE캠퍼스","cat":"일반","track":"학생부 종합","name":"참사람","quota":3,"method":"단계별: 1단계 서류 100% (5배수) + 2단계 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 3개 합 4 절사","unit":"","region":"","jin":"","sigun":""},{"id":117,"univ":"동국대학교 WISE캠퍼스","cat":"지역인재","track":"학생부 종합","name":"지역인재","quota":10,"method":"단계별: 1단계 서류 100% (5배수) + 2단계 1단계 70% + 면접 30% (경북소재 고교로 제한)","minreq":"국수영탐(평균) 3개 합 4 절사","unit":"","region":"","jin":"","sigun":""},{"id":118,"univ":"동국대학교 WISE캠퍼스","cat":"지역의사","track":"학생부 종합","name":"지역의사제(경주권)","quota":1,"method":"단계별: 1단계 서류 100% (5배수) + 2단계 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 3개 합 5 절사","unit":"진료권","region":"대구·경북","jin":"경주권","sigun":"경주시, 영천시, 경산시, 청도군"},{"id":119,"univ":"동국대학교 WISE캠퍼스","cat":"지역의사","track":"학생부 종합","name":"지역의사제(포항권)","quota":1,"method":"단계별: 1단계 서류 100% (5배수) + 2단계 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 3개 합 5 절사","unit":"진료권","region":"대구·경북","jin":"포항권","sigun":"포항시, 영덕군, 울진군, 울릉군"},{"id":120,"univ":"동국대학교 WISE캠퍼스","cat":"지역의사","track":"학생부 종합","name":"지역의사제(안동권)","quota":1,"method":"단계별: 1단계 서류 100% (5배수) + 2단계 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 3개 합 5 절사","unit":"진료권","region":"대구·경북","jin":"안동권","sigun":"안동시, 의성군, 청송군, 영양군"},{"id":121,"univ":"동국대학교 WISE캠퍼스","cat":"지역의사","track":"학생부 종합","name":"지역의사제(구미권)","quota":1,"method":"단계별: 1단계 서류 100% (5배수) + 2단계 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 3개 합 5 절사","unit":"진료권","region":"대구·경북","jin":"구미권","sigun":"김천시, 구미시, 고령군, 성주군, 칠곡군"},{"id":122,"univ":"동국대학교 WISE캠퍼스","cat":"지역의사","track":"학생부 종합","name":"지역의사제(영주권)","quota":1,"method":"단계별: 1단계 서류 100% (5배수) + 2단계 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 3개 합 5 절사","unit":"진료권","region":"대구·경북","jin":"영주권","sigun":"영주시, 예천군, 봉화군"},{"id":123,"univ":"동국대학교 WISE캠퍼스","cat":"지역의사","track":"학생부 종합","name":"지역의사제(상주권)","quota":1,"method":"단계별: 1단계 서류 100% (5배수) + 2단계 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 3개 합 5 절사","unit":"진료권","region":"대구·경북","jin":"상주권","sigun":"상주시, 문경시"},{"id":124,"univ":"동아대학교","cat":"일반","track":"학생부 교과","name":"지역인재교과전형","quota":12,"method":"일괄: 교과 80%+서류 20%","minreq":"국수영탐(평균) 3개 합 4 절사","unit":"","region":"","jin":"","sigun":""},{"id":125,"univ":"동아대학교","cat":"지역인재","track":"학생부 종합","name":"지역인재종합전형","quota":15,"method":"단계별: 1단계 서류 100% (8배수) → 2단계 1단계 60%+면접 40%","minreq":"국수영탐(평균) 3개 합 4 절사","unit":"","region":"","jin":"","sigun":""},{"id":126,"univ":"동아대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(부산 울산 경남 광역권)","quota":6,"method":"일괄: 교과 80%+서류 20%","minreq":"국수영탐(평균) 3개 합 4 절사","unit":"광역권","region":"부산·울산·경남","jin":"","sigun":""},{"id":127,"univ":"동아대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(창원권)","quota":5,"method":"일괄: 교과 80%+서류 20%","minreq":"국수영탐(평균) 3개 합 5 절사","unit":"진료권","region":"부산·울산·경남","jin":"창원권","sigun":"창원시, 의령군, 함안군, 창녕군"},{"id":128,"univ":"동아대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(김해권)","quota":4,"method":"일괄: 교과 80%+서류 20%","minreq":"국수영탐(평균) 3개 합 5 절사","unit":"진료권","region":"부산·울산·경남","jin":"김해권","sigun":"김해시, 밀양시, 양산시"},{"id":129,"univ":"동아대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(진주권)","quota":3,"method":"일괄: 교과 80%+서류 20%","minreq":"국수영탐(평균) 3개 합 5 절사","unit":"진료권","region":"부산·울산·경남","jin":"진주권","sigun":"진주시, 사천시, 남해군, 하동군, 산청군"},{"id":130,"univ":"동아대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(통영권)","quota":2,"method":"일괄: 교과 80%+서류 20%","minreq":"국수영탐(평균) 3개 합 5 절사","unit":"진료권","region":"부산·울산·경남","jin":"통영권","sigun":"통영시, 거제시, 고성군"},{"id":131,"univ":"동아대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(거창권)","quota":1,"method":"일괄: 교과 80%+서류 20%","minreq":"국수영탐(평균) 3개 합 5 절사","unit":"진료권","region":"부산·울산·경남","jin":"거창권","sigun":"함양군, 거창군, 합천군"},{"id":132,"univ":"부산대학교","cat":"일반","track":"학생부 교과","name":"교과우수전형","quota":15,"method":"교과 80% + 학업역량평가 20% (일괄)","minreq":"국수영탐(평균) 수학 포함 3개 합 4","unit":"","region":"","jin":"","sigun":""},{"id":133,"univ":"부산대학교","cat":"지역인재","track":"학생부 교과","name":"지역인재(교과지역)","quota":23,"method":"교과 80% + 학업역량평가 20% (일괄)","minreq":"국수영탐(평균) 수학 포함 3개 합 4","unit":"","region":"","jin":"","sigun":""},{"id":134,"univ":"부산대학교","cat":"지역인재","track":"학생부 종합","name":"지역인재(면접지역전형)","quota":35,"method":"단계별: 1단계 서류 100% (4배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 수학 포함 3개 합 4","unit":"","region":"","jin":"","sigun":""},{"id":135,"univ":"부산대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(부산 울산 경남 광역권)","quota":12,"method":"단계별: 1단계 서류 100% (4배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영탐1 수학 포함 3개 합 4","unit":"광역권","region":"부산·울산·경남","jin":"","sigun":""},{"id":136,"univ":"부산대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(창원권)","quota":9,"method":"단계별: 1단계 서류 100% (4배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영탐1 수학 포함 3개 합 4","unit":"진료권","region":"부산·울산·경남","jin":"창원권","sigun":"창원시, 의령군, 함안군, 창녕군"},{"id":137,"univ":"부산대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(진주권)","quota":5,"method":"단계별: 1단계 서류 100% (4배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영탐1 수학 포함 3개 합 4","unit":"진료권","region":"부산·울산·경남","jin":"진주권","sigun":"진주시, 사천시, 남해군, 하동군, 산청군"},{"id":138,"univ":"부산대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(통영권)","quota":3,"method":"단계별: 1단계 서류 100% (4배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영탐1 수학 포함 3개 합 4","unit":"진료권","region":"부산·울산·경남","jin":"통영권","sigun":"통영시, 거제시, 고성군"},{"id":139,"univ":"부산대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(김해권)","quota":8,"method":"단계별: 1단계 서류 100% (4배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영탐1 수학 포함 3개 합 4","unit":"진료권","region":"부산·울산·경남","jin":"김해권","sigun":"김해시, 밀양시, 양산시"},{"id":140,"univ":"부산대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(거창권)","quota":1,"method":"단계별: 1단계 서류 100% (4배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영탐1 수학 포함 3개 합 4","unit":"진료권","region":"부산·울산·경남","jin":"거창권","sigun":"함양군, 거창군, 합천군"},{"id":141,"univ":"서울대학교","cat":"일반","track":"학생부 종합","name":"지역균형전형","quota":43,"method":"단계별: 1단계 서류 100% (3배수) → 2단계 1단계 70% + 면접 30%","minreq":"미적용","unit":"","region":"","jin":"","sigun":""},{"id":142,"univ":"서울대학교","cat":"일반","track":"학생부 종합","name":"일반전형","quota":55,"method":"단계별: 1단계 서류 100% (2배수) → 2단계 1단계 50% + 면접 50%","minreq":"미적용","unit":"","region":"","jin":"","sigun":""},{"id":143,"univ":"성균관대학교","cat":"일반","track":"학생부 종합","name":"성균인재(면접형)","quota":20,"method":"단계별: 1단계 서류 100% (6배수) → 2단계 1단계 70% + 면접 30%","minreq":"미적용","unit":"","region":"","jin":"","sigun":""},{"id":144,"univ":"성균관대학교","cat":"일반","track":"논술","name":"논술우수전형(수리형)","quota":5,"method":"논술 100","minreq":"국수영탐(평균) 4개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":145,"univ":"성균관대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(의정부권)","quota":4,"method":"단계별: 1단계 서류 100% (6배수) → 2단계 1단계 70% + 면접 30%","minreq":"미적용","unit":"진료권","region":"경기·인천","jin":"의정부권","sigun":"의정부시, 동두천시, 양주시, 연천군"},{"id":146,"univ":"성균관대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(남양주권)","quota":4,"method":"단계별: 1단계 서류 100% (6배수) → 2단계 1단계 70% + 면접 30%","minreq":"미적용","unit":"진료권","region":"경기·인천","jin":"남양주권","sigun":"구리시, 남양주시, 가평군, 양평군"},{"id":147,"univ":"성균관대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(이천권)","quota":4,"method":"단계별: 1단계 서류 100% (6배수) → 2단계 1단계 70% + 면접 30%","minreq":"미적용","unit":"진료권","region":"경기·인천","jin":"이천권","sigun":"이천시, 여주시"},{"id":148,"univ":"성균관대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(포천권)","quota":4,"method":"단계별: 1단계 서류 100% (6배수) → 2단계 1단계 70% + 면접 30%","minreq":"미적용","unit":"진료권","region":"경기·인천","jin":"포천권","sigun":"포천시"},{"id":149,"univ":"순천향대학교","cat":"일반","track":"학생부 교과","name":"교과우수전형","quota":15,"method":"일괄: 교과 100%","minreq":"국수영탐(평균) 3개 합 4","unit":"","region":"","jin":"","sigun":""},{"id":150,"univ":"순천향대학교","cat":"지역인재","track":"학생부 교과","name":"지역인재전형","quota":21,"method":"일괄: 교과 100%","minreq":"국수영탐(평균) 3개 합 4","unit":"","region":"","jin":"","sigun":""},{"id":151,"univ":"순천향대학교","cat":"지역인재","track":"학생부 종합","name":"지역인재종합전형","quota":13,"method":"일괄: 서류 100%","minreq":"미적용","unit":"","region":"","jin":"","sigun":""},{"id":152,"univ":"순천향대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(천안권)","quota":5,"method":"단계별: 1단계 교과 100% (3배수) → 2단계 1단계 60% + 면접 40%","minreq":"국수영탐(평균) 3개 합 5","unit":"진료권","region":"대전·세종·충남·충북","jin":"천안권","sigun":"천안시, 아산시"},{"id":153,"univ":"순천향대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(공주권)","quota":1,"method":"단계별: 1단계 교과 100% (3배수) → 2단계 1단계 60% + 면접 40%","minreq":"국수영탐(평균) 3개 합 5","unit":"진료권","region":"대전·세종·충남·충북","jin":"공주권","sigun":"공주시, 계룡시"},{"id":154,"univ":"순천향대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(서산권)","quota":4,"method":"단계별: 1단계 교과 100% (3배수) → 2단계 1단계 60% + 면접 40%","minreq":"국수영탐(평균) 3개 합 5","unit":"진료권","region":"대전·세종·충남·충북","jin":"서산권","sigun":"서산시, 당진시, 태안군"},{"id":155,"univ":"순천향대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(논산권)","quota":3,"method":"단계별: 1단계 교과 100% (3배수) → 2단계 1단계 60% + 면접 40%","minreq":"국수영탐(평균) 3개 합 5","unit":"진료권","region":"대전·세종·충남·충북","jin":"논산권","sigun":"논산시, 금산군, 부여군, 서천군"},{"id":156,"univ":"순천향대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(홍성권)","quota":3,"method":"단계별: 1단계 교과 100% (3배수) → 2단계 1단계 60% + 면접 40%","minreq":"국수영탐(평균) 3개 합 5","unit":"진료권","region":"대전·세종·충남·충북","jin":"홍성권","sigun":"보령시, 청양군, 홍성군, 예산군"},{"id":157,"univ":"순천향대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(세종 대전 충남 충북 광역권)","quota":7,"method":"단계별: 1단계 교과 100% (3배수) → 2단계 1단계 60% + 면접 40%","minreq":"국수영탐(평균) 3개 합 5","unit":"광역권","region":"대전·세종·충남·충북","jin":"","sigun":""},{"id":158,"univ":"아주대학교","cat":"일반","track":"학생부 종합","name":"ACE전형[면접]","quota":20,"method":"단계별: 1단계 서류 100%(4배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 4개 합 6","unit":"","region":"","jin":"","sigun":""},{"id":159,"univ":"아주대학교","cat":"일반","track":"논술","name":"논술전형","quota":10,"method":"일괄: 논술 90% + 교과 10%","minreq":"국수영탐(평균) 4개 합 6","unit":"","region":"","jin":"","sigun":""},{"id":160,"univ":"아주대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(남양주권)","quota":2,"method":"단계별: 1단계 서류 100%(4배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 4개 합 6","unit":"진료권","region":"경기·인천","jin":"남양주권","sigun":"구리시, 남양주시, 가평군, 양평군"},{"id":161,"univ":"아주대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(의정부권)","quota":1,"method":"단계별: 1단계 서류 100%(4배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 4개 합 6","unit":"진료권","region":"경기·인천","jin":"의정부권","sigun":"의정부시, 동두천시, 양주시, 연천군"},{"id":162,"univ":"아주대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(이천권)","quota":1,"method":"단계별: 1단계 서류 100%(4배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 4개 합 6","unit":"진료권","region":"경기·인천","jin":"이천권","sigun":"이천시, 여주시"},{"id":163,"univ":"아주대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(포천권)","quota":1,"method":"단계별: 1단계 서류 100%(4배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 4개 합 6","unit":"진료권","region":"경기·인천","jin":"포천권","sigun":"포천시"},{"id":164,"univ":"아주대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(인천서북권)","quota":1,"method":"단계별: 1단계 서류 100%(4배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 4개 합 6","unit":"진료권","region":"경기·인천","jin":"인천서북권","sigun":"서구, 강화군"},{"id":165,"univ":"아주대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(인천중부권)","quota":1,"method":"단계별: 1단계 서류 100%(4배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 4개 합 6","unit":"진료권","region":"경기·인천","jin":"인천중부권","sigun":"중구, 동구, 미추홀구, 옹진군"},{"id":166,"univ":"연세대학교","cat":"일반","track":"학생부 교과","name":"추천형","quota":18,"method":"단계별: 1단계 교과 100% (5배수) → 2단계 1단계 80% + 서류정성평가 20%","minreq":"국수탐1 수학 포함 2개 1등급 + 영어 3등급 + 한국사 4등급","unit":"","region":"","jin":"","sigun":""},{"id":167,"univ":"연세대학교","cat":"일반","track":"학생부 종합","name":"종합인재형(활동우수형)","quota":33,"method":"단계별: 1단계 서류 100% (4배수) → 2단계 1단계 70% + 서류정성평가 30%","minreq":"국수탐1 수학 포함 2개 1등급 + 영어 3등급 + 한국사 4등급","unit":"","region":"","jin":"","sigun":""},{"id":168,"univ":"연세대학교","cat":"일반","track":"학생부 종합","name":"탐구인재형","quota":22,"method":"단계별: 1단계 서류 100% (4배수) → 2단계 1단계 60% + 면접 40%","minreq":"미적용","unit":"","region":"","jin":"","sigun":""},{"id":169,"univ":"연세대학교 미래캠퍼스","cat":"일반","track":"학생부 교과","name":"추천형(교과우수자)전형","quota":10,"method":"일괄: 교과 80% + 출결 10% + 면접 10% (국수영사과 전과목)","minreq":"국수과 3개 중 1등급 2개 + 영어 2등급 + 한국사 4등급","unit":"","region":"","jin":"","sigun":""},{"id":170,"univ":"연세대학교 미래캠퍼스","cat":"일반","track":"학생부 교과","name":"일반형(교과우수자)전형","quota":10,"method":"일괄: 교과 80% + 출결 10% + 면접 10% (국수영과 전과목)","minreq":"국수과 3개 중 1등급 2개 + 영어 2등급 + 한국사 4등급","unit":"","region":"","jin":"","sigun":""},{"id":171,"univ":"연세대학교 미래캠퍼스","cat":"일반","track":"학생부 종합","name":"학교생활우수자(면접형)전형","quota":20,"method":"단계별: 1단계 서류 100% (6배수) → 2단계 1단계 70& + 면접 (30%)","minreq":"국수과 3개 중 1등급 2개 + 영어 2등급 + 한국사 4등급","unit":"","region":"","jin":"","sigun":""},{"id":172,"univ":"연세대학교 미래캠퍼스","cat":"지역인재","track":"학생부 종합","name":"강원인재(일반)전형","quota":25,"method":"일괄: 서류 80% + 면접 20%","minreq":"국수과 3개 중 2개 합 3 + 영어 2등급 + 한국사 4등급","unit":"","region":"","jin":"","sigun":""},{"id":173,"univ":"연세대학교 미래캠퍼스","cat":"지역의사","track":"학생부 종합","name":"지역의사제(강원 광역권)","quota":4,"method":"일괄: 서류 80% + 면접 20%","minreq":"국수과 3개 중 2개 합 3 + 영어 2등급 + 한국사 4등급","unit":"광역권","region":"강원","jin":"","sigun":""},{"id":174,"univ":"연세대학교 미래캠퍼스","cat":"지역의사","track":"학생부 종합","name":"지역의사제(춘천권)","quota":3,"method":"일괄: 서류 80% + 면접 20%","minreq":"국수과 3개 중 2개 합 3 + 영어 2등급 + 한국사 4등급","unit":"진료권","region":"강원","jin":"춘천권","sigun":"춘천시, 홍천군, 철원군, 양구군, 화천군"},{"id":175,"univ":"연세대학교 미래캠퍼스","cat":"지역의사","track":"학생부 종합","name":"지역의사제(원주권)","quota":3,"method":"일괄: 서류 80% + 면접 20%","minreq":"국수과 3개 중 2개 합 3 + 영어 2등급 + 한국사 4등급","unit":"진료권","region":"강원","jin":"원주권","sigun":"원주시, 횡성군"},{"id":176,"univ":"연세대학교 미래캠퍼스","cat":"지역의사","track":"학생부 종합","name":"지역의사제(영월권)","quota":1,"method":"일괄: 서류 80% + 면접 20%","minreq":"국수과 3개 중 2개 합 3 + 영어 2등급 + 한국사 4등급","unit":"진료권","region":"강원","jin":"영월권","sigun":"영월군, 평창군, 정선군"},{"id":177,"univ":"연세대학교 미래캠퍼스","cat":"지역의사","track":"학생부 종합","name":"지역의사제(강릉권)","quota":1,"method":"일괄: 서류 80% + 면접 20%","minreq":"국수과 3개 중 2개 합 3 + 영어 2등급 + 한국사 4등급","unit":"진료권","region":"강원","jin":"강릉권","sigun":"강릉시"},{"id":178,"univ":"연세대학교 미래캠퍼스","cat":"지역의사","track":"학생부 종합","name":"지역의사제(동해권)","quota":1,"method":"일괄: 서류 80% + 면접 20%","minreq":"국수과 3개 중 2개 합 3 + 영어 2등급 + 한국사 4등급","unit":"진료권","region":"강원","jin":"동해권","sigun":"동해시, 태백시, 삼척시"},{"id":179,"univ":"연세대학교 미래캠퍼스","cat":"지역의사","track":"학생부 종합","name":"지역의사제(동해권)","quota":1,"method":"일괄: 서류 80% + 면접 20%","minreq":"국수과 3개 중 2개 합 3 + 영어 2등급 + 한국사 4등급","unit":"진료권","region":"강원","jin":"동해권","sigun":"동해시, 태백시, 삼척시"},{"id":180,"univ":"영남대학교","cat":"일반","track":"학생부 교과","name":"일반학생전형","quota":8,"method":"일괄: 교과 100%","minreq":"국수영과 4개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":181,"univ":"영남대학교","cat":"지역인재","track":"학생부 교과","name":"지역인재전형","quota":21,"method":"일괄: 교과 100%","minreq":"국수영과 4개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":182,"univ":"영남대학교","cat":"일반","track":"학생부 교과","name":"의학창의인재전형","quota":10,"method":"단계별: 1단계: 교과 100% (7배수) → 2단계: 1단계 70% + 면접 30%","minreq":"국수영과 4개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":183,"univ":"영남대학교","cat":"지역인재","track":"학생부 종합","name":"지역인재전형","quota":10,"method":"단계별: 1단계: 서류 100% (10배수) → 2단계: 1단계 70% + 면접 30%","minreq":"국수영과 4개 합 6","unit":"","region":"","jin":"","sigun":""},{"id":184,"univ":"영남대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(대구 경북 광역권)","quota":5,"method":"일괄: 교과 100%","minreq":"국수영과 수학 포함 3개 합 4","unit":"광역권","region":"대구·경북","jin":"","sigun":""},{"id":185,"univ":"영남대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(포항권)","quota":2,"method":"단계별: 1단계: 서류 100% (10배수) → 2단계: 1단계 70% + 면접 30%","minreq":"국수영과 수학 포함 3개 합 5","unit":"진료권","region":"대구·경북","jin":"포항권","sigun":"포항시, 영덕군, 울진군, 울릉군"},{"id":186,"univ":"영남대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(경주권)","quota":2,"method":"단계별: 1단계: 서류 100% (10배수) → 2단계: 1단계 70% + 면접 30%","minreq":"국수영과 수학 포함 3개 합 5","unit":"진료권","region":"대구·경북","jin":"경주권","sigun":"경주시, 영천시, 경산시, 청도군"},{"id":187,"univ":"영남대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(안동권)","quota":2,"method":"단계별: 1단계: 서류 100% (10배수) → 2단계: 1단계 70% + 면접 30%","minreq":"국수영과 3개 합 5","unit":"진료권","region":"대구·경북","jin":"안동권","sigun":"안동시, 의성군, 청송군, 영양군"},{"id":188,"univ":"영남대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(구미권)","quota":2,"method":"단계별: 1단계: 서류 100% (10배수) → 2단계: 1단계 70% + 면접 30%","minreq":"국수영과 수학 포함 3개 합 5","unit":"진료권","region":"대구·경북","jin":"구미권","sigun":"김천시, 구미시, 고령군, 성주군, 칠곡군"},{"id":189,"univ":"영남대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(영주권)","quota":2,"method":"단계별: 1단계: 서류 100% (10배수) → 2단계: 1단계 70% + 면접 30%","minreq":"국수영과 3개 합 5","unit":"진료권","region":"대구·경북","jin":"영주권","sigun":"영주시, 예천군, 봉화군"},{"id":190,"univ":"영남대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(상주권)","quota":2,"method":"단계별: 1단계: 서류 100% (10배수) → 2단계: 1단계 70% + 면접 30%","minreq":"국수영과 3개 합 5","unit":"진료권","region":"대구·경북","jin":"상주권","sigun":"상주시, 문경시"},{"id":191,"univ":"울산대학교","cat":"일반","track":"학생부 종합","name":"잠재역량","quota":10,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 면접 50%","minreq":"국수영탐(평균) 4개 합 5 + 한국사 4","unit":"","region":"","jin":"","sigun":""},{"id":192,"univ":"울산대학교","cat":"지역인재","track":"학생부 종합","name":"지역인재","quota":22,"method":"단계별: 1단계 서류 100% (4배수) → 2단계 70% + 면접 30%","minreq":"국수영탐(평균) 4개 합 5 + 한국사 4","unit":"","region":"","jin":"","sigun":""},{"id":193,"univ":"울산대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(부산 울산 경남 광역권)","quota":1,"method":"단계별: 1단계 서류평가 100% (4배수) → 2단계 서류 50% + 면접 50%","minreq":"국수영탐(평균) 3개 합 5 + 한국사 4","unit":"광역권","region":"부산·울산·경남","jin":"","sigun":""},{"id":194,"univ":"울산대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(창원권)","quota":1,"method":"단계별: 1단계 서류평가 100% (4배수) → 2단계 서류 50% + 면접 50%","minreq":"국수영탐(평균) 3개 합 5 + 한국사 4","unit":"진료권","region":"부산·울산·경남","jin":"창원권","sigun":"창원시, 의령군, 함안군, 창녕군"},{"id":195,"univ":"울산대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(진주권)","quota":1,"method":"단계별: 1단계 서류평가 100% (4배수) → 2단계 서류 50% + 면접 50%","minreq":"국수영탐(평균) 3개 합 5 + 한국사 4","unit":"진료권","region":"부산·울산·경남","jin":"진주권","sigun":"진주시, 사천시, 남해군, 하동군, 산청군"},{"id":196,"univ":"울산대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(통영권)","quota":1,"method":"단계별: 1단계 서류평가 100% (4배수) → 2단계 서류 50% + 면접 50%","minreq":"국수영탐(평균) 3개 합 5 + 한국사 4","unit":"진료권","region":"부산·울산·경남","jin":"통영권","sigun":"통영시, 거제시, 고성군"},{"id":197,"univ":"울산대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(김해권)","quota":1,"method":"단계별: 1단계 서류평가 100% (4배수) → 2단계 서류 50% + 면접 50%","minreq":"국수영탐(평균) 3개 합 5 + 한국사 4","unit":"진료권","region":"부산·울산·경남","jin":"김해권","sigun":"김해시, 밀양시, 양산시"},{"id":198,"univ":"울산대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(거창권)","quota":1,"method":"단계별: 1단계 서류평가 100% (4배수) → 2단계 서류 50% + 면접 50%","minreq":"국수영탐(평균) 3개 합 5 + 한국사 4","unit":"진료권","region":"부산·울산·경남","jin":"거창권","sigun":"함양군, 거창군, 합천군"},{"id":199,"univ":"원광대학교","cat":"일반","track":"학생부 종합","name":"학생부종합전형","quota":10,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 3개 합 6","unit":"","region":"","jin":"","sigun":""},{"id":200,"univ":"원광대학교","cat":"지역인재","track":"학생부 종합","name":"지역인재종합전형(전북권)","quota":32,"method":"단계별: 1단계: 서류 100%(4배수) → 2단계 1단계 70% +면접 30%","minreq":"국수영과 수학 포함 3개 합 6","unit":"","region":"","jin":"","sigun":""},{"id":201,"univ":"원광대학교","cat":"지역인재","track":"학생부 종합","name":"지역인재종합전형(호남권)","quota":13,"method":"단계별: 1단계: 서류 100%(4배수) → 2단계 1단계 70%+면접 30%","minreq":"국수영과 수학 포함 3개 합 6","unit":"","region":"","jin":"","sigun":""},{"id":202,"univ":"원광대학교","cat":"지역인재","track":"학생부 교과","name":"지역인재교과전형(전북권)","quota":17,"method":"학생부 100%","minreq":"국수영과 수학 포함 3개 합 6","unit":"","region":"","jin":"","sigun":""},{"id":203,"univ":"원광대학교","cat":"지역인재","track":"학생부 교과","name":"지역인재교과전형(호남권)","quota":10,"method":"학생부 100%","minreq":"국수영과 수학 포함 3개 합 6","unit":"","region":"","jin":"","sigun":""},{"id":204,"univ":"원광대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(광주 전남 전북 광역권)","quota":6,"method":"단계별: 1단계 서류 100% (4배수) → 2단계 1단계 60%+면접 40%","minreq":"국수영과 수학 포함 3개 합 6","unit":"광역권","region":"광주·전남·전북","jin":"","sigun":""},{"id":205,"univ":"원광대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(전주권)","quota":9,"method":"단계별: 1단계 서류 100% (4배수) → 2단계 1단계 60%+면접 40%","minreq":"국수영과 수학 포함 3개 합 6","unit":"진료권","region":"광주·전남·전북","jin":"전주권","sigun":"전주시, 김제시, 완주군, 진안군, 무주군"},{"id":206,"univ":"원광대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(군산권)","quota":1,"method":"단계별: 1단계 서류 100% (4배수) → 2단계 1단계 60%+면접 40%","minreq":"국수영과 수학 포함 3개 합 6","unit":"진료권","region":"광주·전남·전북","jin":"군산권","sigun":"군산시"},{"id":207,"univ":"원광대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(익산권)","quota":1,"method":"단계별: 1단계 서류 100% (4배수) → 2단계 1단계 60%+면접 40%","minreq":"국수영과 수학 포함 3개 합 6","unit":"진료권","region":"광주·전남·전북","jin":"익산권","sigun":"익산시"},{"id":208,"univ":"원광대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(정읍권)","quota":2,"method":"단계별: 1단계 서류 100% (4배수) → 2단계 1단계 60%+면접 40%","minreq":"국수영과 수학 포함 3개 합 6","unit":"진료권","region":"광주·전남·전북","jin":"정읍권","sigun":"정읍시, 고창군, 부안군"},{"id":209,"univ":"원광대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(남원권)","quota":2,"method":"단계별: 1단계 서류 100% (4배수) → 2단계 1단계 60%+면접 40%","minreq":"국수영과 수학 포함 3개 합 6","unit":"진료권","region":"광주·전남·전북","jin":"남원권","sigun":"남원시, 장수군, 임실군, 순창군"},{"id":210,"univ":"을지대학교","cat":"일반","track":"학생부 교과","name":"학교장추천","quota":6,"method":"일괄: 교과 70% +면접 30%","minreq":"국수영탐(평균) 탐구 포함 3개 합 6","unit":"","region":"","jin":"","sigun":""},{"id":211,"univ":"을지대학교","cat":"지역인재","track":"학생부 교과","name":"지역의료인재","quota":25,"method":"단계별: 1단계 교과 100%  → 2단계 1단계 70% + 면접 25% + 서류정성평가 5%","minreq":"국수영탐(평균) 탐구 포함 3개 합 6","unit":"","region":"","jin":"","sigun":""},{"id":212,"univ":"을지대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(세종 대전 충남 충북 광역권)","quota":2,"method":"단계별: 1단계 교과 100% (4배수) → 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 탐구 포함 3개 합 6","unit":"광역권","region":"대전·세종·충남·충북","jin":"","sigun":""},{"id":213,"univ":"을지대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(천안권)","quota":1,"method":"단계별: 1단계 교과 100% (4배수) → 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 탐구 포함 3개 합 6","unit":"진료권","region":"대전·세종·충남·충북","jin":"천안권","sigun":"천안시, 아산시"},{"id":214,"univ":"을지대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(공주권)","quota":1,"method":"단계별: 1단계 교과 100% (4배수) → 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 탐구 포함 3개 합 6","unit":"진료권","region":"대전·세종·충남·충북","jin":"공주권","sigun":"공주시, 계룡시"},{"id":215,"univ":"을지대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(서산권)","quota":1,"method":"단계별: 1단계 교과 100% (4배수) → 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 탐구 포함 3개 합 6","unit":"진료권","region":"대전·세종·충남·충북","jin":"서산권","sigun":"서산시, 당진시, 태안군"},{"id":216,"univ":"을지대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(논산권)","quota":1,"method":"단계별: 1단계 교과 100% (4배수) → 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 탐구 포함 3개 합 6","unit":"진료권","region":"대전·세종·충남·충북","jin":"논산권","sigun":"논산시, 금산군, 부여군, 서천군"},{"id":217,"univ":"을지대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(홍성권)","quota":1,"method":"단계별: 1단계 교과 100% (4배수) → 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 탐구 포함 3개 합 6","unit":"진료권","region":"대전·세종·충남·충북","jin":"홍성권","sigun":"보령시, 청양군, 홍성군, 예산군"},{"id":218,"univ":"이화여자대학교","cat":"일반","track":"학생부 종합","name":"미래인재(면접형)","quota":9,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%","minreq":"미적용","unit":"","region":"","jin":"","sigun":""},{"id":219,"univ":"이화여자대학교","cat":"일반","track":"학생부 종합","name":"미래인재(서류형)","quota":9,"method":"일괄: 서류 100%","minreq":"국수영탐1 4개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":220,"univ":"이화여자대학교","cat":"일반","track":"논술","name":"논술전형","quota":5,"method":"일괄: 논술 100%","minreq":"국수영탐1 4개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":221,"univ":"인제대학교","cat":"일반","track":"학생부 교과","name":"의예·약학전형","quota":23,"method":"단계별: 1단계 교과 100% ( 5배수) → 2단계 1단계 67.5% + 면접 32.5%","minreq":"국수영과 4개 각 2등급","unit":"","region":"","jin":"","sigun":""},{"id":222,"univ":"인제대학교","cat":"일반","track":"학생부 종합","name":"학생부종합(일반)","quota":3,"method":"단계별: 1단계 서류100% (5배수) → 2단계 1단계 80% + 면접 20%","minreq":"국수영과 4개 각 2등급","unit":"","region":"","jin":"","sigun":""},{"id":223,"univ":"인제대학교","cat":"지역인재","track":"학생부 교과","name":"지역인재Ⅰ","quota":29,"method":"단계별: 1단계 교과 100% (5배수) → 2단계 1단계 67.5% + 면접 32.5%","minreq":"국수영과 4개 각 2등급","unit":"","region":"","jin":"","sigun":""},{"id":224,"univ":"인제대학교","cat":"지역인재","track":"학생부 종합","name":"학생부종합(지역)","quota":2,"method":"단계별: 1단계 서류100% (5배수) → 2단계 1단계 80% + 면접 20%","minreq":"국수영과 4개 각 2등급","unit":"","region":"","jin":"","sigun":""},{"id":225,"univ":"인제대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(부산 울산 경남 광역권)","quota":6,"method":"단계별: 1단계 교과 100% ( 5배수) → 2단계 1단계 67.5% + 면접 32.5%","minreq":"국수영과 4개 각 2등급","unit":"광역권","region":"부산·울산·경남","jin":"","sigun":""},{"id":226,"univ":"인제대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(거창권)","quota":1,"method":"단계별: 1단계 교과 100% ( 5배수) → 2단계 1단계 67.5% + 면접 32.5%","minreq":"국수영과 4개 각 2등급","unit":"진료권","region":"부산·울산·경남","jin":"거창권","sigun":"함양군, 거창군, 합천군"},{"id":227,"univ":"인제대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(진주권)","quota":4,"method":"단계별: 1단계 교과 100% ( 5배수) → 2단계 1단계 67.5% + 면접 32.5%","minreq":"국수영과 4개 각 2등급","unit":"진료권","region":"부산·울산·경남","jin":"진주권","sigun":"진주시, 사천시, 남해군, 하동군, 산청군"},{"id":228,"univ":"인제대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(창원권)","quota":2,"method":"단계별: 1단계 교과 100% ( 5배수) → 2단계 1단계 67.5% + 면접 32.5%","minreq":"국수영과 4개 각 2등급","unit":"진료권","region":"부산·울산·경남","jin":"창원권","sigun":"창원시, 의령군, 함안군, 창녕군"},{"id":229,"univ":"인제대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(통영권)","quota":5,"method":"단계별: 1단계 교과 100% ( 5배수) → 2단계 1단계 67.5% + 면접 32.5%","minreq":"국수영과 4개 각 2등급","unit":"진료권","region":"부산·울산·경남","jin":"통영권","sigun":"통영시, 거제시, 고성군"},{"id":230,"univ":"인제대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(김해권)","quota":1,"method":"단계별: 1단계 교과 100% ( 5배수) → 2단계 1단계 67.5% + 면접 32.5%","minreq":"국수영과 4개 각 2등급","unit":"진료권","region":"부산·울산·경남","jin":"김해권","sigun":"김해시, 밀양시, 양산시"},{"id":231,"univ":"인하대학교","cat":"일반","track":"학생부 종합","name":"인하미래인재(면접)","quota":25,"method":"단계별: 1단계 서류 100% (3.5배수) → 2단계 1단계 70 + 면접 30","minreq":"국수영탐(평균) 3개 합 4 절사","unit":"","region":"","jin":"","sigun":""},{"id":232,"univ":"인하대학교","cat":"일반","track":"논술","name":"논술우수자","quota":8,"method":"일괄: 논술 90% + 교과 10%","minreq":"국수영탐(평균) 3개 합 3 절사","unit":"","region":"","jin":"","sigun":""},{"id":233,"univ":"인하대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(의정부권)","quota":1,"method":"단계별: 1단계 서류 100% (3.5배수) → 2단계 1단계 70 + 면접 30","minreq":"국수영과 3개 합 5","unit":"진료권","region":"경기·인천","jin":"의정부권","sigun":"의정부시, 동두천시, 양주시, 연천군"},{"id":234,"univ":"인하대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(남양주권)","quota":2,"method":"단계별: 1단계 서류 100% (3.5배수) → 2단계 1단계 70 + 면접 30","minreq":"국수영과 3개 합 5","unit":"진료권","region":"경기·인천","jin":"남양주권","sigun":"구리시, 남양주시, 가평군, 양평군"},{"id":235,"univ":"인하대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(이천권)","quota":1,"method":"단계별: 1단계 서류 100% (3.5배수) → 2단계 1단계 70 + 면접 30","minreq":"국수영과 3개 합 5","unit":"진료권","region":"경기·인천","jin":"이천권","sigun":"이천시, 여주시"},{"id":236,"univ":"인하대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(포천권)","quota":1,"method":"단계별: 1단계 서류 100% (3.5배수) → 2단계 1단계 70 + 면접 30","minreq":"국수영과 3개 합 5","unit":"진료권","region":"경기·인천","jin":"포천권","sigun":"포천시"},{"id":237,"univ":"인하대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(인천서북권)","quota":1,"method":"단계별: 1단계 서류 100% (3.5배수) → 2단계 1단계 70 + 면접 30","minreq":"국수영과 3개 합 5","unit":"진료권","region":"경기·인천","jin":"인천서북권","sigun":"서구, 강화군"},{"id":238,"univ":"인하대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(인천중부권)","quota":1,"method":"단계별: 1단계 서류 100% (3.5배수) → 2단계 1단계 70 + 면접 30","minreq":"국수영과 3개 합 5","unit":"진료권","region":"경기·인천","jin":"인천중부권","sigun":"중구, 동구, 미추홀구, 옹진군"},{"id":239,"univ":"전남대학교","cat":"일반","track":"학생부 종합","name":"고교생활우수자Ⅰ","quota":10,"method":"단계별: 1단계 서류 100% (6배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 수학, 탐구 포함 3개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":240,"univ":"전남대학교","cat":"지역인재","track":"학생부 교과","name":"지역인재전형","quota":86,"method":"교과 100% (일괄)","minreq":"국수영탐(평균) 수학, 탐구 포함 3개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":241,"univ":"전남대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(목포권)","quota":7,"method":"단계별: 1단계 서류 100% (6배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 3개 합 6","unit":"진료권","region":"광주·전남·전북","jin":"목포권","sigun":"목포시, 영암군, 무안군, 함평군, 진도군, 신안군"},{"id":242,"univ":"전남대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(여수권)","quota":2,"method":"단계별: 1단계 서류 100% (6배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 3개 합 6","unit":"진료권","region":"광주·전남·전북","jin":"여수권","sigun":"여수시"},{"id":243,"univ":"전남대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(순천권)","quota":9,"method":"단계별: 1단계 서류 100% (6배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 3개 합 6","unit":"진료권","region":"광주·전남·전북","jin":"순천권","sigun":"순천시, 광양시, 구례군, 고흥군, 보성군"},{"id":244,"univ":"전남대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(나주권)","quota":3,"method":"단계별: 1단계 서류 100% (6배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 3개 합 6","unit":"진료권","region":"광주·전남·전북","jin":"나주권","sigun":"나주시, 곡성군, 화순군"},{"id":245,"univ":"전남대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(해남권)","quota":3,"method":"단계별: 1단계 서류 100% (6배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 3개 합 6","unit":"진료권","region":"광주·전남·전북","jin":"해남권","sigun":"장흥군, 강진군, 해남군, 완도군"},{"id":246,"univ":"전남대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(영광권)","quota":2,"method":"단계별: 1단계 서류 100% (6배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영탐(평균) 3개 합 6","unit":"진료권","region":"광주·전남·전북","jin":"영광권","sigun":"담양군, 영광군, 장성군"},{"id":247,"univ":"전북대학교","cat":"일반","track":"학생부 종합","name":"큰사람전형","quota":5,"method":"단계별: 1단계 서류 100% (3배수) → 2단계 1단계 80% + 면접 20%","minreq":"국수영과 4개 합 6","unit":"","region":"","jin":"","sigun":""},{"id":248,"univ":"전북대학교","cat":"일반","track":"학생부 교과","name":"일반학생전형","quota":26,"method":"일괄: 교과 100%","minreq":"국수영과 4개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":249,"univ":"전북대학교","cat":"지역인재","track":"학생부 종합","name":"지역인재1유형(호남)","quota":2,"method":"단계별: 1단계 서류 100% (3배수) → 2단계 1단계 80% + 면접 20%","minreq":"국수영과 4개 합 6","unit":"","region":"","jin":"","sigun":""},{"id":250,"univ":"전북대학교","cat":"지역인재","track":"학생부 종합","name":"지역인재2유형(전북)","quota":2,"method":"단계별: 1단계 서류 100% (3배수) → 2단계 1단계 80% + 면접 20%","minreq":"국수영과 4개 합 6","unit":"","region":"","jin":"","sigun":""},{"id":251,"univ":"전북대학교","cat":"지역인재","track":"학생부 교과","name":"지역인재1유형(호남)","quota":14,"method":"일괄: 교과 100%","minreq":"국수영과 4개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":252,"univ":"전북대학교","cat":"지역인재","track":"학생부 교과","name":"지역인재2유형(전북)","quota":42,"method":"일괄: 교과 100","minreq":"국수영과 4개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":253,"univ":"전북대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(광주 전남 전북 광역권)","quota":8,"method":"일괄: 교과 100%","minreq":"국수영과 4개 합 5","unit":"광역권","region":"광주·전남·전북","jin":"","sigun":""},{"id":254,"univ":"전북대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(전주권)","quota":11,"method":"일괄: 교과 100%","minreq":"국수영과 4개 합 5","unit":"진료권","region":"광주·전남·전북","jin":"전주권","sigun":"전주시, 김제시, 완주군, 진안군, 무주군"},{"id":255,"univ":"전북대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(군산권)","quota":2,"method":"일괄: 교과 100%","minreq":"국수영과 4개 합 5","unit":"진료권","region":"광주·전남·전북","jin":"군산권","sigun":"군산시"},{"id":256,"univ":"전북대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(익산권)","quota":2,"method":"일괄: 교과 100%","minreq":"국수영과 4개 합 5","unit":"진료권","region":"광주·전남·전북","jin":"익산권","sigun":"익산시"},{"id":257,"univ":"전북대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(정읍권)","quota":2,"method":"일괄: 교과 100%","minreq":"국수영과 4개 합 5","unit":"진료권","region":"광주·전남·전북","jin":"정읍권","sigun":"정읍시, 고창군, 부안군"},{"id":258,"univ":"전북대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(남원권)","quota":2,"method":"일괄: 교과 100%","minreq":"국수영과 4개 합 5","unit":"진료권","region":"광주·전남·전북","jin":"남원권","sigun":"남원시, 장수군, 임실군, 순창군"},{"id":259,"univ":"제주대학교","cat":"일반","track":"학생부 교과","name":"일반학생","quota":11,"method":"일괄: 교과 100%","minreq":"국수영과 수학 포함 3개 합 6","unit":"","region":"","jin":"","sigun":""},{"id":260,"univ":"제주대학교","cat":"지역인재","track":"학생부 교과","name":"지역인재","quota":7,"method":"일괄: 교과 100%","minreq":"국수영과 수학 포함 3개 합 6","unit":"","region":"","jin":"","sigun":""},{"id":261,"univ":"제주대학교","cat":"지역인재","track":"학생부 종합","name":"지역인재(학생부종합)","quota":3,"method":"단계별: 1단계 서류 100% (3배수) → 2단계 1단계 70% + 면접 30%","minreq":"미적용","unit":"","region":"","jin":"","sigun":""},{"id":262,"univ":"제주대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(제주시)","quota":9,"method":"일괄: 교과 100%","minreq":"국수영과 수학 포함 3개 합 6","unit":"진료권","region":"제주","jin":"제주권","sigun":"제주시"},{"id":263,"univ":"제주대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(서귀포시)","quota":7,"method":"일괄: 교과 100%","minreq":"국수영과 수학 포함 3개 합 6","unit":"진료권","region":"제주","jin":"서귀포권","sigun":"서귀포시"},{"id":264,"univ":"제주대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(제주 광역권)","quota":6,"method":"일괄: 교과 100%","minreq":"국수영과 수학 포함 3개 합 6","unit":"광역권","region":"제주","jin":"","sigun":""},{"id":265,"univ":"제주대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(제주 광역권)","quota":2,"method":"단계별: 1단계 서류 100% (3배수) → 2단계 1단계 70% + 면접 30%","minreq":"미적용","unit":"광역권","region":"제주","jin":"","sigun":""},{"id":266,"univ":"조선대학교","cat":"일반","track":"학생부 교과","name":"일반전형","quota":17,"method":"일괄: 교과 90% + 출결 10%","minreq":"국수영과 수학 포함 3개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":267,"univ":"조선대학교","cat":"일반","track":"학생부 종합","name":"면접전형","quota":6,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영과 수학 포함 3개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":268,"univ":"조선대학교","cat":"일반","track":"학생부 종합","name":"서류전형","quota":6,"method":"일괄: 교과 90% + 출결 10%","minreq":"국수영과 수학 포함 3개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":269,"univ":"조선대학교","cat":"지역인재","track":"학생부 교과","name":"지역인재전형","quota":68,"method":"일괄: 교과 90% + 출결 10%","minreq":"국수영과 수학 포함 3개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":270,"univ":"조선대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(광주 전남 전북 광역권)","quota":7,"method":"일괄: 교과 90% + 출결 10%","minreq":"국수영과 수학 포함 3개 합 6","unit":"광역권","region":"광주·전남·전북","jin":"","sigun":""},{"id":271,"univ":"조선대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(목포권)","quota":5,"method":"일괄: 교과 90% + 출결 10%","minreq":"국수영과 수학 포함 3개 합 6","unit":"진료권","region":"광주·전남·전북","jin":"목포권","sigun":"목포시, 영암군, 무안군, 함평군, 진도군, 신안군"},{"id":272,"univ":"조선대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(여수권)","quota":1,"method":"일괄: 교과 90% + 출결 10%","minreq":"국수영과 수학 포함 3개 합 6","unit":"진료권","region":"광주·전남·전북","jin":"여수권","sigun":"여수시"},{"id":273,"univ":"조선대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(순천권)","quota":6,"method":"일괄: 교과 90% + 출결 10%","minreq":"국수영과 수학 포함 3개 합 6","unit":"진료권","region":"광주·전남·전북","jin":"순천권","sigun":"순천시, 광양시, 구례군, 고흥군, 보성군"},{"id":274,"univ":"조선대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(나주권)","quota":2,"method":"일괄: 교과 90% + 출결 10%","minreq":"국수영과 수학 포함 3개 합 6","unit":"진료권","region":"광주·전남·전북","jin":"나주권","sigun":"나주시, 곡성군, 화순군"},{"id":275,"univ":"조선대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(해남권)","quota":2,"method":"일괄: 교과 90% + 출결 10%","minreq":"국수영과 수학 포함 3개 합 6","unit":"진료권","region":"광주·전남·전북","jin":"해남권","sigun":"장흥군, 강진군, 해남군, 완도군"},{"id":276,"univ":"조선대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(영광권)","quota":1,"method":"일괄: 교과 90% + 출결 10%","minreq":"국수영과 수학 포함 3개 합 6","unit":"진료권","region":"광주·전남·전북","jin":"영광권","sigun":"담양군, 영광군, 장성군"},{"id":277,"univ":"중앙대학교","cat":"일반","track":"학생부 종합","name":"모두의학종(All)","quota":12,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 60% + 면접 40%","minreq":"미적용","unit":"","region":"","jin":"","sigun":""},{"id":278,"univ":"중앙대학교","cat":"일반","track":"학생부 종합","name":"최저있는학종(Up)","quota":4,"method":"단계별: 서류 100%","minreq":"국수영탐(평균) 4개 합 5 + 한국사 4 (영어 2등급 누적 20% 미만시 1등급 간주)","unit":"","region":"","jin":"","sigun":""},{"id":279,"univ":"중앙대학교","cat":"일반","track":"학생부 종합","name":"탐구하는학종(Core)","quota":16,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 60% + 면접 40%","minreq":"미적용","unit":"","region":"","jin":"","sigun":""},{"id":280,"univ":"중앙대학교","cat":"일반","track":"논술","name":"모두의논술","quota":13,"method":"일괄: 논술 80% + 교과 10% + 출결 10% (재학생’도’ 지원 가능)","minreq":"국수영탐(평균) 4개 합 5 + 한국사 4 (영어 2등급 누적 20% 미만시 1등급 간주)","unit":"","region":"","jin":"","sigun":""},{"id":281,"univ":"중앙대학교","cat":"일반","track":"논술","name":"재학생논술","quota":4,"method":"일괄: 논술 80% + 교과 10% + 출결 10% (재학생 한정 지원 가능)","minreq":"미적용","unit":"","region":"","jin":"","sigun":""},{"id":282,"univ":"충남대학교","cat":"일반","track":"학생부 교과","name":"일반전형","quota":12,"method":"일괄: 교과 80% + 학생부 정성평가20%","minreq":"국수영탐(평균) 수학 포함 3개 합 4","unit":"","region":"","jin":"","sigun":""},{"id":283,"univ":"충남대학교","cat":"일반","track":"학생부 종합","name":"학생부종합I(면접)","quota":14,"method":"단계별: 1단계 서류 100% (3배수) → 2단계 1단계 66.7% + 면접 33.3%","minreq":"국수영탐(평균) 수학 포함 3개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":284,"univ":"충남대학교","cat":"일반","track":"학생부 종합","name":"학생부종합I(서류)","quota":12,"method":"일괄: 서류 100%","minreq":"국수영탐(평균) 수학 포함 3개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":285,"univ":"충남대학교","cat":"지역인재","track":"학생부 교과","name":"지역인재","quota":22,"method":"일괄: 교과 80% + 학생부 정성평가20%","minreq":"국수영탐(평균) 수학 포함 3개 합 4","unit":"","region":"","jin":"","sigun":""},{"id":286,"univ":"충남대학교","cat":"지역인재","track":"학생부 종합","name":"학생부종합II(지역인재)","quota":15,"method":"단계별: 1단계 서류 100% (3배수) → 2단계 1단계 66.7% + 면접 33.3%","minreq":"국수영탐(평균) 수학 포함 3개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":287,"univ":"충남대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(세종 대전 충남 충북 광역권)","quota":10,"method":"일괄: 1단계 서류 100%","minreq":"국수영탐(평균) 수학 포함 3개 합 6","unit":"광역권","region":"대전·세종·충남·충북","jin":"","sigun":""},{"id":288,"univ":"충남대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(천안권)","quota":7,"method":"일괄: 1단계 서류 100%","minreq":"국수영탐(평균) 수학 포함 3개 합 6","unit":"진료권","region":"대전·세종·충남·충북","jin":"천안권","sigun":"천안시, 아산시"},{"id":289,"univ":"충남대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(공주권)","quota":2,"method":"일괄: 1단계 서류 100%","minreq":"국수영탐(평균) 수학 포함 3개 합 6","unit":"진료권","region":"대전·세종·충남·충북","jin":"공주권","sigun":"공주시, 계룡시"},{"id":290,"univ":"충남대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(서산권)","quota":6,"method":"일괄: 1단계 서류 100%","minreq":"국수영탐(평균) 수학 포함 3개 합 6","unit":"진료권","region":"대전·세종·충남·충북","jin":"서산권","sigun":"서산시, 당진시, 태안군"},{"id":291,"univ":"충남대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(논산권)","quota":4,"method":"일괄: 1단계 서류 100%","minreq":"국수영탐(평균) 수학 포함 3개 합 6","unit":"진료권","region":"대전·세종·충남·충북","jin":"논산권","sigun":"논산시, 금산군, 부여군, 서천군"},{"id":292,"univ":"충남대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(홍성권)","quota":4,"method":"일괄: 1단계 서류 100%","minreq":"국수영탐(평균) 수학 포함 3개 합 6","unit":"진료권","region":"대전·세종·충남·충북","jin":"홍성권","sigun":"보령시, 청양군, 홍성군, 예산군"},{"id":293,"univ":"충북대학교","cat":"일반","track":"학생부 교과","name":"학생부교과(일반)","quota":4,"method":"일괄: 교과 100%","minreq":"국수영과 3개 합 4","unit":"","region":"","jin":"","sigun":""},{"id":294,"univ":"충북대학교","cat":"일반","track":"학생부 종합","name":"학생부종합I","quota":3,"method":"단계별: 1단계 서류 100(3배수) → 2단계 1단계 80 + 면접 20","minreq":"미적용","unit":"","region":"","jin":"","sigun":""},{"id":295,"univ":"충북대학교","cat":"일반","track":"학생부 종합","name":"학생부종합II","quota":5,"method":"단계별: 1단계 서류 100(3배수) → 2단계 1단계 80 + 면접 20","minreq":"국수영과 수학 포함 3개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":296,"univ":"충북대학교","cat":"지역인재","track":"학생부 교과","name":"지역인재전형","quota":12,"method":"일괄: 교과 100%","minreq":"국수영과 수학 포함 3개 합 5","unit":"","region":"","jin":"","sigun":""},{"id":297,"univ":"충북대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(청주권)","quota":24,"method":"일괄: 교과 100%","minreq":"국수영과 수학 포함 2개 합 6","unit":"진료권","region":"대전·세종·충남·충북","jin":"청주권","sigun":"청주시, 보은군, 옥천군, 영동군, 증평군, 진천군"},{"id":298,"univ":"충북대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(충주권)","quota":7,"method":"일괄: 교과 100%","minreq":"국수영과 수학 포함 2개 합 6","unit":"진료권","region":"대전·세종·충남·충북","jin":"충주권","sigun":"충주시, 괴산군, 음성군"},{"id":299,"univ":"충북대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(제천권)","quota":3,"method":"일괄: 교과 100%","minreq":"국수영과 수학 포함 2개 합 6","unit":"진료권","region":"대전·세종·충남·충북","jin":"제천권","sigun":"제천시, 단양군"},{"id":300,"univ":"충북대학교","cat":"지역의사","track":"학생부 교과","name":"지역의사제(세종 대전 충남 충북 광역권)","quota":15,"method":"일괄: 교과 100%","minreq":"국수영과 수학 포함 2개 합 6","unit":"광역권","region":"대전·세종·충남·충북","jin":"","sigun":""},{"id":301,"univ":"한림대학교","cat":"일반","track":"학생부 종합","name":"학교생활우수자","quota":28,"method":"단계별: 1단계 서류 100% (4배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영과 3개 합 4 (영어 포함 시 영어는 1등급 이어야 함)","unit":"","region":"","jin":"","sigun":""},{"id":302,"univ":"한림대학교","cat":"지역인재","track":"학생부 종합","name":"지역인재","quota":21,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영과 3개 합 5 (영어 포함 시 영어 2등급 이내 이어야 함)","unit":"","region":"","jin":"","sigun":""},{"id":303,"univ":"한림대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(강원 광역권)","quota":2,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영과 3개 합 5 (영어 포함 시 영어 2등급 이내 이어야 함)","unit":"광역권","region":"강원","jin":"","sigun":""},{"id":304,"univ":"한림대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(춘천권)","quota":1,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영과 3개 합 5 (영어 포함 시 영어 2등급 이내 이어야 함)","unit":"진료권","region":"강원","jin":"춘천권","sigun":"춘천시, 홍천군, 철원군, 양구군, 화천군"},{"id":305,"univ":"한림대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(원주권)","quota":1,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영과 3개 합 5 (영어 포함 시 영어 2등급 이내 이어야 함)","unit":"진료권","region":"강원","jin":"원주권","sigun":"원주시, 횡성군"},{"id":306,"univ":"한림대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(영월권)","quota":1,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영과 3개 합 5 (영어 포함 시 영어 2등급 이내 이어야 함)","unit":"진료권","region":"강원","jin":"영월권","sigun":"영월군, 평창군, 정선군"},{"id":307,"univ":"한림대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(강릉권)","quota":1,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영과 3개 합 5 (영어 포함 시 영어 2등급 이내 이어야 함)","unit":"진료권","region":"강원","jin":"강릉권","sigun":"강릉시"},{"id":308,"univ":"한림대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(동해권)","quota":1,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영과 3개 합 5 (영어 포함 시 영어 2등급 이내 이어야 함)","unit":"진료권","region":"강원","jin":"동해권","sigun":"동해시, 태백시, 삼척시"},{"id":309,"univ":"한림대학교","cat":"지역의사","track":"학생부 종합","name":"지역의사제(속초권)","quota":1,"method":"단계별: 1단계 서류 100% (5배수) → 2단계 1단계 70% + 면접 30%","minreq":"국수영과 3개 합 5 (영어 포함 시 영어 2등급 이내 이어야 함)","unit":"진료권","region":"강원","jin":"속초권","sigun":"속초시, 인제군, 고성군, 양양군"},{"id":310,"univ":"한양대학교","cat":"일반","track":"학생부 종합","name":"면접형","quota":16,"method":"단계별: 1단계 서류 100% (3~5배수) → 2단계 1단계 70% + 면접 30%","minreq":"미적용","unit":"","region":"","jin":"","sigun":""},{"id":311,"univ":"한양대학교","cat":"일반","track":"학생부 종합","name":"학업형","quota":40,"method":"일괄: 학생부종합 100%","minreq":"국수영탐(평균) 3개 합 4","unit":"","region":"","jin":"","sigun":""},{"id":312,"univ":"한양대학교","cat":"일반","track":"논술","name":"논술전형","quota":10,"method":"일괄: 논술 100%","minreq":"국수영탐(평균) 3개 합 4","unit":"","region":"","jin":"","sigun":""}],"glossary":[{"term":"국수영탐1","def":"국어, 수학, 영어, (사회탐구·과학탐구 중 하나)"},{"term":"국수영과","def":"국어, 수학, 영어, 과학"},{"term":"국수영탐(평균)","def":"국어, 수학, 영어, (사회탐구와 과학탐구의 평균)"},{"term":"국수영사과","def":"국어, 수학, 영어, 사회탐구, 과학탐구 — 5개를 각각으로 취급"},{"term":"수영탐(평균)","def":"국어 제외. 수학, 영어, (사탐과 과탐의 평균) 이 셋"},{"term":"국수탐1","def":"국어, 수학, (사회탐구 또는 과학탐구)"},{"term":"국수과","def":"국어, 수학, 과학탐구 이 셋으로 한정"},{"term":"절사","def":"탐구 평균 산출 시 발생하는 0.5를 버림 (예: 1.5등급 → 1등급)"},{"term":"미적용","def":"수능최저학력기준 없음"},{"term":"(부가) 수학 포함 / 탐구 포함","def":"지정 과목이 반드시 반영 과목에 포함되어야 함"},{"term":"(부가) + 영어 / + 한국사","def":"해당 과목 등급 조건을 별도로 추가 적용"}],"sigunDb":{"의정부시":{"sido":"경기도","jin":"의정부권","region":"경기·인천"},"동두천시":{"sido":"경기도","jin":"의정부권","region":"경기·인천"},"양주시":{"sido":"경기도","jin":"의정부권","region":"경기·인천"},"연천군":{"sido":"경기도","jin":"의정부권","region":"경기·인천"},"구리시":{"sido":"경기도","jin":"남양주권","region":"경기·인천"},"남양주시":{"sido":"경기도","jin":"남양주권","region":"경기·인천"},"가평군":{"sido":"경기도","jin":"남양주권","region":"경기·인천"},"양평군":{"sido":"경기도","jin":"남양주권","region":"경기·인천"},"이천시":{"sido":"경기도","jin":"이천권","region":"경기·인천"},"여주시":{"sido":"경기도","jin":"이천권","region":"경기·인천"},"포천시":{"sido":"경기도","jin":"포천권","region":"경기·인천"},"서구":{"sido":"인천광역시","jin":"인천서북권","region":"경기·인천"},"강화군":{"sido":"인천광역시","jin":"인천서북권","region":"경기·인천"},"중구":{"sido":"인천광역시","jin":"인천중부권","region":"경기·인천"},"동구":{"sido":"인천광역시","jin":"인천중부권","region":"경기·인천"},"미추홀구":{"sido":"인천광역시","jin":"인천중부권","region":"경기·인천"},"옹진군":{"sido":"인천광역시","jin":"인천중부권","region":"경기·인천"},"춘천시":{"sido":"강원특별자치도","jin":"춘천권","region":"강원"},"홍천군":{"sido":"강원특별자치도","jin":"춘천권","region":"강원"},"철원군":{"sido":"강원특별자치도","jin":"춘천권","region":"강원"},"양구군":{"sido":"강원특별자치도","jin":"춘천권","region":"강원"},"화천군":{"sido":"강원특별자치도","jin":"춘천권","region":"강원"},"원주시":{"sido":"강원특별자치도","jin":"원주권","region":"강원"},"횡성군":{"sido":"강원특별자치도","jin":"원주권","region":"강원"},"영월군":{"sido":"강원특별자치도","jin":"영월권","region":"강원"},"평창군":{"sido":"강원특별자치도","jin":"영월권","region":"강원"},"정선군":{"sido":"강원특별자치도","jin":"영월권","region":"강원"},"강릉시":{"sido":"강원특별자치도","jin":"강릉권","region":"강원"},"동해시":{"sido":"강원특별자치도","jin":"동해권","region":"강원"},"태백시":{"sido":"강원특별자치도","jin":"동해권","region":"강원"},"삼척시":{"sido":"강원특별자치도","jin":"동해권","region":"강원"},"속초시":{"sido":"강원특별자치도","jin":"속초권","region":"강원"},"인제군":{"sido":"강원특별자치도","jin":"속초권","region":"강원"},"고성군":{"sido":"경상남도","jin":"통영권","region":"부산·울산·경남"},"양양군":{"sido":"강원특별자치도","jin":"속초권","region":"강원"},"청주시":{"sido":"충청북도","jin":"청주권","region":"대전·세종·충남·충북"},"보은군":{"sido":"충청북도","jin":"청주권","region":"대전·세종·충남·충북"},"옥천군":{"sido":"충청북도","jin":"청주권","region":"대전·세종·충남·충북"},"영동군":{"sido":"충청북도","jin":"청주권","region":"대전·세종·충남·충북"},"증평군":{"sido":"충청북도","jin":"청주권","region":"대전·세종·충남·충북"},"진천군":{"sido":"충청북도","jin":"청주권","region":"대전·세종·충남·충북"},"충주시":{"sido":"충청북도","jin":"충주권","region":"대전·세종·충남·충북"},"괴산군":{"sido":"충청북도","jin":"충주권","region":"대전·세종·충남·충북"},"음성군":{"sido":"충청북도","jin":"충주권","region":"대전·세종·충남·충북"},"제천시":{"sido":"충청북도","jin":"제천권","region":"대전·세종·충남·충북"},"단양군":{"sido":"충청북도","jin":"제천권","region":"대전·세종·충남·충북"},"공주시":{"sido":"충청남도","jin":"공주권","region":"대전·세종·충남·충북"},"계룡시":{"sido":"충청남도","jin":"공주권","region":"대전·세종·충남·충북"},"논산시":{"sido":"충청남도","jin":"논산권","region":"대전·세종·충남·충북"},"금산군":{"sido":"충청남도","jin":"논산권","region":"대전·세종·충남·충북"},"부여군":{"sido":"충청남도","jin":"논산권","region":"대전·세종·충남·충북"},"서천군":{"sido":"충청남도","jin":"논산권","region":"대전·세종·충남·충북"},"서산시":{"sido":"충청남도","jin":"서산권","region":"대전·세종·충남·충북"},"당진시":{"sido":"충청남도","jin":"서산권","region":"대전·세종·충남·충북"},"태안군":{"sido":"충청남도","jin":"서산권","region":"대전·세종·충남·충북"},"천안시":{"sido":"충청남도","jin":"천안권","region":"대전·세종·충남·충북"},"아산시":{"sido":"충청남도","jin":"천안권","region":"대전·세종·충남·충북"},"보령시":{"sido":"충청남도","jin":"홍성권","region":"대전·세종·충남·충북"},"청양군":{"sido":"충청남도","jin":"홍성권","region":"대전·세종·충남·충북"},"홍성군":{"sido":"충청남도","jin":"홍성권","region":"대전·세종·충남·충북"},"예산군":{"sido":"충청남도","jin":"홍성권","region":"대전·세종·충남·충북"},"포항시":{"sido":"경상북도","jin":"포항권","region":"대구·경북"},"영덕군":{"sido":"경상북도","jin":"포항권","region":"대구·경북"},"울진군":{"sido":"경상북도","jin":"포항권","region":"대구·경북"},"울릉군":{"sido":"경상북도","jin":"포항권","region":"대구·경북"},"경주시":{"sido":"경상북도","jin":"경주권","region":"대구·경북"},"영천시":{"sido":"경상북도","jin":"경주권","region":"대구·경북"},"경산시":{"sido":"경상북도","jin":"경주권","region":"대구·경북"},"청도군":{"sido":"경상북도","jin":"경주권","region":"대구·경북"},"안동시":{"sido":"경상북도","jin":"안동권","region":"대구·경북"},"의성군":{"sido":"경상북도","jin":"안동권","region":"대구·경북"},"청송군":{"sido":"경상북도","jin":"안동권","region":"대구·경북"},"영양군":{"sido":"경상북도","jin":"안동권","region":"대구·경북"},"김천시":{"sido":"경상북도","jin":"구미권","region":"대구·경북"},"구미시":{"sido":"경상북도","jin":"구미권","region":"대구·경북"},"고령군":{"sido":"경상북도","jin":"구미권","region":"대구·경북"},"성주군":{"sido":"경상북도","jin":"구미권","region":"대구·경북"},"칠곡군":{"sido":"경상북도","jin":"구미권","region":"대구·경북"},"영주시":{"sido":"경상북도","jin":"영주권","region":"대구·경북"},"예천군":{"sido":"경상북도","jin":"영주권","region":"대구·경북"},"봉화군":{"sido":"경상북도","jin":"영주권","region":"대구·경북"},"상주시":{"sido":"경상북도","jin":"상주권","region":"대구·경북"},"문경시":{"sido":"경상북도","jin":"상주권","region":"대구·경북"},"창원시":{"sido":"경상남도","jin":"창원권","region":"부산·울산·경남"},"의령군":{"sido":"경상남도","jin":"창원권","region":"부산·울산·경남"},"함안군":{"sido":"경상남도","jin":"창원권","region":"부산·울산·경남"},"창녕군":{"sido":"경상남도","jin":"창원권","region":"부산·울산·경남"},"김해시":{"sido":"경상남도","jin":"김해권","region":"부산·울산·경남"},"밀양시":{"sido":"경상남도","jin":"김해권","region":"부산·울산·경남"},"양산시":{"sido":"경상남도","jin":"김해권","region":"부산·울산·경남"},"진주시":{"sido":"경상남도","jin":"진주권","region":"부산·울산·경남"},"사천시":{"sido":"경상남도","jin":"진주권","region":"부산·울산·경남"},"남해군":{"sido":"경상남도","jin":"진주권","region":"부산·울산·경남"},"하동군":{"sido":"경상남도","jin":"진주권","region":"부산·울산·경남"},"산청군":{"sido":"경상남도","jin":"진주권","region":"부산·울산·경남"},"통영시":{"sido":"경상남도","jin":"통영권","region":"부산·울산·경남"},"거제시":{"sido":"경상남도","jin":"통영권","region":"부산·울산·경남"},"함양군":{"sido":"경상남도","jin":"거창권","region":"부산·울산·경남"},"거창군":{"sido":"경상남도","jin":"거창권","region":"부산·울산·경남"},"합천군":{"sido":"경상남도","jin":"거창권","region":"부산·울산·경남"},"전주시":{"sido":"전북특별자치도","jin":"전주권","region":"광주·전남·전북"},"김제시":{"sido":"전북특별자치도","jin":"전주권","region":"광주·전남·전북"},"완주군":{"sido":"전북특별자치도","jin":"전주권","region":"광주·전남·전북"},"진안군":{"sido":"전북특별자치도","jin":"전주권","region":"광주·전남·전북"},"무주군":{"sido":"전북특별자치도","jin":"전주권","region":"광주·전남·전북"},"군산시":{"sido":"전북특별자치도","jin":"군산권","region":"광주·전남·전북"},"익산시":{"sido":"전북특별자치도","jin":"익산권","region":"광주·전남·전북"},"정읍시":{"sido":"전북특별자치도","jin":"정읍권","region":"광주·전남·전북"},"고창군":{"sido":"전북특별자치도","jin":"정읍권","region":"광주·전남·전북"},"부안군":{"sido":"전북특별자치도","jin":"정읍권","region":"광주·전남·전북"},"남원시":{"sido":"전북특별자치도","jin":"남원권","region":"광주·전남·전북"},"장수군":{"sido":"전북특별자치도","jin":"남원권","region":"광주·전남·전북"},"임실군":{"sido":"전북특별자치도","jin":"남원권","region":"광주·전남·전북"},"순창군":{"sido":"전북특별자치도","jin":"남원권","region":"광주·전남·전북"},"목포시":{"sido":"전라남도","jin":"목포권","region":"광주·전남·전북"},"영암군":{"sido":"전라남도","jin":"목포권","region":"광주·전남·전북"},"무안군":{"sido":"전라남도","jin":"목포권","region":"광주·전남·전북"},"함평군":{"sido":"전라남도","jin":"목포권","region":"광주·전남·전북"},"진도군":{"sido":"전라남도","jin":"목포권","region":"광주·전남·전북"},"신안군":{"sido":"전라남도","jin":"목포권","region":"광주·전남·전북"},"여수시":{"sido":"전라남도","jin":"여수권","region":"광주·전남·전북"},"순천시":{"sido":"전라남도","jin":"순천권","region":"광주·전남·전북"},"광양시":{"sido":"전라남도","jin":"순천권","region":"광주·전남·전북"},"구례군":{"sido":"전라남도","jin":"순천권","region":"광주·전남·전북"},"고흥군":{"sido":"전라남도","jin":"순천권","region":"광주·전남·전북"},"보성군":{"sido":"전라남도","jin":"순천권","region":"광주·전남·전북"},"나주시":{"sido":"전라남도","jin":"나주권","region":"광주·전남·전북"},"곡성군":{"sido":"전라남도","jin":"나주권","region":"광주·전남·전북"},"화순군":{"sido":"전라남도","jin":"나주권","region":"광주·전남·전북"},"장흥군":{"sido":"전라남도","jin":"해남권","region":"광주·전남·전북"},"강진군":{"sido":"전라남도","jin":"해남권","region":"광주·전남·전북"},"해남군":{"sido":"전라남도","jin":"해남권","region":"광주·전남·전북"},"완도군":{"sido":"전라남도","jin":"해남권","region":"광주·전남·전북"},"담양군":{"sido":"전라남도","jin":"영광권","region":"광주·전남·전북"},"영광군":{"sido":"전라남도","jin":"영광권","region":"광주·전남·전북"},"장성군":{"sido":"전라남도","jin":"영광권","region":"광주·전남·전북"},"제주시":{"sido":"제주특별자치도","jin":"제주권","region":"제주"},"서귀포시":{"sido":"제주특별자치도","jin":"서귀포권","region":"제주"},"대전광역시":{"sido":"대전광역시","jin":"","region":"대전·세종·충남·충북"},"세종특별자치시":{"sido":"세종특별자치시","jin":"","region":"대전·세종·충남·충북"},"대구광역시":{"sido":"대구광역시","jin":"","region":"대구·경북"},"부산광역시":{"sido":"부산광역시","jin":"","region":"부산·울산·경남"},"울산광역시":{"sido":"울산광역시","jin":"","region":"부산·울산·경남"},"광주광역시":{"sido":"광주광역시","jin":"","region":"광주·전남·전북"},"서울특별시":{"sido":"서울특별시","jin":"","region":""}},"sidoList":[{"sido":"서울특별시","siguns":["서울특별시"]},{"sido":"부산광역시","siguns":["부산광역시"]},{"sido":"대구광역시","siguns":["대구광역시"]},{"sido":"인천광역시","siguns":["강화군","동구","미추홀구","서구","옹진군","중구"]},{"sido":"광주광역시","siguns":["광주광역시"]},{"sido":"대전광역시","siguns":["대전광역시"]},{"sido":"울산광역시","siguns":["울산광역시"]},{"sido":"세종특별자치시","siguns":["세종특별자치시"]},{"sido":"경기도","siguns":["가평군","구리시","남양주시","동두천시","양주시","양평군","여주시","연천군","의정부시","이천시","포천시"]},{"sido":"강원특별자치도","siguns":["강릉시","동해시","삼척시","속초시","양구군","양양군","영월군","원주시","인제군","정선군","철원군","춘천시","태백시","평창군","홍천군","화천군","횡성군"]},{"sido":"충청북도","siguns":["괴산군","단양군","보은군","영동군","옥천군","음성군","제천시","증평군","진천군","청주시","충주시"]},{"sido":"충청남도","siguns":["계룡시","공주시","금산군","논산시","당진시","보령시","부여군","서산시","서천군","아산시","예산군","천안시","청양군","태안군","홍성군"]},{"sido":"전북특별자치도","siguns":["고창군","군산시","김제시","남원시","무주군","부안군","순창군","완주군","익산시","임실군","장수군","전주시","정읍시","진안군"]},{"sido":"전라남도","siguns":["강진군","고흥군","곡성군","광양시","구례군","나주시","담양군","목포시","무안군","보성군","순천시","신안군","여수시","영광군","영암군","완도군","장성군","장흥군","진도군","함평군","해남군","화순군"]},{"sido":"경상북도","siguns":["경산시","경주시","고령군","구미시","김천시","문경시","봉화군","상주시","성주군","안동시","영덕군","영양군","영주시","영천시","예천군","울릉군","울진군","의성군","청도군","청송군","칠곡군","포항시"]},{"sido":"경상남도","siguns":["거제시","거창군","고성군","김해시","남해군","밀양시","사천시","산청군","양산시","의령군","진주시","창녕군","창원시","통영시","하동군","함안군","함양군","합천군"]},{"sido":"제주특별자치도","siguns":["서귀포시","제주시"]}],"univRegion":{"가천대학교":"경기·인천","가톨릭관동대학교":"강원","강원대학교":"강원","건국대학교 글로컬캠퍼스":"대전·세종·충남·충북","건양대학교":"대전·세종·충남·충북","경북대학교":"대구·경북","경상국립대학교":"부산·울산·경남","계명대학교":"대구·경북","고신대학교":"부산·울산·경남","단국대학교 천안캠퍼스":"대전·세종·충남·충북","대구가톨릭대학교":"대구·경북","동국대학교 WISE캠퍼스":"대구·경북","동아대학교":"부산·울산·경남","부산대학교":"부산·울산·경남","성균관대학교":"경기·인천","순천향대학교":"대전·세종·충남·충북","아주대학교":"경기·인천","연세대학교 미래캠퍼스":"강원","영남대학교":"대구·경북","울산대학교":"부산·울산·경남","원광대학교":"광주·전남·전북","을지대학교":"대전·세종·충남·충북","인제대학교":"부산·울산·경남","인하대학교":"경기·인천","전남대학교":"광주·전남·전북","전북대학교":"광주·전남·전북","제주대학교":"제주","조선대학교":"광주·전남·전북","충남대학교":"대전·세종·충남·충북","충북대학교":"대전·세종·충남·충북","한림대학교":"강원"},"regionJin":{"경기·인천":{"의정부권":["의정부시","동두천시","양주시","연천군"],"남양주권":["구리시","남양주시","가평군","양평군"],"이천권":["이천시","여주시"],"포천권":["포천시"],"인천서북권":["서구","강화군"],"인천중부권":["중구","동구","미추홀구","옹진군"]},"강원":{"춘천권":["춘천시","홍천군","철원군","양구군","화천군"],"원주권":["원주시","횡성군"],"영월권":["영월군","평창군","정선군"],"강릉권":["강릉시"],"동해권":["동해시","태백시","삼척시"],"속초권":["속초시","인제군","고성군","양양군"]},"대전·세종·충남·충북":{"청주권":["청주시","보은군","옥천군","영동군","증평군","진천군"],"충주권":["충주시","괴산군","음성군"],"제천권":["제천시","단양군"],"공주권":["공주시","계룡시"],"논산권":["논산시","금산군","부여군","서천군"],"서산권":["서산시","당진시","태안군"],"천안권":["천안시","아산시"],"홍성권":["보령시","청양군","홍성군","예산군"]},"대구·경북":{"포항권":["포항시","영덕군","울진군","울릉군"],"경주권":["경주시","영천시","경산시","청도군"],"안동권":["안동시","의성군","청송군","영양군"],"구미권":["김천시","구미시","고령군","성주군","칠곡군"],"영주권":["영주시","예천군","봉화군"],"상주권":["상주시","문경시"]},"부산·울산·경남":{"창원권":["창원시","의령군","함안군","창녕군"],"김해권":["김해시","밀양시","양산시"],"진주권":["진주시","사천시","남해군","하동군","산청군"],"통영권":["통영시","거제시","고성군"],"거창권":["함양군","거창군","합천군"]},"광주·전남·전북":{"전주권":["전주시","김제시","완주군","진안군","무주군"],"군산권":["군산시"],"익산권":["익산시"],"정읍권":["정읍시","고창군","부안군"],"남원권":["남원시","장수군","임실군","순창군"],"목포권":["목포시","영암군","무안군","함평군","진도군","신안군"],"여수권":["여수시"],"순천권":["순천시","광양시","구례군","고흥군","보성군"],"나주권":["나주시","곡성군","화순군"],"해남권":["장흥군","강진군","해남군","완도군"],"영광권":["담양군","영광군","장성군"]},"제주":{"제주권":["제주시"],"서귀포권":["서귀포시"]}},"metroOnly":["대전광역시","세종특별자치시","대구광역시","부산광역시","울산광역시","광주광역시"]};
+const P = DATA.programs, GLO = DATA.glossary, SDB = DATA.sigunDb, SIDO = DATA.sidoList,
+      UREG = DATA.univRegion, RJIN = DATA.regionJin, METRO = DATA.metroOnly;
+
+/* ── 지역인재 권역 매핑 (v2 데이터 정합, 보완 추가) ── */
+const JIYEOK_MAP = {"가톨릭관동대학교\u0001학생부 교과\u0001지역인재": "강원", "가톨릭관동대학교\u0001학생부 종합\u0001지역인재": "강원", "건국대학교 글로컬캠퍼스\u0001학생부 종합\u0001학생부종합 지역인재": "대전·세종·충남·충북", "건양대학교\u0001학생부 교과\u0001지역교과[면접]": "대전·세종·충남·충북", "건양대학교\u0001학생부 종합\u0001지역종합[면접]": "대전·세종·충남·충북", "경북대학교\u0001학생부 교과\u0001지역인재전형": "대구·경북", "경북대학교\u0001학생부 종합\u0001지역인재전형": "대구·경북", "경상국립대학교\u0001학생부 교과\u0001지역인재전형": "부산·울산·경남", "경상국립대학교\u0001학생부 종합\u0001지역인재(서류)": "부산·울산·경남", "계명대학교\u0001학생부 교과\u0001지역전형": "대구·경북", "계명대학교\u0001학생부 종합\u0001지역전형": "대구·경북", "고신대학교\u0001학생부 교과\u0001지역인재 서류면접": "부산·울산·경남", "고신대학교\u0001학생부 종합\u0001지역인재종합": "부산·울산·경남", "단국대학교 천안캠퍼스\u0001학생부 교과\u0001지역메디바이오인재": "대전·세종·충남·충북", "대구가톨릭대학교\u0001학생부 교과\u0001지역교과": "대구·경북", "대구가톨릭대학교\u0001학생부 종합\u0001지역종합": "대구·경북", "동국대학교 WISE캠퍼스\u0001학생부 교과\u0001지역인재교과전형": "경북", "동국대학교 WISE캠퍼스\u0001학생부 종합\u0001지역인재": "경북", "동아대학교\u0001학생부 종합\u0001지역인재종합전형": "부산·울산·경남", "부산대학교\u0001학생부 교과\u0001지역인재(교과지역)": "부산·울산·경남", "부산대학교\u0001학생부 종합\u0001지역인재(면접지역전형)": "부산·울산·경남", "순천향대학교\u0001학생부 교과\u0001지역인재전형": "대전·세종·충남·충북", "순천향대학교\u0001학생부 종합\u0001지역인재종합전형": "대전·세종·충남·충북", "연세대학교 미래캠퍼스\u0001학생부 종합\u0001강원인재(일반)전형": "강원", "영남대학교\u0001학생부 교과\u0001지역인재전형": "대구·경북", "영남대학교\u0001학생부 종합\u0001지역인재전형": "대구·경북", "울산대학교\u0001학생부 종합\u0001지역인재": "부산·울산·경남", "원광대학교\u0001학생부 종합\u0001지역인재종합전형(전북권)": "전북", "원광대학교\u0001학생부 종합\u0001지역인재종합전형(호남권)": "광주·전남·전북", "원광대학교\u0001학생부 교과\u0001지역인재교과전형(전북권)": "전북", "원광대학교\u0001학생부 교과\u0001지역인재교과전형(호남권)": "광주·전남·전북", "을지대학교\u0001학생부 교과\u0001지역의료인재": "대전·세종·충남·충북", "인제대학교\u0001학생부 교과\u0001지역인재Ⅰ": "부산·울산·경남", "인제대학교\u0001학생부 종합\u0001학생부종합(지역)": "부산·울산·경남", "전남대학교\u0001학생부 교과\u0001지역인재전형": "광주·전남·전북", "전북대학교\u0001학생부 종합\u0001지역인재1유형(호남)": "광주·전남·전북", "전북대학교\u0001학생부 종합\u0001지역인재2유형(전북)": "전북", "전북대학교\u0001학생부 교과\u0001지역인재1유형(호남)": "광주·전남·전북", "전북대학교\u0001학생부 교과\u0001지역인재2유형(전북)": "전북", "제주대학교\u0001학생부 교과\u0001지역인재": "제주", "제주대학교\u0001학생부 종합\u0001지역인재(학생부종합)": "제주", "조선대학교\u0001학생부 교과\u0001지역인재전형": "광주·전남·전북", "충남대학교\u0001학생부 교과\u0001지역인재": "대전·세종·충남·충북", "충남대학교\u0001학생부 종합\u0001학생부종합II(지역인재)": "대전·세종·충남·충북", "충북대학교\u0001학생부 교과\u0001지역인재전형": "충청북도", "한림대학교\u0001학생부 종합\u0001지역인재": "강원"};
+P.forEach(p=>{ if(p.cat==='지역인재'){ p.jiyeok = JIYEOK_MAP[p.univ+'\u0001'+p.track+'\u0001'+p.name]||''; } });
+const JIYEOK_BY_SIDO = {
+  '강원특별자치도':['강원'],
+  '충청북도':['대전·세종·충남·충북','충청북도'],
+  '충청남도':['대전·세종·충남·충북'],
+  '대전광역시':['대전·세종·충남·충북'],
+  '세종특별자치시':['대전·세종·충남·충북'],
+  '전북특별자치도':['광주·전남·전북','전북'],
+  '전라남도':['광주·전남·전북'],
+  '광주광역시':['광주·전남·전북'],
+  '경상북도':['대구·경북','경북'],
+  '대구광역시':['대구·경북'],
+  '경상남도':['부산·울산·경남'],
+  '부산광역시':['부산·울산·경남'],
+  '울산광역시':['부산·울산·경남'],
+  '제주특별자치도':['제주'],
+  '경기도':[], '인천광역시':[], '서울특별시':[]
+};
+const JIYEOK_LABEL = { '충청북도':'충북 한정','경북':'경북 한정','전북':'전북 한정' };
+
+/* ===== 대학별 정성 정보 (2028 변경자료 정리) ===== */
+const UNIV_NOTES = {"가천대학교": [["완화", "논술·학생부우수자·가천의약학 최저 완화: 3합3(2)절사→3합3(과)"], ["강도", "가천의약학·학생부우수자 최저가 '1등급 3개' 수준으로 의대 최상위권"]], "가톨릭대학교": [["폐지", "지역균형(2027 교과100 P/F 10명) 폐지"], ["변경", "학교장추천·논술 최저 3합4(2)절사,한4 → 3합4(과),한4"]], "경희대학교": [["변경", "지역균형 지원자격 삼수생→재학생"], ["신설", "네오르네상스(서류형) 신설 — 최저 3합4(1),한5 적용"], ["완화", "네오르네상스(면접형) 최저 폐지, 1단계 4→5배수"], ["완화", "지역균형·논술 최저 완화: 탐구 2과목 평균→상위 1과목"]], "고려대학교": [["변경", "학교추천 교과90+서류10 → 교과80+서류20"], ["변경", "학업우수형 면접 부활: 서류100 → (5배수)면접20"], ["변경", "계열적합형 면접 폐지 → 서류100 (최저·면접 모두 없는 유일 전형)"], ["강도", "학교추천·학업우수형 최저 4합5(1)로 의대 최상위권"]], "서울대학교": [["완화", "수시 지역균형 최저 폐지(2027 3합7), 고교별 추천 2→3명"]], "성균관대학교": [["변경", "성균인재 1단계 4→6배수"], ["주의", "지역의사제 포함 최저 미적용 — 종합 경쟁 치열 예상"]], "아주대학교": [["변경", "ACE(면접형) 1단계 3→4배수"], ["변경", "논술 80→90"]], "연세대학교": [["신설", "탐구인재형(일반) 신설 — 최저 미적용"], ["변경", "추천형 교과100→(5배수)교과80+서류20"], ["변경", "종합인재형(←활동우수형) 면접 40→30, 최저에 수필 추가"]], "이화여자대학교": [["변경", "2028 변경 사항 없음"], ["강도", "미래인재(서류) 최저 4합5(1) — 종합 일반 최상위권"]], "인하대학교": [["폐지", "지역균형 폐지"], ["신설", "인하미래인재 최저 신설(3합4(2)절사), 1단계 3→3.5배수"], ["변경", "논술 80→90"]], "중앙대학교": [["변경", "전형명 변경(모두의/탐구하는/최저있는)"], ["변경", "모두의·탐구하는 면접 30→40·5배수; 최저있는학종 면접 폐지→서류100"], ["강도", "최저있는학종 4합5(2),한4 — 종합 일반 최상위권"]], "한양대학교": [["폐지", "서류형 폐지(추천형→학업형)"], ["변경", "면접형 1단계 7→3~5배수"]], "가톨릭관동대학교": [["강화", "최저 강화: 1등급씩 상향, 탐구 평균절사→과탐"], ["변경", "교과 석차등급·성취도 조합 9개 영역 반영"]], "강원대학교": [["완화", "최저 과필 조건 폐지"], ["폐지", "수시 지역인재는 지역의사제만 모집(종합·교과 지역 폐지)"]], "건국대학교 글로컬캠퍼스": [["강화", "최저 강화: Cogito 4합5(과),한4 / 지역인재 4합6(과),한4"], ["폐지", "지역인재교과(충북) 폐지"], ["변경", "종합 1단계 3→5배수"]], "건양대학교": [["신설", "최저 신설: 일반교과면접 3합4(과)/지역교과면접 3합5(과)"], ["변경", "전 전형 면접 실시, 일반교과면접 부활·지역종합면접 신설"], ["주의", "지역의사제·지역종합면접은 최저 미적용"]], "경북대학교": [["변경", "2028 수시 변경 사항 없음"]], "경상국립대학교": [["변경", "학생부교과 정성평가 20% 신설(교과100→교과80+정성20)"]], "계명대학교": [["변경", "학생부교과 면접 30→20, 교과지역 1단계 10→15배수"], ["변경", "최저 변경: 탐구 상위1과목→과탐"], ["강도", "일반교과 3합3(과) — 교과 최상위권"]], "고신대학교": [["신설", "일반고성장인재 신설(재학생)"], ["변경", "학생부교과 2단계 정성평가 10% 반영"]], "단국대학교 천안캠퍼스": [["강화", "최저 강화: DKU면접·지역메디바이오 3합4(과),수필"], ["변경", "DKU인재(면접형) 2단계 면접 30→40"], ["주의", "지역의사제 지역인재/광역권/진료권 최저가 각각 다름(3합4/5/6)"]], "대구가톨릭대학교": [["완화", "최저 완화: 탐구 2과목 절사→과탐만 반영"], ["폐지", "가톨릭지도자추천 폐지"], ["변경", "교과일반 1단계 7→10배수"]], "동국대학교 WISE캠퍼스": [["강화", "최저 강화: 탐구 1과목→2과목 평균 절사"], ["폐지", "지역인재교과(경북)·지역인재종합 폐지"]], "동아대학교": [["완화", "최저 완화: 탐구 2과목 평균→2과목 평균 절사"], ["변경", "지역인재종합 1단계 6→8배수"]], "부산대학교": [["변경", "종합지역면접 면접 20→30"]], "순천향대학교": [["완화", "최저 완화: 교과우수·지역교과 4합6(2)/0.5조정→3합4(2)"], ["폐지", "충남형 지역교과·지역종합 폐지"]], "연세대학교 미래캠퍼스": [["완화", "최저 완화: 3합5(2),한4→2합3(과),영2,한4 (동일과목 I+II 불가)"], ["변경", "교과 출결 가산점 변경, 교과+면접 신설"]], "영남대학교": [["변경", "최저 조정: 탐구 상위1과목→과탐"], ["강도", "일반·의학창의·지역인재 최저 4합5(과) — 지역인재 중 유일 최고 난도"]], "울산대학교": [["강화", "최저 강화: 잠재역량 3합4(2),한4→4합5(2),한4 / 지역 종합도 4합5(2),한4로 강화"], ["변경", "잠재역량 1단계 4→5배수"], ["주의", "인기 하락 경향이나 부울경 최고 수준"]], "원광대학교": [["변경", "최저 조정: 탐구 상위1과목→과탐"], ["변경", "교과성적 반영 신설"]], "을지대학교": [["완화", "학교장추천 최저 완화: 3합5(2),생필→3합6(2),탐필"], ["신설", "지역의료인재(일반형) 단계별·인성면접 신설"]], "인제대학교": [["변경", "학생부종합(일반·지역) 소수 신설"], ["변경", "최저 조정: 탐구 상위1과목→과탐"]], "전남대학교": [["강화", "최저에 탐필(탐구 필수) 조건 신설"], ["강도", "지역인재 86명 — 비수도권 최대 규모 지역인재"]], "전북대학교": [["완화", "의대 최저 완화: 2과목 평균 절사→과탐"], ["변경", "교과별 가중치 신설(국20·수30·영20·사5·과25)"], ["강도", "일반전형 4합5(과) 교과100 — 사실상 최상위 내신 필요"]], "제주대학교": [["완화", "최저 완화: 2과목 평균 절사→과탐"], ["변경", "지역인재 종합 1단계 5→3배수"], ["주의", "지역인재 종합·지역의사제(광역) 종합은 최저 미적용"]], "조선대학교": [["변경", "교과 출결 반영(교과100→교과90+출결10)"], ["변경", "최저 조정: 탐구 상위1과목→과탐"]], "충남대학교": [["변경", "2028 의대 수시 변경 사항 없음"], ["주의", "지역의사제 광역권/진료권 최저 3합6(2),수필"]], "충북대학교": [["변경", "지역의사제 최저에 수필 조건 추가(3합6(1)→3합6(1),수필)"], ["주의", "전남대·제주대와 함께 지역의사제를 정시로도 선발"]], "한림대학교": [["완화", "학생부종합(지역) 최저 완화: 영어 포함 시 1등급→2등급"]]};
+const NOTE_META = {
+  '강화':{c:'#B23B3B',bg:'#FBEAEA'}, '완화':{c:'#2C8C68',bg:'#E7F4EE'},
+  '신설':{c:'#1B6E9C',bg:'#E4EFF6'}, '폐지':{c:'#6B7785',bg:'#EEF1F3'},
+  '변경':{c:'#5C7178',bg:'#EEF2F3'}, '강도':{c:'#B26A24',bg:'#F6ECDD'},
+  '주의':{c:'#9A6212',bg:'#FBF3E2'}
+};
+function univNoteCount(u){ const n=UNIV_NOTES[u]; return n?n.length:0; }
+
+/* ===== 수능최저 판정기 ===== */
+function _jeolsa(x){ const f=Math.floor(x), fr=x-f; return fr===0.5? f : (fr>0.5? f+1 : f); }
+function _pool(spec,g){
+  const t1=Math.min(g.t1,g.t2), mean=(g.t1+g.t2)/2;
+  const K={'국':{label:'국',val:g.kor},'수':{label:'수',val:g.math,math:true},
+           '영':{label:'영',val:g.eng,eng:true}};
+  if(spec==='국수영과') return [K['국'],K['수'],K['영'],{label:'과',val:g.t2,tam:true}];
+  if(spec==='국수영탐1') return [K['국'],K['수'],K['영'],{label:'탐',val:t1,tam:true}];
+  if(spec==='국수영탐(평균)'||spec==='국수영탐(평균)절사'){const tv=spec.endsWith('절사')?_jeolsa(mean):mean;return [K['국'],K['수'],K['영'],{label:'탐평',val:tv,tam:true}];}
+  if(spec==='국수영사과') return [K['국'],K['수'],K['영'],{label:'사',val:g.t1,tam:true},{label:'과',val:g.t2,tam:true}];
+  if(spec==='수영탐(평균)') return [K['수'],K['영'],{label:'탐평',val:mean,tam:true}];
+  if(spec==='국수과') return [K['국'],K['수'],{label:'과',val:g.t2,tam:true}];
+  if(spec==='국수탐1') return [K['국'],K['수'],{label:'탐',val:t1,tam:true}];
+  return null;
+}
+function _combos(arr,k){const r=[];(function go(i,a){if(a.length===k){r.push(a.slice());return;}for(let j=i;j<arr.length;j++){a.push(arr[j]);go(j+1,a);a.pop();}})(0,[]);return r;}
+function _exists(P,N,M,im,it){for(const c of _combos(P,N)){if(im&&!c.some(x=>x.math))continue;if(it&&!c.some(x=>x.tam))continue;if(c.reduce((s,x)=>s+x.val,0)<=M+1e-9)return true;}return false;}
+function evalMin(minreq,g){
+  if(!minreq||minreq==='미적용') return {ok:true,detail:'수능최저 미적용'};
+  let s=minreq.trim(), needEng=null, needKha=null, caveat='';
+  s=s.replace('국수영탐(평균)','국수영탐##평균##').replace('수영탐(평균)','수영탐##평균##');
+  let mc=s.match(/\(([^)]*포함[^)]*|[^)]*간주[^)]*|[^)]*이어야[^)]*)\)/);
+  if(mc){caveat=mc[1];s=s.replace(mc[0],'').trim();}
+  let m=s.match(/\+?\s*영어\s*(\d)\s*등급/); if(m){needEng=+m[1];s=s.replace(m[0],'');}
+  m=s.match(/\+?\s*한국사\s*(\d)\s*등급?/); if(m){needKha=+m[1];s=s.replace(m[0],'');}
+  m=s.match(/[,，]\s*한국사\s*(\d)/); if(m){needKha=+m[1];s=s.replace(m[0],'');}
+  m=s.match(/[,，]\s*한\s*(\d)/); if(m){needKha=+m[1];s=s.replace(m[0],'');}
+  s=s.replace(/\+\s*$/,'').trim().replace('##평균##','(평균)');
+  const jeol=/절사/.test(s); s=s.replace(/절사/g,'').trim();
+  const specs=['국수영탐(평균)','국수영탐1','국수영사과','국수영과','수영탐(평균)','국수탐1','국수과'];
+  let spec=specs.find(x=>s.startsWith(x)); if(!spec) return {ok:null,detail:'자동판정 보류',raw:minreq};
+  let rest=s.slice(spec.length).trim();
+  if(spec==='국수영탐(평균)'&&jeol) spec='국수영탐(평균)절사';
+  const P=_pool(spec,g);
+  const im=/수학\s*포함/.test(rest), it=/탐구\s*포함/.test(rest);
+  rest=rest.replace(/수학[, ]*포함/,'').replace(/탐구\s*포함/,'').replace(/,/g,' ').trim();
+  const addonOk=(needEng==null||g.eng<=needEng)&&(needKha==null||g.kha<=needKha);
+  let mm=rest.match(/(\d)개\s*각\s*(\d)등급/);
+  if(mm){const Kk=+mm[2];return {ok:P.every(p=>p.val<=Kk)&&addonOk,detail:spec+' 각 '+Kk+'등급',caveat};}
+  mm=rest.match(/(\d)개\s*중\s*(\d)개\s*1등급/)||rest.match(/(\d)개\s*중\s*1등급\s*(\d)개/);
+  if(mm){const Kk=+mm[2];let ok=P.filter(p=>p.val<=1).length>=Kk;if(im){const mh=P.find(p=>p.math);ok=ok&&mh&&mh.val<=1;}return {ok:ok&&addonOk,detail:spec+' '+Kk+'개 1등급',caveat};}
+  mm=rest.match(/^(\d)개\s*1등급/);
+  if(mm){const Kk=+mm[1];let ok=P.filter(p=>p.val<=1).length>=Kk;if(im){const mh=P.find(p=>p.math);ok=ok&&mh&&mh.val<=1;}return {ok:ok&&addonOk,detail:spec+' '+Kk+'개 1등급',caveat};}
+  mm=rest.match(/(\d)개\s*중\s*(\d)개\s*합\s*(\d+)/);
+  if(mm){return {ok:_exists(P,+mm[2],+mm[3],im,it)&&addonOk,detail:spec+' '+mm[2]+'개 합 '+mm[3],caveat};}
+  mm=rest.match(/(\d)개\s*합\s*(\d+)/);
+  if(mm){return {ok:_exists(P,+mm[1],+mm[2],im,it)&&addonOk,detail:spec+' '+mm[1]+'개 합 '+mm[2],caveat};}
+  return {ok:null,detail:'자동판정 보류',raw:minreq};
+}
+
+/* ---------- helpers ---------- */
+const catKey = c => ({'일반':'g','지역인재':'j','지역의사':'u','특별전형':'s'}[c]||'g');
+const catColor = c => 'var(--muted)';
+const esc = s => (s||'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+
+function shortName(u){
+  return u.replace('대학교','대').replace('캠퍼스','').trim();
+}
+function monogram(u){
+  const core = u.replace(/대학교.*$/,'').replace(/대$/,'');
+  return core.slice(0,2);
+}
+// 로고 박스: logos/{대학전체명}.png 있으면 표시, 없으면 2글자 텍스트로 폴백
+function umonoHTML(u){
+  return `<img src="logos/${esc(u)}.png" alt="" loading="lazy" onerror="this.remove()">`
+       + `<b class="mg">${esc(monogram(u))}</b>`;
+}
+// university aggregate
+const UNIVS = [...new Set(P.map(p=>p.univ))].sort((a,b)=>a.localeCompare(b,'ko'));
+const univAgg = {};
+UNIVS.forEach(u=>{
+  const ps = P.filter(p=>p.univ===u);
+  univAgg[u]={
+    programs:ps,
+    region: UREG[u]||'',
+    counts:{
+      '일반':ps.filter(p=>p.cat==='일반').length,
+      '지역인재':ps.filter(p=>p.cat==='지역인재').length,
+      '지역의사':ps.filter(p=>p.cat==='지역의사').length,
+      '특별전형':ps.filter(p=>p.cat==='특별전형').length,
+    }
+  };
+});
+
+/* ---------- 수능최저 term highlighting ---------- */
+const GMAP = {};
+GLO.forEach(g=>{ if(!g.term.startsWith('(부가)')) GMAP[g.term]=g.def; });
+const ADDONS = {
+  '수학 포함':'지정 과목(수학)이 반드시 반영 과목에 포함되어야 함',
+  '탐구 포함':'지정 과목(탐구)이 반드시 반영 과목에 포함되어야 함',
+};
+const TERMS = [...Object.keys(GMAP),...Object.keys(ADDONS)].sort((a,b)=>b.length-a.length);
+function highlightMin(str){
+  if(!str) return '';
+  if(str==='미적용') return '<span class="term-tag" data-def="'+esc(GMAP['미적용']||'수능최저학력기준 없음')+'">미적용</span>';
+  let out=esc(str), placeholders=[];
+  TERMS.forEach((t,i)=>{
+    const def = GMAP[t]||ADDONS[t];
+    const token='\u0000'+i+'\u0000';
+    out = out.split(esc(t)).join(token);
+    placeholders.push({token,html:'<span class="term-tag" data-def="'+esc(def)+'">'+esc(t)+'</span>'});
+  });
+  placeholders.forEach(p=>{ out=out.split(p.token).join(p.html); });
+  return out;
+}
+
+/* ---------- views ---------- */
+let view='univ', trackCat='일반', trackType='전체', uniqQuery='', trackQuery='';
+function switchView(v){
+  view=v;
+  if(typeof setDetailMode==='function') setDetailMode(false);
+  document.querySelectorAll('.topic-card').forEach(c=>c.classList.toggle('on', c.dataset.view===v));
+  render();
+  window.scrollTo({top:0,behavior:'instant'in window?'instant':'auto'});
+}
+function render(){
+  const m=document.getElementById('main');
+  if(view==='univ') m.innerHTML=renderUniv();
+  else if(view==='track') m.innerHTML=renderTrack();
+  else if(view==='min'){ m.innerHTML=renderMin(); }
+  else m.innerHTML=renderUisa(), wireUisa();
+}
+
+/* === 대학별 === */
+function univCompute(){
+  const q=uniqQuery.trim();
+  const list=UNIVS.filter(u=>!q||u.includes(q)||shortName(u).includes(q));
+  const cards=list.map(u=>{
+    const a=univAgg[u], c=a.counts;
+    const minis=[];
+    if(c['일반'])minis.push('<span class="mini g">일반 '+c['일반']+'</span>');
+    if(c['지역인재'])minis.push('<span class="mini j">지역인재 '+c['지역인재']+'</span>');
+    if(c['지역의사'])minis.push('<span class="mini u">지역의사 '+c['지역의사']+'</span>');
+    if(c['특별전형'])minis.push('<span class="mini s">특별 '+c['특별전형']+'</span>');
+    return `<button class="ucard" onclick="openUniv('${esc(u)}')">
+      <div style="display:flex;align-items:center;gap:11px">
+        <span class="umono">${umonoHTML(u)}</span>
+        <div style="min-width:0">
+          <div class="uname">${esc(shortName(u))}</div>
+          ${a.region?`<div class="uregion">${esc(a.region)}</div>`:'<div class="uregion">수도권 / 광역</div>'}
+        </div>
+      </div>
+      <div class="ucount">${minis.join('')}</div>
+      ${univNoteCount(u)?`<div class="unote-badge">변경·특징 ${univNoteCount(u)}건</div>`:''}
+    </button>`;
+  }).join('');
+  return {len:list.length, html:list.length?`<div class="ugrid">${cards}</div>`:emptyState('검색 결과가 없습니다','다른 대학명으로 검색해 보세요')};
+}
+function updateUnivList(){
+  const r=univCompute();
+  const c=document.getElementById('univCount'); if(c) c.textContent=r.len+'개 의대';
+  const l=document.getElementById('univList'); if(l) l.innerHTML=r.html;
+}
+function renderUniv(){
+  const r=univCompute();
+  return `<div class="toolbar">
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+      <input type="text" placeholder="대학명 검색 (예: 가천, 충남)" value="${esc(uniqQuery)}" oninput="uniqQuery=this.value;updateUnivList()">
+    </div>
+    <div class="count" id="univCount">${r.len}개 의대</div>
+  </div>
+  <div id="univList">${r.html}</div>`;
+}
+
+/* === 전형별 === */
+function setTrackCat(c){ trackCat=c; trackType='전체'; document.getElementById('main').innerHTML=renderTrack(); }
+function setTrackType(t){ trackType=t; document.getElementById('main').innerHTML=renderTrack(); }
+function renderTrack(){
+  const counts={'일반':0,'지역인재':0,'지역의사':0,'특별전형':0};
+  P.forEach(p=>{if(counts[p.cat]!==undefined)counts[p.cat]++;});
+  const subtabs=['일반','지역인재','지역의사','특별전형'].filter(c=>counts[c]).map(c=>
+    `<button class="subtab" data-c="${c}" aria-selected="${trackCat===c}" onclick="setTrackCat('${c}')">
+      <span class="dot" style="background:${catColor(c)}"></span>${c==='특별전형'?'특별전형':c+'전형'}<span class="n">${counts[c]}</span>
+    </button>`).join('');
+  // 전형분류 필터 (현재 카테고리 기준)
+  const pool=P.filter(p=>p.cat===trackCat);
+  const typeCounts={};
+  pool.forEach(p=>{typeCounts[p.track]=(typeCounts[p.track]||0)+1;});
+  if(trackType!=='전체' && !typeCounts[trackType]) trackType='전체';
+  const typeOrder=['학생부 교과','학생부 종합','논술'].filter(t=>typeCounts[t]);
+  const typeChips=['전체',...typeOrder].map(t=>{
+    const n = t==='전체'?pool.length:typeCounts[t];
+    const lbl = t==='전체'?'전체':t.replace('학생부 ','');
+    return `<button class="chip" aria-pressed="${trackType===t}" onclick="setTrackType('${t}')">${lbl} ${n}</button>`;
+  }).join('');
+  const r=trackListCompute();
+  return `<div class="subtabs">${subtabs}</div>
+  <div class="chips" style="margin-bottom:16px">${typeChips}</div>
+  <div class="toolbar">
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+      <input type="text" placeholder="대학·전형명 검색" value="${esc(trackQuery)}" oninput="trackQuery=this.value;updateTrackList()">
+    </div>
+    <div class="count" id="trackCount">${r.len}개 전형 · 총 ${r.totalQ}명</div>
+  </div>
+  <div id="trackList">${r.html}</div>`;
+}
+function trackListCompute(){
+  const pool=P.filter(p=>p.cat===trackCat);
+  const q=trackQuery.trim();
+  let list=pool.filter(p=>trackType==='전체'||p.track===trackType)
+    .filter(p=>!q||p.univ.includes(q)||p.name.includes(q)||shortName(p.univ).includes(q));
+  list.sort((a,b)=>a.univ.localeCompare(b.univ,'ko')||a.name.localeCompare(b.name,'ko'));
+  const totalQ=list.reduce((s,p)=>s+p.quota,0);
+  const cards=list.map(p=>pcard(p)).join('');
+  return {len:list.length, totalQ, html:list.length?`<div class="plist">${cards}</div>`:emptyState('해당 조건의 전형이 없습니다','검색어를 지우거나 다른 전형을 선택해 보세요')};
+}
+function updateTrackList(){
+  const r=trackListCompute();
+  const c=document.getElementById('trackCount'); if(c) c.textContent=r.len+'개 전형 · 총 '+r.totalQ+'명';
+  const l=document.getElementById('trackList'); if(l) l.innerHTML=r.html;
+}
+function pcard(p,back){
+  const k=catKey(p.cat);
+  const useBack = typeof back==='string' && back;
+  const arrow='<span class="parrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg></span>';
+  if(useBack){   // 대학 모달 안: 전형명을 주연으로, 중복 대학명 제거, 수능최저는 라벨 달아 한 줄로
+    const minRow = p.minreq==='미적용'
+      ? '<span class="pmin none">미적용</span>'
+      : '<span class="pmin">'+esc(p.minreq)+'</span>';
+    return `<button class="pcard pcard-in" onclick="openProgram(${p.id},'${esc(back)}')">
+      <span class="pstripe" style="background:${catColor(p.cat)}"></span>
+      <div class="pmain">
+        <div class="ptop">
+          <span class="pname-lead">${esc(p.name)}</span>
+          <span class="badge track">${esc(p.track)}</span>
+          ${p.unit?`<span class="badge ${k}">${esc(p.jin||p.region)}</span>`:''}
+        </div>
+        <div class="pmin-row"><span class="pmin-lbl">수능최저</span>${minRow}</div>
+      </div>
+      <div class="pmeta">
+        <div class="pq"><b class="tnum">${p.quota}</b><span>명</span></div>
+        ${arrow}
+      </div>
+    </button>`;
+  }
+  const minHtml = p.minreq==='미적용'
+    ? '<div class="pmin none">수능최저 미적용</div>'
+    : '<div class="pmin">'+esc(p.minreq)+'</div>';
+  return `<button class="pcard" onclick="openProgram(${p.id})">
+    <span class="pstripe" style="background:${catColor(p.cat)}"></span>
+    <div class="pmain">
+      <div class="ptop">
+        <span class="puniv">${esc(shortName(p.univ))}</span>
+        <span class="badge track">${esc(p.track)}</span>
+        ${p.unit?`<span class="badge ${k}">${esc(p.jin||p.region)}</span>`:''}
+      </div>
+      <div class="pname">${esc(p.name)}</div>
+    </div>
+    <div class="pmeta">
+      ${minHtml}
+      <div class="pq"><b class="tnum">${p.quota}</b><span>명</span></div>
+      ${arrow}
+    </div>
+  </button>`;
+}
+
+/* === 지역의사 자격 === */
+function renderUisa(){
+  const opt = (selId, isHigh) => {
+    const sidos = SIDO.map(s=>`<option value="${esc(s.sido)}">${esc(s.sido)}</option>`).join('');
+    return `<select id="${selId}-sido" onchange="onSido('${selId}',${isHigh})"><option value="">시·도 선택</option>${sidos}</select>
+            <select id="${selId}-sg" disabled onchange="onSigun(${isHigh})"><option value="">시·군·구 선택</option></select>`;
+  };
+  return `<div class="uisa-wrap">
+    <div class="panel accent">
+      <h3><span style="width:26px;height:26px;border-radius:8px;background:var(--coral);display:grid;place-items:center;color:#fff">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      </span>지역의사 · 지역인재 자격 판정</h3>
+      <p class="hint">출신 <b>중학교</b>와 <b>고등학교</b> 소재 지역을 고르면, <b>지역의사</b>(진료권·광역권)와 <b>지역인재</b> 전형을 함께 찾아드립니다. 지역의사 자격은 <b>중·고 이수 경로</b>로, 지역인재 자격은 <b>고교 졸업 권역</b>으로 판정됩니다.</p>
+      <div class="selrow">
+        <div class="field">
+          <label><span class="step">중</span>중학교 졸업 지역<span class="desc">광역권 자격 결정</span></label>
+          ${opt('mid',0)}
+          <div class="resolve empty" id="mid-resolve">시·도부터 선택하세요</div>
+        </div>
+        <div class="field">
+          <label><span class="step b">고</span>고등학교 재학 지역<span class="desc">복무 진료권 결정</span></label>
+          ${opt('high',1)}
+          <div class="resolve empty" id="high-resolve">시·도부터 선택하세요</div>
+        </div>
+      </div>
+      <button class="judge-btn" id="judgeBtn" disabled onclick="runJudge()">지원 가능 전형 판정하기</button>
+    </div>
+    <div class="panel">
+      <div id="result">
+        <div class="placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v6l9 4 9-4V7"/></svg>
+          <p>중·고교 지역을 선택하면 지역의사·지역인재 결과가 여기에 표시됩니다</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="uhelp-btn" onclick="toggleUisaHelp()" aria-label="지역전형 도움말">?</button>
+  <div class="uhelp" id="uisaHelp">
+    <div class="uhelp-h">지역전형 자격 판정 안내<button class="uhelp-x" onclick="toggleUisaHelp()" aria-label="닫기">&times;</button></div>
+    <div class="uhelp-i"><div class="uhelp-t">지역의사 전형</div>
+      <div class="uhelp-d">해당 지역의 중학교와 고등학교 이수 경로를 기준으로 지원 자격을 판정합니다.</div></div>
+    <div class="uhelp-i"><div class="uhelp-t">지역인재 전형</div>
+      <div class="uhelp-d">해당 지역 고등학교 졸업(예정) 여부를 기준으로 지원 자격을 판정합니다.</div></div>
+  </div>`;
+}
+function toggleUisaHelp(){ const e=document.getElementById('uisaHelp'); if(e) e.classList.toggle('open'); }
+function wireUisa(){ uisaSel={mid:null,high:null}; }
+let uisaSel={mid:null,high:null};
+function onSido(which,isHigh){
+  const sido=document.getElementById(which+'-sido').value;
+  const sgSel=document.getElementById(which+'-sg');
+  const resolve=document.getElementById((isHigh?'high':'mid')+'-resolve');
+  uisaSel[which]=null;
+  if(!sido){ sgSel.innerHTML='<option value="">시·군·구 선택</option>';sgSel.disabled=true;resolve.className='resolve empty';resolve.textContent='시·도부터 선택하세요';updateJudge();return;}
+  const entry=SIDO.find(s=>s.sido===sido);
+  const isMetroWhole = METRO.includes(sido)||sido==='서울특별시';
+  let opts;
+  if(isMetroWhole){
+    // 광역시 자체가 단위 (서울 포함)
+    opts=`<option value="${esc(sido)}">${esc(sido)} 전역</option>`;
+    sgSel.innerHTML=opts; sgSel.disabled=false;
+    sgSel.value=sido; onSigun(isHigh);
+  }else{
+    opts='<option value="">시·군·구 선택</option>'+entry.siguns.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('');
+    sgSel.innerHTML=opts; sgSel.disabled=false;
+    resolve.className='resolve empty';resolve.textContent='시·군·구를 선택하세요';
+  }
+  updateJudge();
+}
+function onSigun(isHigh){
+  const which=isHigh?'high':'mid';
+  const sg=document.getElementById(which+'-sg').value;
+  const resolve=document.getElementById(which+'-resolve');
+  if(!sg){uisaSel[which]=null;resolve.className='resolve empty';resolve.textContent='시·군·구를 선택하세요';updateJudge();return;}
+  const info=SDB[sg];
+  uisaSel[which]={sg,info};
+  if(!info.region){
+    resolve.className='resolve';resolve.style.color='var(--no)';
+    resolve.innerHTML='⚠ 지역의사 전형 비대상 지역';
+  }else{
+    resolve.style.color='';resolve.className='resolve';
+    resolve.innerHTML = (info.jin?`<b>${esc(info.jin)}</b> · `:'진료권 없음 · ')+esc(info.region);
+  }
+  updateJudge();
+}
+function updateJudge(){
+  const b=document.getElementById('judgeBtn');
+  if(b) b.disabled=!(uisaSel.mid&&uisaSel.high);
+}
+function runJudge(){
+  const mid=uisaSel.mid, high=uisaSel.high;
+  const res=document.getElementById('result');
+  const mi=mid.info, hi=high.info;
+  // 경로 시각화
+  const node=(label,sg,info)=>`<div class="path-node"><small>${label}</small>${esc(sg)}<br><small style="color:var(--teal)">${info.region?(info.jin||'진료권 없음')+' / '+info.region:'비대상'}</small></div>`;
+  const pathVis=`<div class="path-vis">${node('중학교',mid.sg,mi)}<span class="path-arrow">→</span>${node('고등학교',high.sg,hi)}</div>`;
+
+  // 자격 산출
+  let jinProgs=[], regProgs=[], status, vtitle, vbody;
+  const sameRegion = mi.region && hi.region && mi.region===hi.region;
+  const sameJin = mi.jin && hi.jin && mi.jin===hi.jin;
+
+  if(!mi.region||!hi.region){
+    status='no';vtitle='지역의사 전형 지원 불가';
+    const which = !mi.region&&!hi.region?'중·고교 모두':(!mi.region?'중학교':'고등학교');
+    vbody=`${which} 소재지가 지역의사 전형 대상 권역이 아닙니다. (서울 등은 지역의사 선발 대상이 아닙니다.) 일반전형·지역인재 전형은 별도로 확인하세요.`;
+  }else if(sameJin){
+    jinProgs=P.filter(p=>p.cat==='지역의사'&&p.unit==='진료권'&&p.jin===mi.jin);
+    regProgs=P.filter(p=>p.cat==='지역의사'&&p.unit==='광역권'&&p.region===mi.region);
+    status='ok';
+    if(regProgs.length){
+      vtitle='진료권 + 광역권 전형 모두 지원 가능';
+      vbody=`중·고교를 같은 <b>${esc(mi.jin)}</b>에서 이수했습니다. 해당 진료권 전형과 ${esc(mi.region)} 광역권 전형에 모두 지원할 수 있습니다.`;
+    }else{
+      vtitle='진료권 전형 지원 가능';
+      vbody=`중·고교를 같은 <b>${esc(mi.jin)}</b>에서 이수했습니다. 진료권 전형에 지원할 수 있습니다. (${esc(mi.region)} 권역은 광역권 전형이 없습니다.)`;
+    }
+  }else if(sameRegion){
+    regProgs=P.filter(p=>p.cat==='지역의사'&&p.unit==='광역권'&&p.region===mi.region);
+    if(regProgs.length){
+      status='partial';vtitle='광역권 전형만 지원 가능';
+      vbody=`중·고교 진료권은 다르지만 같은 <b>${esc(mi.region)}</b> 광역권입니다. 진료권 전형은 불가하고, 광역권 전형에 지원할 수 있습니다.`;
+    }else{
+      status='no';vtitle='지역의사 전형 지원 불가';
+      vbody=`같은 <b>${esc(mi.region)}</b> 광역권이지만 진료권이 다릅니다. 이 권역은 <b>광역권 전형이 없어</b>(경기·인천 특례) 중·고를 같은 진료권에서 이수한 경우에만 지원할 수 있습니다.`;
+    }
+  }else{
+    status='no';vtitle='지역의사 전형 지원 불가';
+    vbody=`중학교(<b>${esc(mi.region)}</b>)와 고등학교(<b>${esc(hi.region)}</b>)의 광역권이 다릅니다. 지역의사 전형은 중·고를 같은 광역권에서 이수해야 지원할 수 있습니다.`;
+  }
+
+  const vicon = status==='ok'?'M5 13l4 4L19 7':(status==='partial'?'M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L14.4 3.9a2 2 0 00-3.4 0z':'M18 6 6 18M6 6l12 12');
+
+  let html=`<div class="verdict ${status}">
+    <div class="vhead"><span class="vicon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="${vicon}"/></svg></span>${vtitle}</div>
+    <div class="vbody">${vbody}</div>
+    ${pathVis}
+  </div>`;
+
+  if(jinProgs.length){
+    jinProgs.sort((a,b)=>a.univ.localeCompare(b.univ,'ko'));
+    const q=jinProgs.reduce((s,p)=>s+p.quota,0);
+    html+=`<div class="rgroup"><h4><span class="badge u">진료권 전형</span> ${esc(mi.jin)}</h4>
+      <p class="rdesc">${jinProgs.length}개 대학 · 총 ${q}명 모집</p>
+      <div class="plist">${jinProgs.map(pcard).join('')}</div>
+      <div class="duty"><b>의무복무</b> · 졸업·면허 취득 후 <b>${esc(hi.jin||mi.jin)}</b>에서 10년간 복무합니다.</div></div>`;
+  }
+  if(regProgs.length){
+    regProgs.sort((a,b)=>a.univ.localeCompare(b.univ,'ko'));
+    const q=regProgs.reduce((s,p)=>s+p.quota,0);
+    html+=`<div class="rgroup"><h4><span class="badge u">광역권 전형</span> ${esc(mi.region)}</h4>
+      <p class="rdesc">${regProgs.length}개 전형 · 총 ${q}명 모집</p>
+      <div class="plist">${regProgs.map(pcard).join('')}</div>
+      <div class="duty"><b>의무복무</b> · 졸업·면허 취득 후 해당 도(道) 지역 진료권 중 선택하여 10년간 복무합니다.</div></div>`;
+  }
+  // ── 지역인재 (고교 졸업지역 권역 기준) ──
+  const jiyeokKeys = JIYEOK_BY_SIDO[hi.sido] || [];
+  let jiProgs = P.filter(p=>p.cat==='지역인재' && p.jiyeok && jiyeokKeys.includes(p.jiyeok));
+  if(jiProgs.length){
+    jiProgs.sort((a,b)=>a.univ.localeCompare(b.univ,'ko')||a.name.localeCompare(b.name,'ko'));
+    const q=jiProgs.reduce((s,p)=>s+p.quota,0);
+    const keyLabels=jiyeokKeys.map(k=>JIYEOK_LABEL[k]?(k+' ('+JIYEOK_LABEL[k]+')'):k).join(' · ');
+    html+=`<div class="rgroup"><h4><span class="badge j">지역인재</span> 고교 졸업지역 기준</h4>
+      <p class="rdesc">${jiProgs.length}개 전형 · 총 ${q}명 · 적용 권역: ${esc(keyLabels)}</p>
+      <div class="plist">${jiProgs.map(pcard).join('')}</div>
+      <div class="duty">지역인재는 <b>고등학교 졸업 지역(권역)</b> 기준입니다. 중학교는 <b>비수도권(서울·경기·인천 외)</b>에서 입학~졸업해야 하는 공통 요건이 있으며, <b>의무복무는 없습니다</b>. 세부 요건은 대학 모집요강을 확인하세요.</div></div>`;
+  }
+
+  if(status==='no' && !jiProgs.length){
+    html+=`<div class="duty" style="margin-top:14px">지역의사·지역인재 모두 해당되지 않습니다. <b>일반전형</b>은 거주지와 무관하게 누구나 지원할 수 있으니 상단 <b>전형별 검색 → 일반전형</b>을 확인하세요.</div>`;
+  }else if(status==='no'){
+    html+=`<div class="duty" style="margin-top:14px">지역의사 전형은 어렵지만 위 <b>지역인재</b> 전형은 지원할 수 있습니다. <b>일반전형</b>도 함께 확인해 보세요.</div>`;
+  }
+  res.innerHTML=html;
+  res.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function emptyState(t,s){
+  return `<div class="empty-state"><b>${esc(t)}</b>${esc(s)}</div>`;
+}
+
+/* ---------- modals ---------- */
+function openModal(html){
+  document.getElementById('modal').innerHTML=html;
+  document.getElementById('overlay').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('overlay').classList.remove('show');
+  document.body.style.overflow='';
+  hidePop();
+}
+let inDetail=false;
+function setDetailMode(on){
+  inDetail=on;
+  const h=document.querySelector('.hero'); if(h) h.style.display=on?'none':'';
+  const t=document.getElementById('topicpick'); if(t) t.style.display=on?'none':'';
+}
+function exitDetail(){
+  setDetailMode(false);
+  render();
+  window.scrollTo({top:0,behavior:'instant'in window?'instant':'auto'});
+}
+function showDetail(html){
+  setDetailMode(true);
+  document.getElementById('main').innerHTML=`<div class="dpage">${html}</div>`;
+  window.scrollTo({top:0,behavior:'instant'in window?'instant':'auto'});
+}
+function openUniv(u){
+  const a=univAgg[u];
+  const order=['일반','지역인재','지역의사','특별전형'];
+  const byCat={};
+  a.programs.forEach(p=>{(byCat[p.cat]=byCat[p.cat]||[]).push(p);});
+  let groups='';
+  order.forEach(c=>{
+    if(!byCat[c])return;
+    const ps=byCat[c].slice().sort((x,y)=>x.name.localeCompare(y.name,'ko'));
+    const q=ps.reduce((s,p)=>s+p.quota,0);
+    groups+=`<div class="mgroup"><div class="mgroup-h"><span class="badge ${catKey(c)}">${esc(c)}</span> ${ps.length}개 · ${q}명</div>
+      <div class="plist">${ps.map(p=>pcard(p,u)).join('')}</div></div>`;
+  });
+  const totalQ=a.programs.reduce((s,p)=>s+p.quota,0);
+  const notes=UNIV_NOTES[u]||[];
+  const notesHtml = notes.length ? `<div class="unotes"><div class="unotes-h">2028 변경·특징 <span>${notes.length}</span></div>`+
+    notes.map(n=>{const meta=NOTE_META[n[0]]||NOTE_META['변경'];return `<div class="unote"><span class="ntag" style="color:${meta.c};background:${meta.bg}">${esc(n[0])}</span><span class="ntxt">${esc(n[1])}</span></div>`;}).join('')+
+    `<div class="unotes-f">2028학년도 변경 자료 요약 · 세부는 모집요강 확인</div></div>` : '';
+  showDetail(`<button class="dback" onclick="exitDetail()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>목록으로</button>
+    <div class="mhead">
+    <span class="umono">${umonoHTML(u)}</span>
+    <div class="mtitle"><h3>${esc(u)}</h3><div class="msub">${a.region?esc(a.region)+' · ':''}전형 ${a.programs.length}개 · 모집 ${totalQ}명</div></div>
+  </div><div class="mbody">${notesHtml}${groups}</div>`);
+}
+function openProgram(id,back){
+  const p=P[id];
+  const k=catKey(p.cat);
+  let regionRow='';
+  if(p.cat==='지역의사'){
+    if(p.unit==='진료권'){
+      regionRow=`<div class="region-box"><b>진료권 전형</b> · ${esc(p.region)} <b>${esc(p.jin)}</b><br>
+        <span style="color:var(--muted)">구성 시·군·구: ${esc(p.sigun)}</span><br>
+        <span style="color:var(--muted)">자격은 시·군 명단이 아니라 중·고 이수 경로로 판정됩니다. 상단 ‘지역의사 자격’ 탭에서 확인하세요.</span></div>`;
+    }else{
+      regionRow=`<div class="region-box"><b>광역권 전형</b> · ${esc(p.region)}<br>
+        <span style="color:var(--muted)">중·고교를 ${esc(p.region)} 광역권에서 이수·거주한 경우 지원 가능합니다.</span></div>`;
+    }
+  }
+  const minHtml = highlightMin(p.minreq);
+  const backBtn = (typeof back==='string'&&back)
+    ? `<button class="dback" onclick="openUniv('${esc(back)}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>${esc(shortName(back))} 전형 목록</button>`
+    : `<button class="dback" onclick="exitDetail()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>목록으로</button>`;
+  showDetail(`${backBtn}<div class="mhead">
+    <span class="umono">${umonoHTML(p.univ)}</span>
+    <div class="mtitle"><h3>${esc(p.name)}</h3><div class="msub">${esc(p.univ)}</div></div>
+  </div>
+  <div class="mbody">
+    <div style="display:flex;gap:7px;flex-wrap:wrap;margin:14px 0 4px">
+      <span class="badge ${k}">${esc(p.cat)}전형</span>
+      <span class="badge track">${esc(p.track)}</span>
+    </div>
+    <div class="mgroup" style="margin-top:14px"><div class="detail-grid">
+      <div class="drow"><span class="dk">모집인원</span><span class="dv big tnum">${p.quota}명</span></div>
+      <div class="drow"><span class="dk">수능최저</span><span class="dv min">${minHtml}</span></div>
+      <div class="drow"><span class="dk">전형방법</span><span class="dv">${esc(p.method)}</span></div>
+    </div></div>
+    ${regionRow?`<div class="mgroup">${regionRow}</div>`:''}
+    <div style="margin-top:16px;text-align:center"><button class="term-btn" style="margin:0 auto" onclick="openGlossary()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg>수능최저 용어가 헷갈리나요?</button></div>
+  </div>`);
+  setTimeout(bindPops,30);
+}
+
+/* glossary */
+const EXAMPLES={
+  '국수영탐1':'‘국수영탐1 3개 합 5’ → 국·수·영·탐구(1과목) 중 상위 3개 등급의 합이 5 이내',
+  '국수영과':'‘국수영과 수학 포함 3개 합 6’ → 국·수·영·과 중 수학을 반드시 넣어 3개 합 6 이내',
+  '국수영탐(평균)':'‘국수영탐(평균) 3개 합 5 절사’ → 탐구는 두 과목 평균을 1과목처럼 보고, 4개 중 상위 3개 합 5 이내',
+  '국수영사과':'‘국수영사과 5개 중 3개 1등급’ → 국·수·영·사·과 5개를 각각 세어 그중 3개가 1등급',
+  '수영탐(평균)':'‘수영탐(평균) 수학 포함 3개 합 5’ → 국어 제외, 수학 포함 3개 합 5 이내',
+  '국수탐1':'‘국수탐1 2개 합 3’ → 국·수·탐구(1과목) 중 상위 2개 합 3 이내',
+  '국수과':'‘국수과 3개 중 2개 합 3’ → 국·수·과 중 2개 합 3 이내',
+  '절사':'탐구 평균이 1.5등급이면 0.5를 버려 1등급으로 계산',
+  '미적용':'수능 성적과 무관하게 지원 가능 (수능최저 없음)',
+};
+function openGlossary(){
+  const items=GLO.filter(g=>!g.term.startsWith('(부가)')).map(g=>{
+    const ex=EXAMPLES[g.term];
+    return `<div class="gitem">
+      <div class="gh"><span class="gterm">${esc(g.term)}</span></div>
+      <div class="gd">${esc(g.def)}</div>
+      ${ex?`<div class="gex"><span class="ex-tag">예시</span>${esc(ex)}</div>`:''}
+    </div>`;
+  }).join('');
+  openModal(`<div class="mhead">
+    <span class="umono" style="background:var(--ink)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg></span>
+    <div class="mtitle"><h3>수능최저학력기준 용어 정리</h3><div class="msub">표기를 읽는 법과 예시</div></div>
+    <button class="mclose" onclick="closeModal()" aria-label="닫기"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <div class="mbody">
+    <p class="gloss-intro">전형 상세의 <b>수능최저</b> 항목에서 점선 표시된 용어를 눌러도 같은 설명을 볼 수 있습니다.</p>
+    <div class="gloss-list">${items}</div>
+    <div class="addon"><b>부가 표기</b><br>
+      <code>수학 포함</code> · <code>탐구 포함</code> — 해당 과목이 반드시 반영 과목에 포함되어야 함<br>
+      <code>+ 영어</code> · <code>+ 한국사</code> — 해당 과목 등급 조건을 별도로 추가 적용</div>
+  </div>`);
+}
+
+/* term popovers (tap/hover) */
+let popTimer;
+function bindPops(){
+  document.querySelectorAll('.term-tag').forEach(el=>{
+    el.addEventListener('mouseenter',e=>showPop(el));
+    el.addEventListener('mouseleave',hidePop);
+    el.addEventListener('click',e=>{e.stopPropagation();showPop(el,true);});
+  });
+}
+function showPop(el,sticky){
+  const pop=document.getElementById('pop');
+  pop.innerHTML='<b>'+esc(el.textContent)+'</b> — '+esc(el.dataset.def);
+  pop.classList.add('show');
+  const r=el.getBoundingClientRect();
+  pop.style.left=Math.min(Math.max(8,r.left),window.innerWidth-268)+'px';
+  pop.style.top=(r.bottom+8)+'px';
+  if(sticky){clearTimeout(popTimer);popTimer=setTimeout(hidePop,2600);}
+}
+function hidePop(){document.getElementById('pop').classList.remove('show');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){ if(document.getElementById('overlay').classList.contains('show')) closeModal(); else if(inDetail) exitDetail(); }});
+
+/* ===== 수능최저 뷰 ===== */
+let mg={kor:0,math:0,eng:0,t1:0,t2:0,kha:0}, minShowFail=false, minDone=false;
+function gradeSel(id,label){
+  return `<label class="gfield"><span class="glab">${label}</span>
+    <input id="${id}" type="text" inputmode="numeric" maxlength="1" placeholder="-"
+      onfocus="this.select()" onkeydown="gradeKey(event)" oninput="onGradeInput(this)">
+    <span class="gunit">등급</span></label>`;
+}
+function gradeKey(e){                       // 키 입력 단계에서 1~9 외 차단
+  if(e.ctrlKey||e.metaKey) return;
+  if(['Backspace','Delete','Tab','ArrowLeft','ArrowRight','Home','End'].includes(e.key)) return;
+  if(!/^[1-9]$/.test(e.key)){ e.preventDefault(); showGradeErr(e.target); }
+}
+function onGradeInput(el){                   // 붙여넣기·모바일 등 안전망
+  const raw=el.value, d=raw.match(/[1-9]/g)||[];
+  el.value = d.length ? d[d.length-1] : '';  // 마지막 유효 1~9만 유지
+  if(raw!=='' && /[^1-9]/.test(raw)) showGradeErr(el); else clearGradeErr(el);
+  onGrade();
+}
+let _gerrT;
+function showGradeErr(el){
+  if(el&&el.classList) el.classList.add('err');
+  const m=document.getElementById('gerr'); if(m) m.classList.add('show');
+  clearTimeout(_gerrT);
+  _gerrT=setTimeout(()=>{ const mm=document.getElementById('gerr'); if(mm) mm.classList.remove('show');
+    document.querySelectorAll('.gfield input.err').forEach(x=>x.classList.remove('err')); },1400);
+}
+function clearGradeErr(el){ if(el&&el.classList) el.classList.remove('err'); }
+function onGrade(){
+  const g=id=>{let x=Math.floor(+v(id)||0);return x<1?0:x>9?9:x;};
+  mg={kor:g('mg-kor'),math:g('mg-math'),eng:g('mg-eng'),t1:g('mg-t1'),t2:g('mg-t2'),kha:g('mg-kha')};
+  const ok = mg.kor&&mg.math&&mg.eng&&mg.t1&&mg.t2&&mg.kha;
+  const b=document.getElementById('minBtn'); if(b) b.disabled=!ok;
+}
+function v(id){const e=document.getElementById(id);return e?e.value:'0';}
+function renderMin(){
+  return `<div class="minwrap">
+    <div class="panel accent">
+      <h3><span style="width:26px;height:26px;border-radius:8px;background:var(--coral);display:grid;place-items:center;color:#fff">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18V8M9 18V5M14 18v-7M19 18v-3"/></svg>
+      </span>모의고사 등급으로 충족 전형 찾기</h3>
+      <p class="hint">국어·수학·영어·탐구 2과목·한국사 등급을 넣으면 <b>수능최저학력기준을 충족하는 전형</b>을 모두 보여줍니다. <b>미적용 전형도 포함</b>됩니다.</p>
+      <p class="ginst">과목별 모의고사 등급을 입력하세요 <span class="gnote">1~9등급</span></p>
+      <div class="grow">
+        ${gradeSel('mg-kor','국어')}${gradeSel('mg-math','수학')}${gradeSel('mg-eng','영어')}
+        ${gradeSel('mg-t1','사회탐구')}${gradeSel('mg-t2','과학탐구')}${gradeSel('mg-kha','한국사')}
+      </div>
+      <div class="gerr" id="gerr">⚠ 1~9 등급만 입력할 수 있어요</div>
+      <button class="judge-btn" id="minBtn" disabled onclick="runMin()">충족 전형 찾기</button>
+      <div class="minnote">사회탐구·과학탐구 등급을 넣으면 과목 지정(예: 국수영과=과학탐구)·탐구 평균·상위 1과목·절사 규칙을 자동 적용합니다. 미적분/기하 필수, 과탐 2과목 필수 같은 응시영역 지정 조건은 반영하지 않으니 모집요강을 확인하세요.</div>
+    </div>
+    <div class="panel"><div id="minResult">
+      <div class="placeholder">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18V8M9 18V5M14 18v-7M19 18v-3"/></svg>
+        <p>등급을 입력하면 충족 전형이 여기에 표시됩니다</p>
+      </div>
+    </div></div>
+  </div>`;
+}
+function minRow(p,r){
+  const k=catKey(p.cat);
+  return `<button class="pcard" onclick="openProgram(${p.id})">
+    <span class="pstripe" style="background:${catColor(p.cat)}"></span>
+    <div class="pmain"><div class="ptop">
+      <span class="puniv">${esc(shortName(p.univ))}</span>
+      <span class="badge ${k}">${esc(p.cat)}</span>
+      <span class="badge track">${esc(p.track)}</span>
+      ${p.jin?`<span class="badge ${k}">${esc(p.jin)}</span>`:''}
+    </div><div class="pname">${esc(p.name)} · <span class="${p.minreq==='미적용'?'mok':'mreq'}">${esc(p.minreq)}</span></div></div>
+    <div class="pmeta"><div class="pq"><b class="tnum">${p.quota}</b><span>명</span></div>
+      <span class="okmark ${r.ok?'y':'n'}">${r.ok?'✓':'✕'}</span></div>
+  </button>`;
+}
+function runMin(){
+  const res=document.getElementById('minResult'); minDone=true;
+  const pass=[], fail=[];
+  P.forEach(p=>{const r=evalMin(p.minreq,mg); (r.ok?pass:fail).push([p,r]);});
+  const order=['일반','지역인재','지역의사','특별전형'];
+  const passNoMin=pass.filter(x=>x[0].minreq==='미적용').length;
+  let html=`<div class="mres-head"><b>${pass.length}</b>개 전형 충족 <span class="mr-sub">(미적용 ${passNoMin}개 포함) · ${[...new Set(pass.map(x=>x[0].univ))].length}개 대학</span></div>`;
+  order.forEach(c=>{
+    const list=pass.filter(x=>x[0].cat===c).sort((a,b)=>a[0].univ.localeCompare(b[0].univ,'ko'));
+    if(!list.length) return;
+    const q=list.reduce((s,x)=>s+x[0].quota,0);
+    html+=`<div class="rgroup"><h4><span class="rg-dot" style="background:${catColor(c)}"></span>${c} <span class="rg-c">${list.length}전형 · ${q}명</span></h4>
+      <div class="plist">${list.map(x=>minRow(x[0],x[1])).join('')}</div></div>`;
+  });
+  html+=`<button class="failtog" onclick="minShowFail=!minShowFail;runMin()">${minShowFail?'미충족 전형 숨기기':'미충족 전형 보기 ('+fail.length+')'}</button>`;
+  if(minShowFail){
+    const fl=fail.sort((a,b)=>a[0].univ.localeCompare(b[0].univ,'ko'));
+    html+=`<div class="rgroup faillist"><h4 class="failh">미충족 ${fl.length}전형</h4><div class="plist">${fl.map(x=>minRow(x[0],x[1])).join('')}</div></div>`;
+  }
+  res.innerHTML=html;
+}
+
+switchView('univ');
+</script>
+<div class="hc-ov" id="hcGuide" onclick="if(event.target===this)HCUI.closeGuide()"><div class="hc-sheet" role="dialog" aria-modal="true"><div class="hc-ghead"><div class="wm">醫</div><button class="hc-gclose" onclick="HCUI.closeGuide()" aria-label="닫기">&times;</button><div class="hc-eyebrow">2028학년도 · 의대 수시모집</div><h2>2028 의대 수시모집 검색기</h2><p>39개 의과대학의 수시 전형을 대학별·전형별로 살펴보고, 출신 지역과 모의고사 등급만으로 지원 가능한 전형을 바로 찾습니다.</p></div><div class="hc-gbody"><div class="hc-kick">이렇게 사용하세요</div><div class="hc-methods"><div class="hc-m"><div class="no">1</div><div><div class="ti">대학별 검색</div><div class="de">관심 의대를 이름으로 찾고 전형·인원·수능최저를 확인합니다.</div><div class="out">대학 카드 → 전형 목록 → 전형 상세 + 유사 수능최저 대학</div></div></div><div class="hc-m"><div class="no">2</div><div><div class="ti">전형별 검색</div><div class="de">일반·지역인재·지역의사·특별 전형을 한데 모아 비교합니다.</div><div class="out">전형 유형별 정렬·검색</div></div></div><div class="hc-m"><div class="no">3</div><div><div class="ti">지역의사·지역인재</div><div class="de">중·고 졸업 지역을 고르면 지원 가능 전형을 자동 판정합니다.</div><div class="out">중학교·고등학교 지역 선택 → 판정</div></div></div><div class="hc-m"><div class="no">4</div><div><div class="ti">수능최저로 찾기</div><div class="de">모의고사 등급을 넣으면 충족하는 전형을 모두 보여줍니다.</div><div class="out">국·수·영·탐·한국사 등급 입력</div></div></div></div><div class="hc-read"><h3>이것만 알면 됩니다</h3><div class="r"><span><b>전형 상세</b>를 열면 같은·비슷한 <b>수능최저</b>를 쓰는 다른 대학이 함께 떠, 카드를 누르며 계속 비교할 수 있습니다.</span></div><div class="r"><span>수능최저 표기(<b>국수영과 3개 합 4</b> 등)가 헷갈리면 우측 상단 <b>수능최저 용어 정리</b>를 누르세요. 팝업 위에서도 언제든 열립니다.</span></div><div class="r"><span><b>지역의사</b> 자격은 시·군 명단이 아니라 중·고 이수 경로로 판정됩니다.</span></div></div><button class="hc-start" onclick="HCUI.closeGuide()"><span class="ar">▶</span><span class="t">검색기 시작하기</span></button></div><div class="hc-cap"><b>알아두기.</b> 인원·전형·수능최저는 2028학년도 정리본 기준입니다. 실제 지원 전 각 대학 최종 모집요강을 반드시 확인하세요. · 제작 (주)이즈유 · 클럽하와이</div></div></div><script>(function(){
+  if(typeof P==='undefined'||typeof openProgram!=='function'){return;}
+  function mNone(p){var m=(p.minreq||'').trim();return m===''||m==='미적용';}
+  function mVal(p){if(mNone(p))return 0;var m=(p.minreq||'').match(/합\s*(\d)/);return m?+m[1]:null;}
+  function mSim(a,b){var va=mVal(a),vb=mVal(b);if(va===null||vb===null)return -999;var sc=100-Math.abs(va-vb)*10;var na=(a.minreq||'').match(/(\d)개/),nb=(b.minreq||'').match(/(\d)개/);if(na&&nb&&na[1]===nb[1])sc+=3;if(a.cat===b.cat)sc+=2;return sc;}
+  var stack=[];
+  var _orig=openProgram;
+  window.openProgram=function(id,back){stack=[{id:id,back:back}];_orig(id,back);append();};
+  window.HCUImedNav=function(id){stack.push({id:id});_orig(id);append();};
+  window.HCUImedBack=function(){if(stack.length>1){stack.pop();var t=stack[stack.length-1];_orig(t.id,t.back);append();}};
+  function relRow(p){
+    var none=mNone(p);
+    var col=(typeof catColor==='function')?catColor(p.cat):'var(--primary)';
+    return '<button class="hc-rel" style="--rc:'+col+'" onclick="HCUImedNav('+p.id+')">'
+      +'<span class="hc-rel-u">'+esc(shortName(p.univ))+'</span>'
+      +'<span class="hc-rel-t">'+esc(p.cat)+' · '+esc(p.name)+'</span>'
+      +'<span class="hc-rel-m '+(none?'none':'')+'">'+(none?'미적용':esc(p.minreq))+'</span></button>';
+  }
+  function append(){
+    var top=stack[stack.length-1];var p=P[top.id];
+    var body=document.querySelector('#modal .mbody');if(!body){return;}
+    if(stack.length>1){
+      var head=document.querySelector('#modal .mhead');
+      if(head&&head.parentNode){
+        var bb=document.createElement('button');bb.className='mback';
+        bb.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>이전 전형으로';
+        bb.onclick=window.HCUImedBack;
+        head.parentNode.insertBefore(bb,head);
+      }
+    }
+    var others=P.filter(function(o){return o.id!==p.id;});
+    var same=others.filter(function(o){return (o.minreq||'')===(p.minreq||'');});
+    var rest=others.filter(function(o){return same.indexOf(o)<0;});
+    rest.forEach(function(o){o._sc=mSim(p,o);});
+    rest.sort(function(a,b){return b._sc-a._sc;});
+    var sim=rest.filter(function(o){return o._sc>-900;}).slice(0,8);
+    var html='<div class="hc-relbox"><div class="hc-rel-h">같은·비슷한 수능최저 대학 <span>동일 '+same.length+' · 유사 '+sim.length+'</span></div>';
+    if(same.length){html+='<div class="hc-rel-s">동일한 수능최저</div>'+same.slice(0,10).map(relRow).join('');}
+    if(sim.length){html+='<div class="hc-rel-s">비슷한 수능최저</div>'+sim.map(relRow).join('');}
+    if(!same.length&&!sim.length){html+='<div class="hc-rel-e">비교할 다른 전형이 없습니다.</div>';}
+    html+='</div>';
+    var box=document.createElement('div');box.innerHTML=html;
+    if(box.firstChild){body.appendChild(box.firstChild);}
+  }
+})();</script>
+<script>(function(){
+  var HCUI={};window.HCUI=HCUI;
+  HCUI.openGuide=function(){var g=document.getElementById('hcGuide');if(g){g.classList.add('open');document.body.style.overflow='hidden';}};
+  HCUI.closeGuide=function(){var g=document.getElementById('hcGuide');if(g){g.classList.remove('open');document.body.style.overflow='';}};
+  HCUI.openTerms=function(){ if(window.openGlossary)window.openGlossary(); };
+  HCUI.closeTerms=function(){var t=document.getElementById('hcTerms');if(t){t.classList.remove('open');}};
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){HCUI.closeGuide();HCUI.closeTerms();}});
+  // build FAB
+  var fab=document.createElement('div');fab.className='hc-fab';
+  fab.innerHTML='<button class="hc-btn hc-home" onclick="HCUI.openGuide()" aria-label="사용설명서"><span class="ic">\uD83D\uDCD6</span><span class="lbl">\uC0AC\uC6A9\uC124\uBA85\uC11C</span></button>'+
+    '<button class="hc-btn hc-term" onclick="HCUI.openTerms()"><span class="ic">?</span><span class="lbl-full">수능최저 용어 정리</span><span class="lbl-short">용어</span></button>';
+  document.body.appendChild(fab);
+  // tooltip on guide button (자동 팝업 대신 말풍선)
+  var homeBtn=fab.querySelector('.hc-home');
+  if(homeBtn){
+    homeBtn.style.position='relative';
+    var tip=document.createElement('div');
+    tip.className='hc-tooltip';
+    var tipText=document.createElement('span');
+    tipText.textContent='자세한 사용법을 확인해보세요!';
+    var tipX=document.createElement('button');
+    tipX.className='hc-tip-x';
+    tipX.innerHTML='&times;';
+    tipX.setAttribute('aria-label','닫기');
+    tipX.onclick=function(e){e.stopPropagation();tip.classList.remove('show');clearTimeout(tip._t1);clearTimeout(tip._t2);};
+    tip.appendChild(tipText);
+    tip.appendChild(tipX);
+    homeBtn.appendChild(tip);
+    tip._t1=setTimeout(function(){tip.classList.add('show');},800);
+    tip._t2=setTimeout(function(){tip.style.transition='opacity .8s';tip.classList.remove('show');},4500);
+  }
+})();</script>
+
+</body>
+</html>
