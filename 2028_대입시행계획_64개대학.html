@@ -101,8 +101,12 @@ main{max-width:1240px;margin:0 auto;padding:24px 2rem 90px}
   display:flex;flex-direction:column;gap:9px;text-align:left}
 .uni:hover{transform:translateY(-2px);border-color:var(--card-pt)}
 .uni:focus-visible{outline:2px solid var(--card-pt);outline-offset:2px}
-.uni .top{display:flex;align-items:baseline;gap:9px}
-.uni .idx{font-family:var(--mono);font-size:11px;color:var(--faint);font-weight:700;flex:none}
+.uni .top{display:flex;align-items:center;gap:10px}
+.uni .uinfo{min-width:0;display:flex;flex-direction:column;gap:2px}
+.logobox{width:44px;height:44px;border-radius:11px;flex:none;display:grid;place-items:center;
+  background:#fff;border:1px solid var(--line);position:relative;overflow:hidden;
+  font-weight:800;font-size:15px;color:var(--ink);letter-spacing:-.04em}
+.logobox img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:5px;background:#fff;border-radius:inherit}
 .uni .nm{font-size:19px;font-weight:700;letter-spacing:-.025em;line-height:1.28}
 .uni .mjb{font-size:9.5px;font-weight:800;color:var(--ink);background:#fff;border:1px solid var(--line);
   padding:1px 6px;border-radius:4px;letter-spacing:.02em;align-self:flex-start}
@@ -236,7 +240,10 @@ main{max-width:1240px;margin:0 auto;padding:24px 2rem 90px}
 
 /* ===== detail ===== */
 .dhead{background:var(--surface);border:1px solid var(--line);border-radius:15px;
-  padding:20px 22px;margin-bottom:17px;animation:fade .28s ease}
+  padding:20px 22px;margin-bottom:17px;animation:fade .28s ease;
+  display:flex;align-items:flex-start;gap:16px}
+.dhead .dbody{flex:1;min-width:0}
+.dhead .dlogo{width:54px;height:54px;border-radius:13px;font-size:18px}
 .dhead .dn{font-size:26px;font-weight:800;letter-spacing:-.04em;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .dhead .mjb{font-size:11px;font-weight:800;color:#fff;background:var(--ink);padding:3px 9px;border-radius:6px;letter-spacing:.01em}
 .dhead .dl{font-size:13px;color:var(--muted);font-family:var(--sans);margin-top:6px;letter-spacing:0}
@@ -490,8 +497,7 @@ body:has(.hc-ov.open) .hc-fab{display:none}
 @media(max-width:560px){ .hc-trow{grid-template-columns:1fr;gap:3px} }
 
 </style>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
 </head>
 <body>
 <header class="bar">
@@ -561,24 +567,17 @@ body:has(.hc-ov.open) .hc-fab{display:none}
 <script>
   let DATA = [];
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDu4Mk4iWesnJyWwFvlx6JRb4M26Nh3DFg",
-  authDomain: "project-7885689854581835083.firebaseapp.com",
-  projectId: "project-7885689854581835083",
-  storageBucket: "project-7885689854581835083.firebasestorage.app",
-  messagingSenderId: "279669891521",
-  appId: "1:279669891521:web:f093a4bcf6d71186a10f40"
-};
+const WORKER_URL = "https://university-search.diosumd0943.workers.dev";
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+async function loadWorkerData() {
+  const response = await fetch(WORKER_URL + "?keyword=__all__");
 
-async function loadFirebaseData() {
-  const snapshot = await db.collection("universities").get();
+  if (!response.ok) {
+    throw new Error("Worker 데이터 요청 실패");
+  }
 
-  DATA = snapshot.docs.map(doc => doc.data());
+  DATA = await response.json();
 
-  // 기존 순서 최대한 유지
   DATA.sort((a, b) => (a.mj || 999) - (b.mj || 999));
 }
 const GROUPS = [{"t": "서울대·연세대·고려대", "m": [0, 1, 2]}, {"t": "서강대·성균관대·한양대", "m": [4, 3, 5]}, {"t": "중앙대·이화여대", "m": [6, 10]}, {"t": "경희대·시립대·외대", "m": [7, 9, 8]}, {"t": "건국대·동국대·홍익대·숙명여대", "m": [11, 12, 18, 13]}, {"t": "국민대·숭실대·세종대", "m": [14, 15, 17]}, {"t": "단국대·광운대", "m": [19, 20]}, {"t": "상명대·명지대·가톨릭대·가천대·경기대", "m": [27, 21, 22, 35, 40]}, {"t": "아주대·인하대·한양대에리카", "m": [34, 32, 36]}];
@@ -605,6 +604,9 @@ function shortName(n){
   const p=n.match(/\(([^)]+)\)/); if(/과학기술원/.test(n)&&p)return p[1];
   return n.replace(/대학교(\s.*)?$/,"대").replace(/여자대/,"여대");
 }
+function uniBase(n){return (n||"").replace(/\s+\S*캠퍼스.*$/,"").trim();}
+function monogram(n){const core=uniBase(n).replace(/대학교.*$/,"").replace(/대$/,"");return core.slice(0,2);}
+function logoBox(n){return `<img src="logos/${esc(uniBase(n))}.png" alt="" loading="lazy" onerror="this.remove()"><b class="mg">${esc(monogram(n))}</b>`;}
 function methodShort(mt){
   return (mt||"").replace(/^(일괄합산\s*전형|일괄합산|단계별\s*전형)\s*/,"").replace(/\s+/g," ").trim();
 }
@@ -629,9 +631,10 @@ function renderDir(){
       ["kg","jh","ns"].forEach(k=>{if(c[k])chips+=`<span class="chip ${k}">${CATSHORT[k]}<span class="qn">${c[k]}</span></span>`;});
       const nm=u.r.filter(r=>r.nm0).length; if(nm)chips+=`<span class="chip nm">${nm}개전형 최저없음</span>`;
       const isSel=state.sel.includes(i);
-      html+=`<button class="uni" data-uni="${i}"><div class="top"><span class="idx">${String(i+1).padStart(2,"0")}</span>
-        <span class="nm">${hl(u.n)}</span></div>${u.mj?'<span class="mjb">주요대</span>':''}
-        <div class="loc">${hl(u.l)}</div><div class="chips">${chips}</div>
+      html+=`<button class="uni" data-uni="${i}"><div class="top">
+        <span class="logobox">${logoBox(u.n)}</span>
+        <div class="uinfo"><span class="nm">${hl(u.n)}</span><div class="loc">${hl(u.l)}</div></div></div>
+        ${u.mj?'<span class="mjb">주요대</span>':''}<div class="chips">${chips}</div>
         <div class="sel-btn${isSel?" on":""}" data-sel="${i}" role="button" tabindex="0" title="${isSel?"선택 해제":"비교에 추가"}">비교</div></button>`;
     });
     html+=`</div></section>`;
@@ -797,8 +800,9 @@ function renderDetail(){
   ["kg","jh","ns"].forEach(k=>{if(c[k])stats+=`<span class="chip ${k}">${CATNAME[k]}<span class="qn">${c[k]}</span></span>`;});
   const nm=u.r.filter(r=>r.nm0).length; if(nm)stats+=`<span class="nmtag">수능최저 없음 ${nm}</span>`;
   let html=`<div class="crumb"><button class="back" data-home="1">← 전체 대학</button><span class="meta">${u.rg}</span></div>
-    <div class="dhead"><div class="dn">${hl(u.n)}${u.mj?'<span class="mjb">주요대</span>':''}</div>
-    <div class="dl">${hl(u.l)} · 주 전형 ${u.cnt}개</div><div class="dstats">${stats}</div></div>`;
+    <div class="dhead"><span class="logobox dlogo">${logoBox(u.n)}</span>
+    <div class="dbody"><div class="dn">${hl(u.n)}${u.mj?'<span class="mjb">주요대</span>':''}</div>
+    <div class="dl">${hl(u.l)} · 주 전형 ${u.cnt}개</div><div class="dstats">${stats}</div></div></div>`;
   u.r.forEach(r=>{
     const su=r.nm0?`<span class="nochange">없음 / 미적용</span>`:`<div class="body">${hl(r.su)}</div>`;
     html+=`<div class="card ${r.c}"><div class="ch"><span class="tag ${r.c}">${CATNAME[r.c]||r.t}</span><span class="cnm">${hl(r.nm)}</span></div>
@@ -1182,12 +1186,12 @@ function printCmp(){
 
 document.querySelector(".tab[data-tab='dir']").dataset.on="1";
 
-loadFirebaseData()
+loadWorkerData()
   .then(() => {
     render();
   })
   .catch((error) => {
-    console.error("Firebase 데이터 불러오기 실패:", error);
+    console.error("Worker 데이터 불러오기 실패:", error);
     main.innerHTML = `
       <div class="empty">
         <div class="big">데이터를 불러오지 못했습니다.</div>
