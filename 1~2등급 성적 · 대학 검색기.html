@@ -67,7 +67,43 @@
   .chip:hover{border-color:var(--accent2); color:var(--accent2);}
   .quick .chip:hover{border-color:var(--accent); color:var(--accent);}
   .chip:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+  .chip.on{background:var(--accent); border-color:var(--accent); color:#fff;}
+  .chip.on:hover{color:#fff;}
   .hint{font-size:13.5px; color:var(--muted); margin:14px 0 0;}
+  .hint b{color:var(--ink); font-weight:700;}
+
+  /* grade caption + slider */
+  .grade-cap{display:block; font-size:13px; font-weight:700; color:var(--muted); margin:0 0 9px; letter-spacing:.01em;}
+  .slider-wrap{max-width:340px; margin:16px auto 0;}
+  .grade-slider{-webkit-appearance:none; appearance:none; width:100%; height:6px; border-radius:999px;
+    background:linear-gradient(90deg,var(--accent) 0%,#FFD0E3 100%); outline:none; cursor:pointer;}
+  .grade-slider::-webkit-slider-thumb{-webkit-appearance:none; appearance:none; width:24px; height:24px; border-radius:50%;
+    background:#fff; border:3px solid var(--accent); box-shadow:0 2px 6px rgba(0,0,0,.18); cursor:pointer; transition:transform .12s;}
+  .grade-slider::-webkit-slider-thumb:active{transform:scale(1.12);}
+  .grade-slider::-moz-range-thumb{width:22px; height:22px; border-radius:50%; background:#fff; border:3px solid var(--accent); box-shadow:0 2px 6px rgba(0,0,0,.18); cursor:pointer;}
+  .grade-slider:focus-visible{box-shadow:0 0 0 3px rgba(255,95,159,.25);}
+  .slider-ends{display:flex; justify-content:space-between; margin:7px 2px 0; font-size:11.5px; color:var(--muted); font-weight:700;}
+  .slider-ends i{font-style:normal; font-weight:500; opacity:.8;}
+
+  /* result summary bar */
+  .gsum{display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:4px 0 18px;
+    padding:13px 15px; border:1px solid var(--line); border-radius:var(--radius); background:var(--line2);}
+  .gsum .base{font-size:14px; font-weight:800; color:var(--ink);}
+  .gsum .base b{color:var(--accent2);}
+  .gsum .pill{font-size:13px; font-weight:800; padding:4px 11px; border-radius:999px;}
+  .gsum .pill.fit{color:var(--fit); background:var(--fit-bg);}
+  .gsum .pill.reach{color:var(--reach); background:var(--reach-bg);}
+  .gsum .pill.safe{color:var(--safe); background:var(--safe-bg);}
+  .gsum .pill.out{color:var(--out); background:var(--out-bg);}
+  .gsum .me{margin-left:auto; font-size:12.5px; font-weight:700; color:var(--ink2); display:inline-flex; align-items:center; gap:5px;}
+  .gsum .me::before{content:""; width:3px; height:14px; border-radius:2px; background:var(--ink); box-shadow:0 0 0 2px #fff;}
+  @media (max-width:560px){ .gsum .me{margin-left:0; width:100%;} }
+
+  /* per-card scale ruler (aligned to gauge column) */
+  .scale{position:relative; grid-column:2; height:16px; margin-bottom:-2px;}
+  .scale .tick{position:absolute; top:0; transform:translateX(-50%); font-size:10.5px; color:var(--muted); font-weight:600; white-space:nowrap;}
+  .scale .tick::before{content:""; position:absolute; left:50%; top:13px; width:1px; height:5px; background:var(--line); transform:translateX(-50%);}
+  .scale-row{display:grid; grid-template-columns:40px 1fr auto; align-items:center; gap:12px; margin-bottom:3px;}
 
   .search-input{width:100%; max-width:560px; font:inherit; font-size:16.5px; padding:14px 16px;
     border:1.5px solid var(--ink); border-radius:12px; background:#fff; color:var(--ink);
@@ -90,6 +126,7 @@
   .dot{width:10px; height:10px; border-radius:3px;}
   .dot.safe{background:var(--safe);} .dot.fit{background:var(--fit);}
   .dot.reach{background:var(--reach);} .dot.out{background:var(--out);}
+  .dot-mark{width:3px; height:13px; border-radius:2px; background:var(--ink); box-shadow:0 0 0 2px #fff;}
 
   /* Bucket heading */
   .bucket{margin:28px 0 12px; display:flex; align-items:baseline; gap:10px;}
@@ -212,17 +249,21 @@
   <!-- GRADE MODE INPUT -->
   <div class="bar-sub" id="sub-grade">
     <p class="search-label">성적으로 예상하는 대학 라인</p>
-    <label class="hidden" for="grade">내신 등급 입력</label>
-    <input class="grade-input" id="grade" type="number" inputmode="decimal" step="0.05" min="1" max="3" placeholder="1.70" value="1.70" aria-label="내신 등급">
-    <div class="quick" aria-label="간편 검색">
-      <button class="chip" data-g="1.10">1.10</button>
-      <button class="chip" data-g="1.30">1.30</button>
-      <button class="chip" data-g="1.50">1.50</button>
-      <button class="chip" data-g="1.70">1.70</button>
-      <button class="chip" data-g="1.90">1.90</button>
-      <button class="chip" data-g="2.10">2.10</button>
+    <span class="grade-cap">내 내신 등급</span>
+    <input class="grade-input" id="grade" type="number" inputmode="decimal" step="0.05" min="1" max="2.6" placeholder="1.70" value="1.70" aria-label="내신 등급">
+    <div class="slider-wrap">
+      <input type="range" id="gradeSlider" class="grade-slider" min="1" max="2.6" step="0.05" value="1.70" aria-label="내신 등급 슬라이더">
+      <div class="slider-ends"><span>1.0 <i>최상위</i></span><span><i>하위</i> 2.6</span></div>
     </div>
-    <p class="hint">교과·종합 각각의 컷 구간과 내 위치를 게이지로 표시합니다. 점수 라인은 보정값 기반으로 ±0.1 변동 가능.</p>
+    <div class="quick" aria-label="간편 검색">
+      <button class="chip" data-g="1.10" aria-pressed="false">1.10</button>
+      <button class="chip" data-g="1.30" aria-pressed="false">1.30</button>
+      <button class="chip" data-g="1.50" aria-pressed="false">1.50</button>
+      <button class="chip" data-g="1.70" aria-pressed="false">1.70</button>
+      <button class="chip" data-g="1.90" aria-pressed="false">1.90</button>
+      <button class="chip" data-g="2.10" aria-pressed="false">2.10</button>
+    </div>
+    <p class="hint">숫자·슬라이더·버튼 아무거나 조절하면 교과·종합 컷 구간과 <b>내 위치</b>가 게이지로 표시됩니다. 라인은 보정값 기반 ±0.1 변동 가능.</p>
   </div>
 
   <!-- UNI MODE INPUT -->
@@ -244,6 +285,7 @@
       <span class="lg"><span class="dot reach"></span>도전</span>
       <span class="lg"><span class="dot safe"></span>안정</span>
       <span class="lg"><span class="dot out"></span>어려움</span>
+      <span class="lg"><span class="dot-mark"></span>내 위치</span>
     </div>
 
     <div id="grade-results"></div>
@@ -515,6 +557,13 @@ function trackRow(label, range, g){
       <span class="badge ${c.k}">${c.t} · ${fmt(range)}</span>
     </div>`;
 }
+/* 카드 상단 눈금자 — 게이지와 동일 스케일(1.0~SCALE_MAX) */
+function cardScaleHTML(){
+  const ticks=[1.0,1.5,2.0,2.5];
+  const t = ticks.filter(v=>v>=SCALE_MIN && v<=SCALE_MAX)
+    .map(v=>`<span class="tick" style="left:${pct(v)}%">${v.toFixed(1)}</span>`).join('');
+  return `<div class="scale-row"><span></span><div class="scale">${t}</div><span></span></div>`;
+}
 
 /* ---------- grade mode render ---------- */
 function renderGrade(){
@@ -534,7 +583,16 @@ function renderGrade(){
     {k:'safe', label:'안정 (성적이 컷보다 우수)'},
     {k:'out', label:'현 성적으로는 어려움'},
   ];
-  let html='';
+  // 분포 요약 바
+  const cnt = k => scored.filter(s=>s.best===RANK[k]).length;
+  let html = `<div class="gsum">
+      <span class="base"><b>${g.toFixed(2)}</b> 기준</span>
+      <span class="pill fit">적정 ${cnt('fit')}</span>
+      <span class="pill reach">도전 ${cnt('reach')}</span>
+      <span class="pill safe">안정 ${cnt('safe')}</span>
+      <span class="pill out">어려움 ${cnt('out')}</span>
+      <span class="me">내 위치 = ${g.toFixed(2)}</span>
+    </div>`;
   buckets.forEach(b=>{
     const items = scored.filter(s=>s.best===RANK[b.k]);
     if(!items.length) return;
@@ -547,6 +605,7 @@ function renderGrade(){
         </div>
         <div class="unis">${L.unis.map(u=>`<button class="uni-tag" data-uni="${esc(u)}">${esc(u)}</button>`).join('')}</div>
         <div class="tracks">
+          ${cardScaleHTML()}
           ${trackRow('교과', L.gyo, g)}
           ${trackRow('종합', L.jong, g)}
         </div>
@@ -644,10 +703,43 @@ function setMode(mode){
 tabGrade.addEventListener('click', ()=>setMode('grade'));
 tabUni.addEventListener('click', ()=>setMode('uni'));
 
-document.getElementById('grade').addEventListener('input', renderGrade);
-document.querySelectorAll('.quick .chip').forEach(c=>{
-  c.addEventListener('click', ()=>{ document.getElementById('grade').value = c.dataset.g; renderGrade(); });
+const gradeInput = document.getElementById('grade');
+const gradeSlider = document.getElementById('gradeSlider');
+const quickChips = [...document.querySelectorAll('.quick .chip')];
+
+function highlightChip(){
+  const v = parseFloat(gradeInput.value);
+  quickChips.forEach(c=>{
+    const on = !isNaN(v) && Math.abs(parseFloat(c.dataset.g)-v) < 1e-9;
+    c.classList.toggle('on', on);
+    c.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+}
+/* 숫자·슬라이더·칩 단일 진입점 */
+function setGrade(v, opts){
+  opts = opts || {};
+  let n = parseFloat(v);
+  if(!isNaN(n)){
+    n = Math.min(2.6, Math.max(1.0, n));
+    const s = (Math.round(n/0.05)*0.05).toFixed(2);
+    if(!opts.skipInput) gradeInput.value = s;
+    gradeSlider.value = s;
+  }
+  highlightChip();
+  renderGrade();
+}
+// 숫자 입력: 타이핑 중엔 입력값 유지(클램프/반올림 X), 슬라이더·칩만 동기화
+gradeInput.addEventListener('input', ()=>{
+  const n = parseFloat(gradeInput.value);
+  if(!isNaN(n)) gradeSlider.value = Math.min(2.6, Math.max(1.0, n)).toFixed(2);
+  highlightChip();
+  renderGrade();
 });
+gradeSlider.addEventListener('input', ()=> setGrade(gradeSlider.value));
+quickChips.forEach(c=>{
+  c.addEventListener('click', ()=> setGrade(c.dataset.g));
+});
+highlightChip();
 document.getElementById('grade-results').addEventListener('click', e=>{
   const b = e.target.closest('[data-uni]');
   if(!b) return;
