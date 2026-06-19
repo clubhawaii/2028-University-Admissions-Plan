@@ -1186,6 +1186,8 @@ function printCmp(){
 
 document.querySelector(".tab[data-tab='dir']").dataset.on="1";
 
+main.innerHTML=`<div class="empty"><div class="big">불러오는 중…</div><div class="sm">대학·전형 데이터를 가져오고 있어요.</div></div>`;
+
 loadWorkerData()
   .then(() => {
     render();
