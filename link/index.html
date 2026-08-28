@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>이즈유 · 클럽하와이 · 유미니</title>
+<title>클럽하와이 × 유미니 링크트리</title>
 <meta name="description" content="학원 운영을 원장 개인의 감각에서, 팀이 반복하는 시스템으로. 클럽하와이와 유미니의 모든 통로를 한곳에 모았습니다.">
-<meta property="og:title" content="이즈유 · 클럽하와이 · 유미니">
+<meta property="og:title" content="클럽하와이 × 유미니 링크트리">
 <meta property="og:description" content="학원 운영을 원장 개인의 감각에서, 팀이 반복하는 시스템으로">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#ffffff">
@@ -809,7 +809,12 @@ button.card:active .cta{background:var(--b-dark)}
     app.innerHTML = g ? brand(g) : home();
     wireDecks();
     window.scrollTo(0, 0);
-    document.title = (g ? g.name + ' · ' : '') + '이즈유';
+    /* 제목은 links.js 의 brand 에서 옵니다.
+       첫 화면은 pageTitle, 안쪽은 「브랜드 · pageSuffix」입니다. */
+    var B2 = D.brand || {};
+    document.title = g
+      ? g.name + ' · ' + (B2.pageSuffix || B2.pageTitle || '이즈유')
+      : (B2.pageTitle || '이즈유');
   }
 
   /* 대문을 누르면 주소가 바뀝니다 → 뒤로가기로 돌아옵니다.
