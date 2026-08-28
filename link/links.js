@@ -138,9 +138,7 @@ window.LINKS = {
       links: [
         { t: '홈페이지', d: '서비스 전체를 한눈에', url: 'https://clubhawaii.co.kr', icon: 'home', w: 'feat' },
         { t: '멤버십 상담 신청', d: '신청하시면 담당자가 연락드립니다', url: 'https://www.clubhawaii.co.kr/consultation', icon: 'form', tag: '승인제' },
-        { t: '카카오톡 상담', d: '가장 빠릅니다. 무엇이든 물어보세요', url: 'http://pf.kakao.com/_xdrlwX', icon: 'chat' },
-        { t: '인스타그램', url: '', icon: 'insta', w: 'half' },
-        { t: '네이버 블로그', url: '', icon: 'blog', w: 'half' }
+        { t: '카카오톡 상담', d: '가장 빠릅니다. 무엇이든 물어보세요', url: 'http://pf.kakao.com/_xdrlwX', icon: 'chat' }
       ]
     },
     {
