@@ -1,0 +1,831 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>이즈유 · 클럽하와이 · 유미니</title>
+<meta name="description" content="학원 운영을 원장 개인의 감각에서, 팀이 반복하는 시스템으로. 클럽하와이와 유미니의 모든 통로를 한곳에 모았습니다.">
+<meta property="og:title" content="이즈유 · 클럽하와이 · 유미니">
+<meta property="og:description" content="학원 운영을 원장 개인의 감각에서, 팀이 반복하는 시스템으로">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="favicon-64.png" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* ─────────────────────────────────────────────────────────────
+   클럽하와이 실제 서비스(clubhawaii.co.kr)의 디자인 토큰을 그대로 씁니다.
+   2026-08-28 에 운영 사이트에서 읽어온 값입니다 —
+     색    primary #ff5f9f · primary-dark #e54a8a · sub-bg #faf6f2 · sub-dark #45352f
+           회색 #f9f9f9 #f2f2f2 #ebebeb #e0e0e0 #9e9e9e #757575 #616161 #212121
+     글씨  Pretendard · 굵기는 300/500/600/700 만 (800·900 을 쓰지 않습니다)
+     자간  normal (조이지 않습니다)
+     강조  굵기가 아니라 「핑크 색」으로 합니다
+     버튼  반경 8px · 핑크 채움 + 흰 글씨
+     목록  떠 있는 카드가 아니라 흰 바탕 + 1px #ebebeb 선
+
+   ⚠️ 인쇄물(리플렛)과 규칙이 다른 지점이 둘 있습니다. 화면은 아래를 따릅니다 —
+      (1) 핑크 면 위 글씨 : 인쇄물은 먹, 화면은 흰색
+      (2) 강조          : 인쇄물은 굵기 900, 화면은 핑크 색
+   유미니(.sky)만 자기 브랜드 색을 씁니다. 서비스에는 파랑이 없습니다.        */
+:root{
+  /* 색 — 서비스 토큰 */
+  --ink:#212121; --ink-2:#616161; --gray:#757575; --gray-2:#9e9e9e;
+  --line:#ebebeb; --line-2:#e0e0e0; --bg-1:#f9f9f9; --bg-2:#f2f2f2;
+  --pink:#FF5F9F; --pink-dark:#E54A8A; --cream:#FAF6F2; --cream-line:#F0E7DF;
+  --sky:#4FA3E3;  --sky-dark:#2C6FA8;  --sky-bg:#F1F7FC; --sky-line:#DCEAF6;
+  --kakao:#FEE500; --kakao-deep:#6B4E00; --kakao-bg:#FFFBE8; --kakao-line:#F3E7A8;
+  /* 글씨 크기 — 서비스 스케일 */
+  --t-xxl:30px; --t-xl:26px; --t-lg:22px; --t-md:20px; --t-sm:17px;
+  --t-body:16px; --t-15:15px; --t-13:13px; --t-12:12px;
+  --fw-l:300; --fw-m:500; --fw-sb:600; --fw-b:700;
+  /* 여백 · 반경 */
+  /* 여백 눈금 — 이 뜻대로만 씁니다. 아무 데나 40px 를 쓰면 구분이 다시 사라집니다.
+       2~4  한 줄 안의 요소끼리   5~6  카드 안의 묶음 사이
+       7    화면의 묶음(구역) 사이 ★ 여기서 「무엇을 볼지」가 갈립니다 */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px; --sp-6:28px; --sp-7:40px;
+  --r:12px; --r-s:10px; --r-btn:8px; --band-h:84px; --pad:16px;
+  /* 브랜드 자리 — 카드에 .sky 를 붙이면 통째로 바뀝니다 */
+  --b:var(--pink); --b-dark:var(--pink-dark); --b-bg:var(--cream); --b-line:var(--cream-line);
+  --b-rgb:255,95,159;
+}
+.sky{--b:var(--sky); --b-dark:var(--sky-dark); --b-bg:var(--sky-bg); --b-line:var(--sky-line);
+     --b-rgb:79,163,227}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:Pretendard Variable,Pretendard,-apple-system,BlinkMacSystemFont,
+    "Apple SD Gothic Neo",system-ui,Roboto,"Noto Sans KR","Malgun Gothic",sans-serif;
+  background:#fff; color:var(--ink);
+  font-size:var(--t-15); line-height:1.5; letter-spacing:normal;
+  word-break:keep-all; overflow-wrap:anywhere;
+  -webkit-font-smoothing:antialiased;
+  min-height:100svh;
+}
+::selection{background:rgba(255,95,159,.16)}
+.wrap{
+  max-width:520px; margin:0 auto;
+  padding:var(--sp-6) var(--pad);
+  padding-bottom:calc(var(--sp-7) + env(safe-area-inset-bottom));
+  display:flex; flex-direction:column; gap:var(--sp-7);
+}
+
+/* ── 카드 공통 — 그림자 없이 1px 선. 서비스 목록과 같은 무게입니다 ── */
+.card{
+  display:block; position:relative; overflow:hidden;
+  width:100%; text-align:left; font:inherit; color:inherit; text-decoration:none;
+  background:#fff; border:1px solid var(--line); border-radius:var(--r);
+  padding:var(--sp-5); margin:0;
+  transition:border-color .12s, background .12s;
+}
+a.card,button.card{cursor:pointer}
+a.card:active,button.card:active{background:var(--bg-1)}
+@media (hover:hover){ a.card:hover,button.card:hover{border-color:var(--line-2)} }
+:focus-visible{outline:2px solid var(--b); outline-offset:2px; border-radius:4px}
+
+/* ── 길 묻는 줄 — 서비스 제목과 같은 규격(먹 600, 자간 normal) ── */
+.q{text-align:center; margin:0}
+.q h1{
+  margin:0; color:var(--ink);
+  font-size:clamp(22px, 6vw, var(--t-xl)); font-weight:var(--fw-sb); line-height:1.4;
+}
+.q h1 b{color:var(--b); font-weight:var(--fw-sb)}
+
+/* ── 오픈카톡 칸 ──────────────────────────────────────────
+   두 대문에는 채움 버튼이 있는데 여기만 작은 화살표였습니다 —
+   같은 화면에서 「누르는 것」의 생김새가 다르면 약한 쪽은 안 눌립니다.
+   카카오 정품 노랑(#FEE500) 위 글씨는 먹입니다 (카카오 브랜드 규칙). */
+.hero{
+  display:block;
+  background:var(--kakao-bg); border-color:var(--kakao-line);
+}
+.hero .row{display:flex; align-items:center; gap:var(--sp-3)}
+.hero .ic{
+  flex:none; width:40px; height:40px; border-radius:var(--r-s); background:var(--kakao);
+  display:grid; place-items:center; color:var(--kakao-deep);
+}
+.hero .tx{flex:1; min-width:0; display:block}
+.hero .ask{display:block; font-size:var(--t-13); font-weight:var(--fw-m); color:var(--kakao-deep)}
+.hero .t{display:block; font-size:var(--t-body); font-weight:var(--fw-sb); line-height:1.45}
+.hero .cta{
+  margin-top:var(--sp-4); min-height:44px;
+  background:var(--kakao); color:var(--ink);
+}
+a.card.hero:active .cta{background:#F2DA00}
+
+/* ── 큰 제목 — 강조는 굵기가 아니라 핑크 색입니다 ────────── */
+.hl{
+  display:block; color:var(--ink); font-weight:var(--fw-sb);
+  font-size:clamp(24px, 6.4vw, var(--t-xxl)); line-height:1.4;
+}
+.hl b{color:var(--b); font-weight:var(--fw-sb)}
+/* 킥커도 서비스와 같이 핑크입니다 */
+.kick2{display:block; font-size:var(--t-15); font-weight:var(--fw-sb); color:var(--b); line-height:1.5}
+.dots3{display:flex; gap:5px; margin:var(--sp-4) 0 var(--sp-3)}
+.dots3 i{width:16px; height:5px; border-radius:3px; background:var(--b); display:block; opacity:.28}
+.dots3 i:first-child{width:22px; opacity:1}
+
+/* ── 브랜드 카드 ────────────────────────────────────────── */
+.cov{padding:0}
+.band{
+  display:block; position:relative; height:var(--band-h); overflow:hidden;
+  background:var(--b-bg); border-bottom:1px solid var(--b-line);
+}
+.plate{
+  position:absolute; left:var(--sp-5); top:var(--band-h); transform:translateY(-50%); z-index:2;
+  height:52px; min-width:52px; padding:0 14px; border-radius:var(--r-s);
+  background:#fff; border:1px solid var(--line);
+  display:inline-flex; align-items:center; justify-content:center;
+}
+.plate img{width:auto; max-width:170px; object-fit:contain; display:block}
+.bd{display:block; padding:calc(var(--sp-5) + 18px) var(--sp-5) var(--sp-6)}
+
+/* 표지 얼굴 — 서비스 히어로 띠와 같은 크림 바탕입니다 */
+.cover{padding:var(--sp-6) var(--sp-5); background:var(--b-bg); border-color:var(--b-line)}
+.cover .mk{display:block; line-height:0; margin:0 0 var(--sp-5)}
+.cover .mk img{width:auto; max-width:120px; object-fit:contain; display:block}
+.cover .rule{display:none}
+.cover .lead{display:block; margin-top:var(--sp-5);
+  font-size:var(--t-15); font-weight:400; color:var(--gray); line-height:1.65}
+
+.ask{display:block; font-size:var(--t-13); font-weight:var(--fw-m); color:var(--b); line-height:1.5; margin:0 0 var(--sp-2)}
+.nmrow{display:flex; align-items:center; gap:var(--sp-2); flex-wrap:wrap}
+.nm{font-size:var(--t-lg); font-weight:var(--fw-sb); line-height:1.4; color:var(--ink)}
+.en{
+  border-radius:var(--r-btn); padding:3px 8px; background:#fff;
+  border:1px solid var(--b-line); color:var(--b-dark);
+  font-size:var(--t-12); font-weight:var(--fw-m); letter-spacing:.06em;
+}
+.one{display:block; font-size:var(--t-15); font-weight:400; color:var(--gray); line-height:1.65; margin:var(--sp-3) 0 0}
+/* 낱말 — 조용한 회색 테두리. 서비스의 분류 칩과 같은 무게입니다 */
+.tags{display:flex; flex-wrap:wrap; gap:6px; margin:var(--sp-4) 0 0; padding:0; list-style:none}
+.tags>*{
+  font-size:var(--t-13); font-weight:var(--fw-m); color:var(--ink-2);
+  background:#fff; border:1px solid var(--line-2); border-radius:var(--r-btn); padding:4px 9px;
+}
+/* 버튼 — 반경 8px · 핑크 채움 · 흰 글씨 */
+.cta{
+  display:flex; align-items:center; justify-content:center; gap:5px;
+  margin:var(--sp-5) 0 0; min-height:46px; border-radius:var(--r-btn);
+  background:var(--b); color:#fff; font-size:var(--t-15); font-weight:var(--fw-sb);
+}
+button.card:active .cta{background:var(--b-dark)}
+
+.head .nm{font-size:var(--t-xl)}
+.head .d{font-size:var(--t-15); font-weight:400; color:var(--gray); line-height:1.65; margin:var(--sp-3) 0 0}
+
+.back{
+  align-self:flex-start;
+  display:inline-flex; align-items:center; gap:4px; cursor:pointer;
+  border:0; background:none; padding:var(--sp-2) 0; margin:0;
+  font:inherit; font-size:var(--t-15); font-weight:var(--fw-m); color:var(--gray);
+  min-height:44px;
+  /* 바로 아래 표지 카드와 한 묶음입니다 */
+  margin-bottom:calc(var(--sp-3) - var(--sp-7));
+}
+@media (hover:hover){ .back:hover{color:var(--ink)} }
+
+/* ── 안쪽 화면의 이야기 덩어리 ─────────────────────────────
+   덩어리는 카드가 아니라 맨 지면입니다. 전부 카드로 만들면
+   링크와 이야기가 같은 무게로 보여 무엇을 눌러야 할지 흐려집니다. */
+.sec{margin:var(--sp-6) 0 0}
+.sec .kick2{margin-bottom:var(--sp-1)}
+.sec .hl{font-size:clamp(20px, 5.4vw, var(--t-lg))}
+
+/* 고민 — 핑크 왼쪽 세로선 */
+.qs{list-style:none; margin:var(--sp-4) 0 0; padding:0; display:grid; gap:var(--sp-3)}
+.qs li{
+  border-left:2px solid var(--b); padding:2px 0 2px var(--sp-3);
+  font-size:var(--t-15); font-weight:var(--fw-m); color:var(--ink); line-height:1.55;
+}
+
+/* 강점 셋 — 크림 면 */
+.three{
+  margin:var(--sp-4) 0 0; padding:var(--sp-5); border-radius:var(--r);
+  background:var(--b-bg); border:1px solid var(--b-line);
+  display:grid; gap:var(--sp-4); list-style:none;
+}
+.three li{display:grid; grid-template-columns:46px 1fr; gap:var(--sp-4); align-items:start}
+/* 리플렛에 인쇄된 손가락 선화 — 아이콘을 새로 그리지 않고 브랜드 자산을 씁니다 */
+.three .ill{display:block; width:38px; height:auto; margin:2px auto 0}
+.three .k{display:block; font-size:var(--t-12); font-weight:var(--fw-sb); color:var(--b); letter-spacing:.06em}
+.three .n{display:block; font-size:var(--t-sm); font-weight:var(--fw-sb); line-height:1.4; margin-bottom:var(--sp-2)}
+.three .d{display:block; font-size:var(--t-13); font-weight:400; color:var(--ink-2); line-height:1.65}
+
+/* 절차 — 핑크 번호 */
+.steps{list-style:none; margin:var(--sp-4) 0 0; padding:0; display:grid; gap:var(--sp-4)}
+.steps li{display:grid; grid-template-columns:24px 1fr; gap:var(--sp-3); align-items:start}
+.steps .no{
+  width:24px; height:24px; border-radius:var(--r-btn); background:var(--b); color:#fff;
+  font-size:var(--t-12); font-weight:var(--fw-sb); display:grid; place-items:center; margin-top:1px;
+}
+.steps .n{display:block; font-size:var(--t-15); font-weight:var(--fw-sb); line-height:1.5}
+.steps .d{display:block; font-size:var(--t-13); font-weight:400; color:var(--gray); line-height:1.5}
+
+/* 맨 끝 한 줄 */
+.end{margin:0; padding-top:var(--sp-6); border-top:1px solid var(--line)}
+.end .hl{font-size:clamp(19px, 5vw, var(--t-md))}
+
+/* 구역 이름 — 「여기부터 다른 이야기」를 알려 주는 가장 싼 방법입니다 */
+.zlabel{
+  display:block; margin:0 0 var(--sp-3);
+  font-size:var(--t-12); font-weight:var(--fw-sb); color:var(--gray-2); letter-spacing:.04em;
+}
+
+/* ── 두 대문 ────────────────────────────────────────────
+   폰에서는 위아래로 쌓입니다. 좌우 2단은 아래 미디어쿼리에서만 켜집니다. */
+.doors{display:grid; grid-template-columns:1fr; gap:var(--sp-4)}
+
+/* ── 옆으로 넘겨 보는 카달로그 ─────────────────────────────
+   서비스 첫 화면의 히어로도 점이 달린 가로 넘김입니다.
+   두 가지를 지켜야 실제로 넘깁니다 —
+     (1) 다음 장이 살짝 보이게 자릅니다 (86%). 딱 맞게 채우면 아무도 안 넘깁니다
+     (2) 넘김판을 화면 양옆까지 붙입니다 (음수 여백). 가운데 떠 있으면 갇혀 보입니다
+   장 안에서는 세로로 읽고, 장을 바꿀 때만 옆으로 넘깁니다. */
+.deck{
+  display:grid; grid-auto-flow:column; grid-auto-columns:86%;
+  gap:var(--sp-3); align-items:stretch;
+  overflow-x:auto; overscroll-behavior-x:contain;
+  scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
+  margin:0 calc(var(--pad) * -1); padding:0 var(--pad);
+  scrollbar-width:none;
+}
+.deck::-webkit-scrollbar{display:none}
+.slide{
+  scroll-snap-align:start;
+  background:#fff; border:1px solid var(--line); border-radius:var(--r);
+  padding:var(--sp-6) var(--sp-5);
+}
+.slide .kick2{margin-bottom:var(--sp-1)}
+.slide .hl{font-size:clamp(19px, 5.2vw, var(--t-lg))}
+.slide .qs,.slide .three,.slide .steps{margin-top:var(--sp-5)}
+/* 장 안에서는 크림 면을 또 깔지 않습니다 — 장 자체가 이미 한 칸입니다 */
+.slide .three{background:none; border:0; padding:0; gap:var(--sp-4)}
+
+/* 점 — 서비스 히어로와 같은 모양(현재 장은 핑크 알약) */
+.dotrow{display:flex; justify-content:center; gap:6px; margin:var(--sp-4) 0 0}
+.dotrow button{
+  width:7px; height:7px; padding:0; border:0; border-radius:99px;
+  background:var(--line-2); cursor:pointer;
+  transition:width .16s ease, background .16s ease;
+}
+.dotrow button[aria-current="true"]{width:20px; background:var(--b)}
+
+/* ── 링크 타일 ──────────────────────────────────────────── */
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-3)}
+.tile{
+  grid-column:span 2; padding:var(--sp-4); border-radius:var(--r-s);
+  display:flex; align-items:center; gap:var(--sp-3);
+}
+.tile .ic{
+  flex:none; width:38px; height:38px; border-radius:var(--r-btn);
+  background:var(--b-bg); color:var(--b-dark); display:grid; place-items:center;
+}
+.tile .tx{flex:1; min-width:0; display:block}
+.tt{display:flex; align-items:center; gap:6px; flex-wrap:wrap}
+.tile .t{display:block; font-size:var(--t-body); font-weight:var(--fw-sb); line-height:1.45}
+.tile .d{display:block; font-size:var(--t-13); font-weight:400; color:var(--gray); margin-top:1px; line-height:1.5}
+.tile .tag{
+  flex:none; font-size:var(--t-12); font-weight:var(--fw-m); color:var(--b-dark);
+  background:#fff; border:1px solid var(--b-line); border-radius:var(--r-btn); padding:1px 7px;
+}
+.tile .arw{flex:none; color:var(--gray-2); font-size:var(--t-md); line-height:1}
+
+/* 큰 칸 — 그 브랜드에서 제일 먼저 눌러야 하는 링크 */
+.tile.feat{padding:var(--sp-5); background:var(--b-bg); border-color:var(--b-line)}
+.tile.feat .ic{width:44px; height:44px; background:#fff; border:1px solid var(--b-line)}
+.tile.feat .t{font-size:var(--t-sm)}
+.tile.feat .d{font-size:var(--t-15)}
+
+/* 반 칸 — 아이콘 위, 이름 아래 */
+.tile.half{
+  grid-column:span 1; flex-direction:column; align-items:flex-start;
+  justify-content:space-between; gap:var(--sp-3); min-height:110px;
+}
+.tile.half .arw{display:none}
+
+/* 준비 중 */
+.tile.soon{cursor:default; background:var(--bg-1); border-color:var(--line)}
+.tile.soon .ic{background:var(--bg-2); color:var(--gray-2)}
+.tile.soon .t{color:var(--gray)}
+.tile.soon .tag{color:var(--gray); border-color:var(--line-2)}
+.tile.soon .arw{display:none}
+.soonchip{
+  flex:none; font-size:var(--t-12); font-weight:var(--fw-m); color:var(--gray);
+  background:#fff; border:1px solid var(--line-2); border-radius:var(--r-btn); padding:2px 8px;
+}
+.tile svg{display:block}
+
+/* ── 리플렛 원본 넘겨 보기 ─────────────────────────────────
+   인쇄물을 폰 폭에 맞춰 줄이면 본문이 4~5px 가 되어 못 읽습니다.
+   그래서 「줄여서 보여주기」가 아니라 「눌러서 키우기」로 풉니다 —
+   여기서는 어떤 장이 있는지만 훑고, 읽는 건 전체화면 뷰어가 맡습니다. */
+.znote{margin:0 0 var(--sp-4); font-size:var(--t-13); color:var(--gray); line-height:1.5}
+/* 지면 한 장 — 카달로그 넘김판과 같은 86% 폭입니다.
+   이 크기라야 지면의 대제목(원본 200px)이 26px 로 읽힙니다. 작은 썸네일은
+   눌러야만 의미가 생기지만, 이 크기는 넘기는 것만으로 메시지가 전달됩니다.
+   본문까지 읽으려면 눌러서 전체화면 뷰어로 갑니다. */
+.leafP{
+  scroll-snap-align:start; position:relative; padding:0; line-height:0; cursor:pointer;
+  background:#fff; border:1px solid var(--line); border-radius:var(--r); overflow:hidden;
+}
+.leafP img{width:100%; height:auto; display:block}
+.leafP .pno{
+  position:absolute; left:10px; top:10px; min-width:22px; height:22px; padding:0 6px;
+  border-radius:7px; background:rgba(33,33,33,.62); color:#fff;
+  font-size:11px; font-weight:var(--fw-sb); display:grid; place-items:center; line-height:1;
+}
+.leafP .zoom{
+  position:absolute; right:10px; bottom:10px; padding:4px 9px; border-radius:var(--r-btn);
+  background:rgba(33,33,33,.62); color:#fff; font-size:11px; font-weight:var(--fw-sb); line-height:1.5;
+}
+@media (hover:hover){ .leafP:hover{border-color:var(--line-2)} }
+
+/* 전체화면 뷰어 — 핀치줌으로 읽습니다. 그래도 작으면 「원본 크게 보기」로 넘깁니다. */
+.viewer{position:fixed; inset:0; z-index:50; background:#fff; display:flex; flex-direction:column}
+.viewer[hidden]{display:none}
+.vbar{
+  display:flex; align-items:center; gap:var(--sp-3); flex:none;
+  padding:var(--sp-3) var(--sp-4); border-bottom:1px solid var(--line);
+  padding-top:calc(var(--sp-3) + env(safe-area-inset-top));
+}
+.vbar .cnt{font-size:var(--t-13); font-weight:var(--fw-sb); color:var(--gray)}
+.vbar .big{
+  margin-left:auto; font-size:var(--t-13); font-weight:var(--fw-sb);
+  color:var(--b-dark); text-decoration:none; padding:6px 0;
+}
+.vbar .x{
+  flex:none; border:0; background:none; padding:6px 2px; margin:0; cursor:pointer;
+  font:inherit; font-size:19px; line-height:1; color:var(--ink); min-width:32px;
+}
+.vpages{
+  flex:1; min-height:0; display:grid; grid-auto-flow:column; grid-auto-columns:100%;
+  overflow-x:auto; overscroll-behavior:contain;
+  scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch; scrollbar-width:none;
+}
+.vpages::-webkit-scrollbar{display:none}
+.vpages section{scroll-snap-align:start; display:grid; place-items:center; padding:var(--sp-3)}
+.vpages img{max-width:100%; max-height:100%; object-fit:contain; display:block}
+
+/* ── 맨 아래 ────────────────────────────────────────────── */
+.foot{
+  display:flex; align-items:center; justify-content:center; gap:var(--sp-2);
+  margin:0; padding-top:var(--sp-6); border-top:1px solid var(--line);
+  color:var(--gray-2); font-size:var(--t-12); font-weight:400;
+}
+.foot i{width:12px; height:3px; border-radius:2px; display:block}
+.foot i:first-child{background:var(--pink)}
+.foot i:last-child{background:var(--sky)}
+
+/* 들어올 때 한 칸씩 올라옵니다 */
+@keyframes up{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
+.wrap>*{animation:up .3s both}
+.wrap>*:nth-child(2){animation-delay:.04s}
+.wrap>*:nth-child(3){animation-delay:.08s}
+.wrap>*:nth-child(4){animation-delay:.12s}
+.wrap>*:nth-child(n+5){animation-delay:.16s}
+
+/* 넓은 화면 — 두 브랜드를 나란히. 안쪽 링크 목록은 520px 그대로 둡니다 */
+@media (min-width:600px){
+  .wrap:not(.inner){max-width:720px}
+  .doors{grid-template-columns:1fr 1fr; align-items:stretch}
+  .door{display:flex; flex-direction:column}
+  .door .bd{flex:1; display:flex; flex-direction:column}
+  .door .bd>:nth-last-child(2), .door.cover>:nth-last-child(2){margin-bottom:var(--sp-5)}
+  .door .cta{margin-top:auto}
+}
+
+@media (max-width:360px){
+  .wrap{--pad:12px}
+  .plate{left:var(--sp-4)}
+  .bd{padding-left:var(--sp-4); padding-right:var(--sp-4)}
+  .tile.half{min-height:100px}
+}
+@media (prefers-reduced-motion:reduce){
+  .wrap>*{animation:none}
+  .card{transition:none}
+  .dotrow button{transition:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+
+<script src="links.js"></script>
+<script>
+(function () {
+  var D = window.LINKS;
+  var app = document.getElementById('app');
+
+  function esc(s){ return String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  /* 그림 — 선만 있는 단색 아이콘입니다. 색은 부모(.ic)의 글자색을 따릅니다. */
+  function svg(d, size){
+    return '<svg width="' + (size || 20) + '" height="' + (size || 20) + '" viewBox="0 0 24 24" ' +
+      'fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" ' +
+      'stroke-linejoin="round" aria-hidden="true">' + d + '</svg>';
+  }
+  var PATH = {
+    home : '<path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9.5V21h13V9.5"/><path d="M9.5 21v-6h5v6"/>',
+    chat : '<path d="M12 4c4.7 0 8.5 2.9 8.5 6.5S16.7 17 12 17c-.7 0-1.4-.1-2-.2L6 19l.8-3.2C4.7 14.6 3.5 12.7 3.5 10.5 3.5 6.9 7.3 4 12 4Z"/>',
+    form : '<path d="M6 3.5h9L19 7v13.5H6z"/><path d="M14.5 3.5V7.5H19"/><path d="M9 12.5h6M9 16h4"/>',
+    insta: '<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="3.8"/><circle cx="17" cy="7" r="1" fill="currentColor" stroke="none"/>',
+    blog : '<path d="M5 4.5h11.5L19.5 7.5v12H5z"/><path d="M8.5 9h7M8.5 12.5h7M8.5 16h4"/>',
+    doc  : '<path d="M5 4.5h9.5L19 9v10.5H5z"/><path d="M14.5 4.5V9H19"/>',
+    star : '<path d="M12 4.5l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 10.2l5.4-.8z"/>'
+  };
+  /* 아이콘을 안 적었으면 제목을 보고 골라 줍니다 */
+  function pick(l){
+    var k = l.icon;
+    if (!PATH[k]) {
+      var t = String(l.t || '');
+      k = /카카오|카톡|톡/.test(t)   ? 'chat'  :
+          /홈페이지|사이트/.test(t)  ? 'home'  :
+          /신청|상담|문의/.test(t)   ? 'form'  :
+          /인스타/.test(t)          ? 'insta' :
+          /블로그/.test(t)          ? 'blog'  :
+          /소개|자료|안내/.test(t)   ? 'doc'   : 'star';
+    }
+    return PATH[k];
+  }
+
+  /* 자사 도메인으로 나가는 주소에만 UTM 꼬리표를 답니다.
+     남의 서비스(카카오 등)는 우리 꼬리표를 읽지 않으므로 건드리지 않습니다.
+     campaign 은 이 페이지 주소의 `?c=값` 이 있으면 그것을, 없으면 기본값을 씁니다. */
+  function withUtm(url){
+    var U = D.utm;
+    if (!U || !U.hosts || !U.hosts.length) return url;
+    try {
+      var u = new URL(url, location.href);
+      var mine = U.hosts.some(function(h){
+        return u.hostname === h || u.hostname === 'www.' + h;
+      });
+      if (!mine) return url;
+      var c = new URLSearchParams(location.search).get('c') || U.campaign;
+      if (U.source) u.searchParams.set('utm_source', U.source);
+      if (U.medium) u.searchParams.set('utm_medium', U.medium);
+      if (c) u.searchParams.set('utm_campaign', c);
+      return u.toString();
+    } catch (e) { return url; }   /* 주소가 이상해도 링크는 살아 있어야 합니다 */
+  }
+
+  /* 링크 타일 하나. 주소가 없으면 「준비 중」으로 두고 누르지 못하게 합니다. */
+  function tile(l){
+    var feat = l.w === 'feat', half = l.w === 'half';
+    var cls  = 'card tile' + (feat ? ' feat' : '') + (half ? ' half' : '');
+    var desc = l.label || l.d;
+    var body =
+      '<span class="ic">' + svg(pick(l), feat ? 23 : 20) + '</span>' +
+      '<span class="tx">' +
+        '<span class="tt"><span class="t">' + esc(l.t) + '</span>' +
+        (l.tag ? '<span class="tag">' + esc(l.tag) + '</span>' : '') + '</span>' +
+        (desc && !half ? '<span class="d">' + esc(desc) + '</span>' : '') +
+      '</span>';
+
+    if (!l.url) return '<div class="' + cls + ' soon">' + body +
+      '<span class="soonchip">준비 중</span></div>';
+    var out = /^https?:/.test(l.url);
+    return '<a class="' + cls + '" href="' + esc(withUtm(l.url)) + '"' +
+           (out ? ' target="_blank" rel="noopener"' : '') + '>' +
+           body + '<span class="arw">›</span></a>';
+  }
+
+  /* `*표시*` 안쪽만 굵게 — 카달로그의 「강조어만 굵게」 규칙입니다.
+     별표 바깥도 안쪽도 따로 escape 하므로 데이터에 <> 가 있어도 안전합니다. */
+  function em(line){
+    return String(line == null ? '' : line).split('*').map(function(part, i){
+      return i % 2 ? '<b>' + esc(part) + '</b>' : esc(part);
+    }).join('');
+  }
+
+  /* 덩어리 머리 — 회색 킥커 한 줄 + 큰 제목. 6면 중 5면이 이 구조입니다. */
+  function secHead(o){
+    return (o.kicker ? '<p class="kick2">' + esc(o.kicker) + '</p>' : '') +
+           (o.head ? '<p class="hl">' + em(o.head) + '</p>' : '');
+  }
+
+  /* 「무엇이 들어 있나」 낱말 알약. button 안에도 들어가야 해서 span 으로 씁니다. */
+  function tagRow(g){
+    if (!g.tags || !g.tags.length) return '';
+    return '<span class="tags">' +
+      g.tags.map(function(x){ return '<span>' + esc(x) + '</span>'; }).join('') + '</span>';
+  }
+
+  /* 카달로그 표지 문법 — 회색 킥커 → 핑크 점 셋 → 큰 제목(마지막 줄만 굵게)
+     → 가는 선 → 회색 리드 → 연핑크 알약. 대문과 안쪽 머리가 같이 씁니다.
+     body 자리에 대문은 lead, 안쪽은 desc 가 들어갑니다. */
+  function cover(g, body){
+    var h = [].concat(g.head || g.name);
+    return (g.logo ? '<span class="mk"><img src="' + esc(g.logo) + '" alt="' + esc(g.name) +
+             '" style="height:' + (+g.logoH || 20) + 'px"></span>' : '') +
+      (g.kicker ? '<span class="kick2">' + esc(g.kicker) + '</span>' : '') +
+      '<span class="dots3"><i></i><i></i><i></i></span>' +
+      h.map(function(line){ return '<span class="hl">' + em(line) + '</span>'; }).join('') +
+      '<span class="rule"></span>' +
+      (body ? '<span class="lead">' + [].concat(body).map(esc).join('<br>') + '</span>' : '') +
+      tagRow(g);
+  }
+
+  /* 브랜드 카드의 머리 — 띠 + 로고판. 대문과 안쪽이 같은 얼굴을 씁니다. */
+  function band(g){
+    if (!g.logo) return '<span class="band"></span>';
+    var h = g.logoH || 28;
+    return '<span class="band"></span>' +
+      '<span class="plate"><img src="' + esc(g.logo) + '" alt="' + esc(g.name) +
+      '" style="height:' + (+h) + 'px"></span>';
+  }
+
+  /* 대문 — 두 브랜드 중에서 고릅니다 */
+  function home(){
+    var B = D.brand || {};
+    var T = D.top;
+    var kakao = (T && T.url) ?
+      '<a class="card hero" href="' + esc(T.url) + '" target="_blank" rel="noopener">' +
+        '<span class="row">' +
+          '<span class="ic">' + svg(PATH.chat, 22) + '</span>' +
+          '<span class="tx">' +
+            (T.ask ? '<span class="ask">' + esc(T.ask) + '</span>' : '') +
+            '<span class="t">' + esc(T.t || '') + '</span>' +
+          '</span>' +
+        '</span>' +
+        (T.d ? '<span class="cta">' + esc(T.d) + ' ›</span>' : '') +
+      '</a>' : '';
+
+    var q = B.title ? '<div class="q"><h1>' + em(B.title) + '</h1></div>' : '';
+
+    var cta = '<span class="cta">더 자세히 알아보기 ›</span>';
+    /* 대문은 두 브랜드가 같은 얼굴을 씁니다 — 띠 + 로고판 + 한 줄.
+       예전에는 클럽하와이만 카달로그 표지 얼굴(look:'cover')이라 나란히 놓았을 때
+       둘이 다른 물건처럼 보였습니다. 표지 얼굴은 안쪽 페이지 머리에만 남습니다. */
+    var doors = D.groups.filter(function(g){ return g.id; }).map(function(g){
+      var tone = esc(g.tone || '');
+      return '<button class="card cov door ' + tone + '" data-go="' + esc(g.id) + '">' +
+        band(g) +
+        '<span class="bd">' +
+          (g.ask ? '<span class="ask">' + esc(g.ask) + '</span>' : '') +
+          '<span class="nmrow"><span class="nm">' + esc(g.name) + '</span>' +
+          (g.en ? '<span class="en">' + esc(g.en) + '</span>' : '') + '</span>' +
+          (g.one ? '<span class="one">' + esc(g.one) + '</span>' : '') +
+          tagRow(g) + cta +
+        '</span></button>';
+    }).join('');
+
+    return kakao + q + '<div class="doors">' + doors + '</div>' + foot();
+  }
+
+  /* 이야기 한 덩어리의 「속」 — 넘김판의 한 장이 되기도 하고,
+     세로로 쌓이는 한 칸이 되기도 합니다 (story.layout 으로 고릅니다). */
+  function askBody(o){
+    return '<ul class="qs">' + (o.li || []).map(function(x){
+      return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>';
+  }
+  function whyBody(o){
+    return '<ul class="three">' + (o.li || []).map(function(x){
+      return '<li>' +
+        (x.ill ? '<img class="ill" src="' + esc(x.ill) + '" alt="" loading="lazy">' : '<span></span>') +
+        '<span><span class="k">' + esc(x.k) + '</span>' +
+        '<span class="n">' + esc(x.n) + '</span>' +
+        '<span class="d">' + esc(x.d) + '</span></span></li>'; }).join('') + '</ul>';
+  }
+  function stepBody(o){
+    return '<ol class="steps">' + (o.li || []).map(function(x, i){
+      return '<li><span class="no">' + (i + 1) + '</span>' +
+             '<span><span class="n">' + esc(x.n) + '</span>' +
+             (x.d ? '<span class="d">' + esc(x.d) + '</span>' : '') + '</span></li>';
+    }).join('') + '</ol>';
+  }
+
+  /* story 안에서 실제로 쓸 장들만 골라 차례대로 돌려줍니다 */
+  function pages(st){
+    return [[st.ask, askBody], [st.why, whyBody], [st.step, stepBody]]
+      .filter(function(x){ return x[0]; })
+      .map(function(x){ return secHead(x[0]) + x[1](x[0]); });
+  }
+
+  /* 옆으로 넘겨 보기 — 장 + 점.
+     장이 하나뿐이면 넘길 게 없으니 그냥 세로 한 칸으로 둡니다. */
+  function deck(st, tone){
+    var ps = pages(st);
+    if (!ps.length) return '';
+    if (ps.length === 1) return '<section class="sec ' + tone + '">' + ps[0] + '</section>';
+    return '<div class="' + tone + '">' +
+      (st.label ? '<span class="zlabel">' + esc(st.label) + '</span>' : '') +
+      '<div class="deck" role="region" aria-label="옆으로 넘겨 보기" tabindex="0">' +
+        ps.map(function(p){ return '<section class="slide">' + p + '</section>'; }).join('') +
+      '</div>' +
+      '<div class="dotrow">' + ps.map(function(p, i){
+        return '<button type="button" aria-label="' + (i + 1) + '번째 장"' +
+               (i ? '' : ' aria-current="true"') + '></button>'; }).join('') +
+      '</div></div>';
+  }
+
+  /* 세로로 쌓기 — story.layout 을 'stack' 으로 적으면 이쪽입니다 */
+  function stack(st, tone){
+    return pages(st).map(function(p){
+      return '<section class="sec ' + tone + '">' + p + '</section>'; }).join('');
+  }
+  function endBlock(text, tone){
+    if (!text) return '';
+    return '<section class="end ' + tone + '"><p class="hl">' + em(text) + '</p></section>';
+  }
+
+  /* 리플렛 원본 — 어떤 장이 있는지 훑는 자리. 읽는 것은 뷰어가 맡습니다. */
+  var LEAF = [];
+  function leafZone(g, tone){
+    var L = g.leaflet;
+    if (!L || !L.pages || !L.pages.length) return '';
+    LEAF = L.pages.slice();
+    return '<div class="' + tone + '">' +
+      (L.label ? '<span class="zlabel">' + esc(L.label) + '</span>' : '') +
+      (L.note ? '<p class="znote">' + esc(L.note) + '</p>' : '') +
+      '<div class="deck" role="region" aria-label="리플렛 넘겨 보기" tabindex="0">' +
+        L.pages.map(function(n, i){
+          return '<button class="leafP" type="button" data-leaf="' + i + '">' +
+            '<img src="leafT-' + (+n) + '.webp" alt="리플렛 ' + (i + 1) + '면" loading="lazy">' +
+            '<span class="pno">' + (i + 1) + '</span>' +
+            '<span class="zoom">크게 보기</span></button>';
+        }).join('') +
+      '</div>' +
+      '<div class="dotrow">' + L.pages.map(function(n, i){
+        return '<button type="button" aria-label="' + (i + 1) + '면"' +
+               (i ? '' : ' aria-current="true"') + '></button>'; }).join('') +
+      '</div></div>';
+  }
+
+  /* 전체화면 뷰어 — 한 번만 만들어 두고 다시 씁니다. */
+  var V;
+  function viewer(){
+    if (V) return V;
+    V = document.createElement('div');
+    V.className = 'viewer pink';
+    V.hidden = true;
+    V.innerHTML =
+      '<div class="vbar"><span class="cnt"></span>' +
+      '<a class="big" target="_blank" rel="noopener">원본 크게 보기</a>' +
+      '<button class="x" type="button" aria-label="닫기">✕</button></div>' +
+      '<div class="vpages"></div>';
+    document.body.appendChild(V);
+
+    var pages = V.querySelector('.vpages');
+    function now(){
+      var w = pages.clientWidth || 1;
+      return Math.max(0, Math.min(LEAF.length - 1, Math.round(pages.scrollLeft / w)));
+    }
+    function mark(){
+      var i = now();
+      V.querySelector('.cnt').textContent = (i + 1) + ' / ' + LEAF.length;
+      V.querySelector('.big').href = 'leaf-' + LEAF[i] + '.webp';
+    }
+    var t;
+    pages.addEventListener('scroll', function(){
+      clearTimeout(t); t = setTimeout(mark, 60);
+    }, { passive: true });
+    V.querySelector('.x').addEventListener('click', closeViewer);
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && !V.hidden) closeViewer();
+    });
+    V._mark = mark;
+    return V;
+  }
+  function openViewer(i){
+    var v = viewer(), pages = v.querySelector('.vpages');
+    pages.innerHTML = LEAF.map(function(n){
+      return '<section><img src="leaf-' + (+n) + '.webp" alt="" loading="lazy"></section>';
+    }).join('');
+    v.hidden = false;
+    document.body.style.overflow = 'hidden';
+    /* requestAnimationFrame 을 쓰지 않습니다 — 화면이 안 보이는 상태에서는
+       실행되지 않아 카운터가 빈 채로 열립니다.
+       clientWidth 를 읽는 순간 레이아웃이 계산되므로 그냥 바로 해도 됩니다. */
+    pages.scrollLeft = i * pages.clientWidth;
+    v._mark();
+  }
+  function closeViewer(){
+    if (!V) return;
+    V.hidden = true;
+    V.querySelector('.vpages').innerHTML = '';
+    document.body.style.overflow = '';
+  }
+
+  /* 안쪽 — 한 브랜드의 이야기와 링크들.
+     차례는 공감(고민) → 해결(강점) → 링크 → 절차 → 클로징 입니다.
+     이야기를 링크 위에 두는 이유는, 「더 자세히 알아보기」를 누르고 들어온
+     사람이 먼저 알고 싶어 하는 것이 링크 목록이 아니라 내용이기 때문입니다. */
+  function brand(g){
+    var tone = esc(g.tone || '');
+    var head = (g.look === 'cover')
+      ? '<div class="card head cover ' + tone + '">' + cover(g, g.lead || g.desc) + '</div>'
+      : '<div class="card cov head ' + tone + '">' + band(g) +
+          '<div class="bd">' +
+            '<div class="nmrow"><span class="nm">' + esc(g.name) + '</span>' +
+            (g.en ? '<span class="en">' + esc(g.en) + '</span>' : '') + '</div>' +
+            (g.desc ? '<p class="d">' + esc(g.desc) + '</p>' : '') +
+            tagRow(g) +
+          '</div></div>';
+    var st = g.story || {};
+    var story = st.layout === 'stack' ? stack(st, tone) : deck(st, tone);
+    var links = '<div class="' + tone + '">' +
+      (g.linksLabel ? '<span class="zlabel">' + esc(g.linksLabel) + '</span>' : '') +
+      '<div class="grid">' + g.links.map(tile).join('') + '</div></div>';
+    /* 차례 — 표지(여기가 어디인가) → 리플렛(무엇인가) → 바로가기(무엇을 할까).
+       글로 된 요약 넘김판(story)은 리플렛과 같은 말이라 기본으로는 비어 있습니다. */
+    return '<button class="back" data-go="">‹ 처음으로</button>' + head +
+      leafZone(g, tone) + story + links +
+      endBlock(st.end, tone) +
+      foot();
+  }
+
+  function foot(){
+    var B = D.brand || {};
+    if (!B.foot) return '';
+    return '<div class="foot"><i></i><span>' + esc(B.foot) + '</span><i></i></div>';
+  }
+
+  /* 넘김판과 점을 이어 줍니다 — 넘기면 점이 따라오고, 점을 누르면 그 장으로 갑니다. */
+  /* 화면 안의 넘김판을 모두 이어 줍니다 (카달로그 · 리플렛 두 개). */
+  function wireDecks(){
+    [].slice.call(app.querySelectorAll('.deck')).forEach(function(d){
+      var row = d.nextElementSibling;
+      if (row && row.className === 'dotrow') wireOne(d, row);
+    });
+  }
+  function wireOne(d, row){
+    var dots = [].slice.call(row.children);
+    var slides = [].slice.call(d.children);
+
+    /* 장마다 「이 값을 scrollLeft 에 넣으면 그 장이 왼쪽에 온다」는 수를 구합니다.
+       폭 ÷ 장수 로 어림하면 좌우 여백·간격 때문에 한두 장 넘어가면 어긋납니다. */
+    function targets(){
+      var base = d.getBoundingClientRect().left - d.scrollLeft;
+      return slides.map(function(x){
+        return Math.round(x.getBoundingClientRect().left - base);
+      });
+    }
+    function mark(){
+      var t = targets(), x = d.scrollLeft, i = 0, best = Infinity;
+      t.forEach(function(v, n){
+        var gap = Math.abs(v - x);
+        if (gap < best) { best = gap; i = n; }
+      });
+      dots.forEach(function(b, n){
+        if (n === i) b.setAttribute('aria-current', 'true');
+        else b.removeAttribute('aria-current');
+      });
+    }
+
+    var timer;
+    d.addEventListener('scroll', function(){
+      clearTimeout(timer); timer = setTimeout(mark, 60);
+    }, { passive: true });
+
+    row.addEventListener('click', function(e){
+      var b = e.target.closest && e.target.closest('button');
+      if (!b) return;
+      var i = dots.indexOf(b);
+      /* 부드럽게 넘기려 하지 않습니다 — scrollTo({behavior:'smooth'}) 도
+         CSS 의 scroll-behavior:smooth 도 scroll-snap 과 싸워서 제자리로 되돌아옵니다.
+         값을 바로 넣으면 어느 브라우저에서든 확실히 넘어갑니다. */
+      d.scrollLeft = targets()[i];
+      /* 점은 scroll 이벤트를 기다리지 않고 여기서 바로 바꿉니다.
+         이벤트가 늦거나(디바운스) 안 오는 환경이 있습니다. */
+      dots.forEach(function(x, n){
+        if (n === i) x.setAttribute('aria-current', 'true');
+        else x.removeAttribute('aria-current');
+      });
+    });
+
+    mark();
+  }
+
+  function draw(){
+    var id = location.hash.replace('#', '');
+    var g = D.groups.filter(function(x){ return x.id && x.id === id; })[0];
+    closeViewer();
+    LEAF = [];
+    app.className = 'wrap' + (g ? ' inner' : '');
+    app.innerHTML = g ? brand(g) : home();
+    wireDecks();
+    window.scrollTo(0, 0);
+    document.title = (g ? g.name + ' · ' : '') + '이즈유';
+  }
+
+  /* 대문을 누르면 주소가 바뀝니다 → 뒤로가기로 돌아옵니다.
+     QR 을 브랜드별로 따로 만들 수도 있습니다 (…/#ym). */
+  app.addEventListener('click', function(e){
+    var leaf = e.target.closest && e.target.closest('[data-leaf]');
+    if (leaf) { openViewer(+leaf.getAttribute('data-leaf')); return; }
+    var b = e.target.closest && e.target.closest('[data-go]');
+    if (!b) return;
+    var to = b.getAttribute('data-go');
+    if (to) location.hash = to;
+    else if (location.hash) history.back();
+  });
+  window.addEventListener('hashchange', draw);
+  draw();
+})();
+</script>
+</body>
+</html>
