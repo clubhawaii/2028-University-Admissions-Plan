@@ -154,9 +154,9 @@ window.LINKS = {
       tags: ['사전조사서', '상담계획서', '학습전략서', '알림톡·출결'],
       linksLabel: '바로가기',
       links: [
-        { t: '서비스 소개', d: '무엇을 해주는지 한 장으로', url: '', icon: 'doc', w: 'feat' },
-        { t: '도입 상담 신청', d: '학원 상황에 맞게 안내드립니다', url: '', icon: 'form' },
-        { t: '카카오톡 상담', d: '', url: '', icon: 'chat' }
+        { t: '서비스 소개', d: '무엇을 해주는지 한 장으로', url: 'https://youmeani.github.io/catalog/', icon: 'doc', w: 'feat' },
+        { t: '도입 상담 신청', d: '학원 상황에 맞게 안내드립니다', url: 'https://www.youmeani.com/', icon: 'form' },
+        { t: '카카오톡 상담', d: '가장 빠릅니다. 무엇이든 물어보세요', url: 'http://pf.kakao.com/_YHwDn', icon: 'chat' }
       ]
     }
   ]
